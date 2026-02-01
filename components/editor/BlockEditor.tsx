@@ -249,7 +249,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
 
                 <div className={`transition-all duration-700 flex flex-col items-center ${previewMode === 'mobile'
                     ? 'h-[740px] w-[360px] mockup-phone border-gray-800 bg-gray-800 rounded-[3rem] p-2 shadow-2xl scale-[0.8] justify-center mt-[-60px]'
-                    : 'w-full flex items-center justify-center pt-16 scale-[0.4] md:scale-[0.55] lg:scale-[0.65] xl:scale-[0.75] 2xl:scale-[0.85] origin-top'
+                    : 'w-full flex items-center justify-center pt-8 scale-[0.45] md:scale-[0.6] lg:scale-[0.7] xl:scale-[0.8] 2xl:scale-[0.9] origin-top'
                     } relative`}>
 
                     {previewMode === 'mobile' ? (
@@ -302,18 +302,24 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                         </>
                     ) : (
                         <div className="w-full flex flex-col items-center">
-                            <div className="w-[1920px] aspect-video bg-black rounded-[60px] p-8 shadow-[0_0_100px_rgba(0,0,0,0.2)] border-[16px] border-slate-900 relative ring-4 ring-slate-800/50">
-                                <div className="w-full h-8 bg-slate-200/90 rounded-t-[10px] flex items-center px-4 gap-1.5 border-b border-black/5">
-                                    <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                                    <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                                    <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                                    <div className="ml-4 bg-white/80 h-5 px-4 rounded-md flex items-center gap-2">
-                                        <div className="w-2 h-2 bg-slate-300 rounded-full"></div>
-                                        <div className="w-32 h-2 bg-slate-200 rounded-full"></div>
+                            {/* Improved Monitor Mockup */}
+                            <div className="w-[1280px] aspect-video bg-[#1a1a1a] rounded-[40px] p-4 shadow-[0_30px_100px_rgba(0,0,0,0.3)] border-[12px] border-[#2a2a2a] relative ring-1 ring-white/10">
+                                {/* Browser Header */}
+                                <div className="w-full h-10 bg-[#f1f3f4] rounded-t-[12px] flex items-center px-4 gap-3 border-b border-black/10">
+                                    <div className="flex gap-1.5">
+                                        <div className="w-3 h-3 rounded-full bg-[#ff5f57]"></div>
+                                        <div className="w-3 h-3 rounded-full bg-[#ffbc2e]"></div>
+                                        <div className="w-3 h-3 rounded-full bg-[#28c840]"></div>
                                     </div>
+                                    <div className="flex-1 max-w-md mx-auto bg-white h-7 px-4 rounded-md flex items-center gap-2 border border-black/5 shadow-sm">
+                                        <div className="w-3 h-3 bg-slate-200 rounded-full"></div>
+                                        <div className="w-48 h-2.5 bg-slate-100 rounded-full"></div>
+                                    </div>
+                                    <div className="w-16"></div> {/* Spacer for balance */}
                                 </div>
 
-                                <div className="w-full h-[calc(100%-32px)] overflow-hidden bg-white rounded-b-[10px]">
+                                {/* Content Area */}
+                                <div className="w-full h-[calc(100%-40px)] overflow-hidden bg-white rounded-b-[12px]">
                                     <div
                                         className="h-full w-full overflow-y-auto scrollbar-hide"
                                         style={{
@@ -335,20 +341,20 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                                 previewMode="desktop"
                                             />
                                         ) : (
-                                            <div className="p-4">
-                                                <div className="flex flex-col items-center pt-8 mb-6 text-center">
-                                                    <div className="w-24 h-24 bg-gray-200 rounded-full mb-3 overflow-hidden border-2 border-white/20 relative shadow-sm">
+                                            <div className="p-8">
+                                                <div className="flex flex-col items-center pt-12 mb-10 text-center">
+                                                    <div className="w-32 h-32 bg-gray-200 rounded-full mb-4 overflow-hidden border-4 border-white/20 relative shadow-md">
                                                         {profile?.avatar_url ? (
                                                             <Image src={profile.avatar_url} alt={profile.display_name || 'Profile'} fill className="object-cover" />
                                                         ) : (
-                                                            <div className="w-full h-full bg-slate-300 flex items-center justify-center text-slate-500 font-bold text-xl">{initials}</div>
+                                                            <div className="w-full h-full bg-slate-300 flex items-center justify-center text-slate-500 font-bold text-2xl">{initials}</div>
                                                         )}
                                                     </div>
-                                                    <h2 className="text-2xl font-bold mb-1">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
-                                                    {profile?.bio && <p className="text-sm opacity-70 max-w-[400px]">{profile.bio}</p>}
+                                                    <h2 className="text-3xl font-bold mb-2">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
+                                                    {profile?.bio && <p className="text-lg opacity-70 max-w-[600px]">{profile.bio}</p>}
                                                 </div>
 
-                                                <div className="mx-auto space-y-3 max-w-[600px]">
+                                                <div className="mx-auto space-y-4 max-w-[640px]">
                                                     {blocks.map(block => (
                                                         <BlockRenderer
                                                             key={block.id}
@@ -358,7 +364,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                                     ))}
                                                 </div>
 
-                                                <div className="mt-12 text-center text-[10px] opacity-50 pb-8">
+                                                <div className="mt-16 text-center text-xs opacity-50 pb-12">
                                                     <p>Powered by Link-in-Bio Platform</p>
                                                 </div>
                                             </div>
@@ -366,8 +372,12 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                     </div>
                                 </div>
                             </div>
-                            <div className="w-72 h-14 bg-gradient-to-b from-slate-500 to-slate-700 rounded-b-3xl shadow-xl -mt-2"></div>
-                            <div className="w-[450px] h-4 bg-slate-800 rounded-full shadow-2xl"></div>
+
+                            {/* Stand */}
+                            <div className="flex flex-col items-center">
+                                <div className="w-48 h-12 bg-gradient-to-b from-slate-400 to-slate-600 rounded-b-2xl shadow-lg -mt-1"></div>
+                                <div className="w-80 h-3 bg-slate-800 rounded-full shadow-xl"></div>
+                            </div>
                         </div>
                     )}
                 </div>

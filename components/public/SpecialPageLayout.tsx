@@ -224,11 +224,11 @@ export function SpecialPageLayout({
                 {/* Dots removed as requested */}
             </div>
 
-            <div className={`mx-auto w-full ${previewMode === 'mobile' ? 'px-6 pb-12' : 'w-[1920px] px-16 py-8 pb-32'}`}>
-                <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-row gap-16 items-start'}`}>
+            <div className={`mx-auto w-full ${previewMode === 'mobile' ? 'px-6 pb-12' : 'max-w-[1200px] px-8 py-10 pb-32'}`}>
+                <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-row gap-12 items-start'}`}>
 
                     {/* Profile Sidebar - Smaller Size */}
-                    <div className={`${previewMode === 'mobile' ? 'w-full mb-12' : 'w-[260px] sticky top-12'}`}>
+                    <div className={`${previewMode === 'mobile' ? 'w-full mb-12' : 'w-[280px] sticky top-12'}`}>
                         <div className="relative mb-6 group">
                             <div className={`${previewMode === 'mobile' ? 'w-40 h-40 mx-auto' : 'w-52 h-52'} rounded-[2.5rem] overflow-hidden border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative transform rotate-1 hover:rotate-0 transition-transform duration-700`}>
                                 {profile.avatar_url ? (
