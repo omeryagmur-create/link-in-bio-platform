@@ -62,73 +62,64 @@ export function PublicPageLayout({ profile, page, blocks }: PublicPageLayoutProp
 
     return (
         <div
-            className="min-h-screen transition-all duration-500 relative"
+            className="min-h-screen py-8 px-4"
             style={{
                 backgroundColor,
                 color: textColor,
                 fontFamily,
             }}
         >
-            {/* Desktop Navigation Mockup (matching SpecialPageLayout) - Only visible on desktop if needed, or keeping it clean */}
-            <div className="hidden md:flex w-full justify-between items-center p-6 max-w-[1200px] mx-auto">
-                {/* Visual parity with Special Layout nav */}
-                <div className="flex gap-4 opacity-0"> {/* Hidden but keeping space for layout parity if needed */}
-                    <div className="w-10 h-10" />
-                </div>
-            </div>
-
-            <div className="mx-auto w-full max-w-[1200px] px-4 md:px-8 py-8 md:py-10 pb-32">
-                <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
-                    {/* Profil Sidebar / Header */}
-                    <div className="w-full md:w-[280px] md:sticky md:top-12 flex flex-col items-center md:items-start text-center md:text-left">
-                        {/* Avatar */}
-                        <div className="relative mb-6">
-                            <div className="w-32 h-32 md:w-52 md:h-52 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border-4 md:border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative transform md:rotate-1">
-                                {profile.avatar_url ? (
-                                    <Image
-                                        src={profile.avatar_url}
-                                        alt={profile.display_name || profile.username}
-                                        fill
-                                        className="object-cover"
-                                    />
-                                ) : (
-                                    <div className="w-full h-full bg-slate-100 flex items-center justify-center text-3xl md:text-4xl font-bold text-slate-400">
-                                        {(profile.display_name || profile.username).charAt(0).toUpperCase()}
-                                    </div>
-                                )}
+            <div className="max-w-2xl mx-auto">
+                {/* Profil Header */}
+                <div className="text-center mb-8">
+                    {/* Avatar */}
+                    {profile.avatar_url ? (
+                        <div className="mb-4 flex justify-center">
+                            <Image
+                                src={profile.avatar_url}
+                                alt={profile.display_name || profile.username}
+                                width={96}
+                                height={96}
+                                className="rounded-full"
+                            />
+                        </div>
+                    ) : (
+                        <div className="mb-4 flex justify-center">
+                            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+                                <span className="text-3xl font-bold text-gray-500">
+                                    {(profile.display_name || profile.username).charAt(0).toUpperCase()}
+                                </span>
                             </div>
                         </div>
+                    )}
 
-                        {/* Info */}
-                        <div className="space-y-3 md:space-y-5">
-                            <h1 className="text-2xl md:text-4xl font-bold tracking-tight leading-tight">
-                                {profile.display_name || profile.username}
-                            </h1>
-                            {profile.bio && (
-                                <p className="text-sm md:text-base opacity-80 leading-relaxed max-w-sm">
-                                    {profile.bio}
-                                </p>
-                            )}
-                        </div>
-                    </div>
+                    {/* Display Name */}
+                    <h1 className="text-2xl font-bold mb-2">
+                        {profile.display_name || profile.username}
+                    </h1>
 
-                    {/* Content Area - Classic blocks */}
-                    <div className="w-full flex-1 max-w-2xl md:max-w-[640px]">
-                        <div className="space-y-4 w-full">
-                            {blocks.map((block) => (
-                                <BlockRenderer
-                                    key={block.id}
-                                    block={block}
-                                    theme={theme}
-                                />
-                            ))}
-                        </div>
+                    {/* Bio */}
+                    {profile.bio && (
+                        <p className="text-sm opacity-80 max-w-md mx-auto">
+                            {profile.bio}
+                        </p>
+                    )}
+                </div>
 
-                        {/* Footer */}
-                        <div className="mt-16 text-center text-xs opacity-50 pb-12">
-                            <p>Powered by Link-in-Bio Platform</p>
-                        </div>
-                    </div>
+                {/* Bloklar */}
+                <div className="space-y-4">
+                    {blocks.map((block) => (
+                        <BlockRenderer
+                            key={block.id}
+                            block={block}
+                            theme={theme}
+                        />
+                    ))}
+                </div>
+
+                {/* Footer */}
+                <div className="mt-12 text-center text-sm opacity-50">
+                    <p>Powered by Link-in-Bio Platform</p>
                 </div>
             </div>
         </div>
