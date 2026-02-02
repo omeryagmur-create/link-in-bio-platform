@@ -8,7 +8,7 @@ import { ArrowLeft, Loader2, Save } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { useTranslation } from '@/lib/i18n/provider'
-// Will be created next
+// Force redeploy trigger
 import { BlockEditor } from '@/components/editor/BlockEditor'
 
 export default function EditorPage() {
