@@ -1,0 +1,144 @@
+{
+    "common": {
+        "save": "Сохранить",
+        "saving": "Сохранение...",
+        "saved": "Сохранено",
+        "updated": "Обновлено",
+        "cancel": "Отмена",
+        "delete": "Удалить",
+        "edit": "Изменить",
+        "publish": "Опубликовать",
+        "preview": "Предпросмотр",
+        "loading": "Загрузка...",
+        "error": "Ошибка",
+        "success": "Успешно",
+        "logout": "Выйти",
+        "name": "Имя"
+    },
+    "dashboard": {
+        "title": "Мои страницы",
+        "description": "Создавайте и управляйте своими страницами link-in-bio.",
+        "create_page": "Создать новую страницу",
+        "no_pages": "У вас пока нет страниц.",
+        "status_published": "Опубликовано",
+        "status_draft": "Черновик"
+    },
+    "editor": {
+        "tabs": {
+            "profile": "Профиль",
+            "content": "Контент",
+            "theme": "Дизайн",
+            "seo": "SEO"
+        },
+        "layout": {
+            "title": "Макет страницы",
+            "classic": "Классический список",
+            "special": "Bento Grid",
+            "type": "Макет страницы"
+        },
+        "profile": {
+            "name": "Отображаемое имя",
+            "bio": "Биография",
+            "avatar": "Фото профиля",
+            "tags": "Теги"
+        },
+        "theme": {
+            "title": "Готовые темы",
+            "colors": "Цвета",
+            "background": "Фон",
+            "text": "Текст",
+            "button": "Кнопка",
+            "button_text": "Текст кнопки",
+            "font": "Шрифт",
+            "layout_type": "Макет страницы",
+            "layout_classic": "Классический список",
+            "layout_special": "Bento Grid",
+            "presets": "Готовые темы",
+            "presets_list": {
+                "classic": "Классика",
+                "dark": "Темная",
+                "ocean": "Океан",
+                "modern_soft": "Modern Soft",
+                "luxury": "Люкс"
+            },
+            "typography": "Типографика и стиль",
+            "button_style": "Форма кнопки",
+            "style_sharp": "Острая",
+            "style_rounded": "Скругленная",
+            "style_soft": "Мягкая",
+            "style_pill": "Овальная"
+        },
+        "seo": {
+            "preview_title": "Предпросмотр в поисковиках",
+            "preview_desc": "Проверьте, как ваша страница будет выглядеть в поиске Google.",
+            "placeholder_desc": "Введите описание страницы, чтобы она лучше выглядела в результатах поиска.",
+            "title_label": "SEO Заголовок",
+            "placeholder_title": "Заголовок для поисковиков (опционально)",
+            "hint_title": "Если оставить пустым, будет использоваться обычный заголовок страницы.",
+            "desc_label": "SEO Описание",
+            "social_preview": "Предпросмотр в соцсетях",
+            "social_preview_desc": "Вид при отправке в WhatsApp, Facebook и Twitter."
+        },
+        "blocks": {
+            "add": "Yeni Blok Ekle",
+            "choose": "Выберите блок",
+            "choose_desc": "Выберите тип контента, который вы хотите добавить на свою страницу.",
+            "added": "блок добавлен",
+            "empty": "Блоки пока не добавлены.",
+            "delete_confirm": "Вы уверены, что хотите удалить этот блок?",
+            "deleted": "Блок удален",
+            "updated": "Блок обновлен",
+            "types": {
+                "link": "Ссылка",
+                "text": "Текст",
+                "image": "Изображение",
+                "video": "Видео",
+                "embed": "Вставка",
+                "divider": "Разделитель"
+            },
+            "editor": {
+                "content": "Контент",
+                "style": "Стиль",
+                "title": "Заголовок",
+                "url": "URL",
+                "fetching": "Загрузка данных...",
+                "placeholder_title": "Заголовок ссылки",
+                "placeholder_text": "Пишите здесь...",
+                "image_label": "Изображение",
+                "link_url": "Ссылка для перехода (опция)",
+                "caption": "Подпись (опция)",
+                "caption_placeholder": "Подпись к картинке",
+                "video_url": "YouTube URL",
+                "platform_url": "URL платформы (Spotify, YT Music, Календарь)",
+                "embed_code": "Или код вставки",
+                "divider_hint": "Настройки разделителя в разделе Дизайн.",
+                "widget_placement": "Размещение виджета",
+                "width": "Ширина",
+                "height": "Высота",
+                "columns": "Колонки",
+                "rows": "Строки",
+                "small": "Малый",
+                "medium": "Средний",
+                "wide": "Широкий"
+            },
+            "untitled_link": "Ссылка без заголовка",
+            "text_placeholder": "Содержание текста...",
+            "initial_data": {
+                "link_title": "Новая ссылка",
+                "text_content": "Содержание текста..."
+            }
+        }
+    },
+    "premium": {
+        "seo_title": "Премиум SEO возможности",
+        "seo_description": "Привлекайте больше людей, настраивая SEO и отображение в соцсетях.",
+        "seo_feat1": "Свои Meta-заголовки",
+        "seo_feat2": "Meta-описания",
+        "seo_feat3": "Вид при репосте в соцсети",
+        "upgrade": "Перейти на Pro и активировать"
+    },
+    "public": {
+        "powered_by": "Работает на Link-in-Bio Platform",
+        "not_found": "Пользователь не найден"
+    }
+}

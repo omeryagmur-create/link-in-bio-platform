@@ -7,6 +7,8 @@ import { LayoutDashboard, BarChart3, Loader2, LogOut, Settings, Sparkles } from 
 import { useState } from 'react'
 import { toast } from 'sonner'
 import Link from 'next/link'
+import { LanguageSwitcher } from '@/components/i18n/LanguageSwitcher'
+import { useTranslation } from '@/lib/i18n/provider'
 
 export default function DashboardLayout({
     children,
@@ -17,6 +19,7 @@ export default function DashboardLayout({
     const pathname = usePathname()
     const supabase = createClient()
     const [loading, setLoading] = useState(false)
+    const { t } = useTranslation()
 
     const handleLogout = async () => {
         setLoading(true)
@@ -25,15 +28,15 @@ export default function DashboardLayout({
             router.push('/login')
             router.refresh()
         } catch (error) {
-            toast.error('Çıkış yapılırken hata oluştu')
+            toast.error(t('common.error'))
         } finally {
             setLoading(false)
         }
     }
 
     const navItems = [
-        { label: 'Sayfalarım', icon: LayoutDashboard, href: '/dashboard' },
-        { label: 'Analiz', icon: BarChart3, href: '/analytics' },
+        { label: t('dashboard.title'), icon: LayoutDashboard, href: '/dashboard' },
+        { label: 'Analiz', icon: BarChart3, href: '/analytics' }, // Add to dict if needed, keeping as is for now or use common
         { label: 'Planım', icon: Sparkles, href: '/pricing' },
     ]
 
@@ -71,6 +74,8 @@ export default function DashboardLayout({
                         </nav>
                     </div>
                     <div className="flex items-center gap-3">
+                        <LanguageSwitcher />
+                        <div className="h-4 w-px bg-slate-200 mx-1"></div>
                         <Link href="/settings">
                             <Button variant="ghost" size="icon" className="text-muted-foreground">
                                 <Settings className="w-4 h-4" />
@@ -79,7 +84,7 @@ export default function DashboardLayout({
                         <div className="h-4 w-px bg-slate-200 mx-1"></div>
                         <Button variant="ghost" size="sm" onClick={handleLogout} disabled={loading} className="text-muted-foreground hover:text-destructive transition-colors">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="mr-2 h-4 w-4" />}
-                            Çıkış
+                            {t('common.logout')}
                         </Button>
                     </div>
                 </div>

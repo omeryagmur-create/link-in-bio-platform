@@ -9,6 +9,7 @@ import { Card, CardContent } from '@/components/ui/card'
 import { GripVertical, Trash2, Edit, Check, X, Type, Link as LinkIcon, Image as ImageIcon, Video as VideoIcon, Minus, Grid2X2, Music } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { useTranslation } from '@/lib/i18n/provider'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -24,6 +25,7 @@ interface DraggableBlockProps {
 }
 
 export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classic' }: DraggableBlockProps) {
+    const { t } = useTranslation()
     const {
         attributes,
         listeners,
@@ -57,7 +59,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
             const result = await res.json()
             if (result.statCount) {
                 setData((prev: any) => ({ ...prev, statCount: result.statCount }))
-                toast.success(`${result.platform} verileri güncellendi`)
+                toast.success(`${result.platform} ${t('common.updated')}`)
             }
         } catch {
             console.error('Stats fetch failed')
@@ -70,9 +72,9 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
         try {
             await fetch(`/api/blocks/${block.id}`, { method: 'DELETE' })
             onDelete(block.id)
-            toast.success('Blok silindi')
+            toast.success(t('editor.blocks.deleted'))
         } catch {
-            toast.error('Hata oluştu')
+            toast.error(t('common.error'))
         }
     }
 
@@ -86,9 +88,9 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
             const updated = await res.json()
             onUpdate(updated)
             setIsEditing(false)
-            toast.success('Güncellendi')
+            toast.success(t('editor.blocks.updated'))
         } catch {
-            toast.error('Hata oluştu')
+            toast.error(t('common.error'))
         }
     }
 
@@ -110,24 +112,24 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
             case 'link':
                 return (
                     <div className="flex-1">
-                        <div className="font-medium text-sm">{bData.title || 'Başlıksız Link'}</div>
+                        <div className="font-medium text-sm">{bData.title || t('editor.blocks.untitled_link')}</div>
                         <div className="text-[10px] text-muted-foreground truncate max-w-[200px]">{bData.url}</div>
                     </div>
                 )
             case 'text':
                 return (
                     <div className="flex-1 truncate text-sm">
-                        {bData.content || 'Metin içeriği...'}
+                        {bData.content || t('editor.blocks.text_placeholder')}
                     </div>
                 )
             case 'image':
-                return <div className="flex-1 text-sm font-medium">Resim Bloğu</div>
+                return <div className="flex-1 text-sm font-medium">{t('editor.blocks.types.image')}</div>
             case 'video':
-                return <div className="flex-1 text-sm font-medium">Video Bloğu</div>
+                return <div className="flex-1 text-sm font-medium">{t('editor.blocks.types.video')}</div>
             case 'embed':
-                return <div className="flex-1 text-sm font-medium">Eklenti (Müzik/Takvim)</div>
+                return <div className="flex-1 text-sm font-medium">{t('editor.blocks.types.embed')}</div>
             case 'divider':
-                return <div className="flex-1 text-sm font-medium">Ayırıcı</div>
+                return <div className="flex-1 text-sm font-medium">{t('editor.blocks.types.divider')}</div>
             default:
                 return <div className="flex-1 text-sm font-medium uppercase">{block.type} BLOCK</div>
         }
@@ -138,17 +140,17 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
             <div className="flex-1 space-y-4">
                 <Tabs defaultValue="content" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 h-8">
-                        <TabsTrigger value="content" className="text-xs">İçerik</TabsTrigger>
-                        <TabsTrigger value="style" className="text-xs">Stil</TabsTrigger>
+                        <TabsTrigger value="content" className="text-xs">{t('editor.blocks.editor.content')}</TabsTrigger>
+                        <TabsTrigger value="style" className="text-xs">{t('editor.blocks.editor.style')}</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="content" className="space-y-3 pt-2">
                         {block.type === 'link' && (
                             <>
                                 <div className="space-y-1">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Başlık</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.title')}</Label>
                                     <Input
-                                        placeholder="Link Başlığı"
+                                        placeholder={t('editor.blocks.editor.placeholder_title')}
                                         value={data.title || ''}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, title: e.target.value })}
                                         className="h-8 text-sm"
@@ -156,8 +158,8 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                 </div>
                                 <div className="space-y-1">
                                     <div className="flex justify-between items-center">
-                                        <Label className="text-[10px] uppercase font-bold text-muted-foreground">URL</Label>
-                                        {isFetchingStats && <span className="text-[10px] text-primary animate-pulse">Veriler Çekiliyor...</span>}
+                                        <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.url')}</Label>
+                                        {isFetchingStats && <span className="text-[10px] text-primary animate-pulse">{t('editor.blocks.editor.fetching')}</span>}
                                     </div>
                                     <Input
                                         placeholder="https://..."
@@ -172,9 +174,9 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
 
                         {block.type === 'text' && (
                             <div className="space-y-1">
-                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Metin İçeriği</Label>
+                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.types.text')}</Label>
                                 <Textarea
-                                    placeholder="Buraya yazın..."
+                                    placeholder={t('editor.blocks.editor.placeholder_text')}
                                     value={data.content || ''}
                                     onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setData({ ...data, content: e.target.value })}
                                     className="min-h-[80px] text-sm"
@@ -185,12 +187,12 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         {block.type === 'image' && (
                             <div className="space-y-3">
                                 <ImageUpload
-                                    label="Resim"
+                                    label={t('editor.blocks.editor.image_label')}
                                     value={data.imageUrl || data.url || ''}
                                     onChange={(url) => setData({ ...data, imageUrl: url, url })}
                                 />
                                 <div className="space-y-1">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Yönlendirilecek Link (Opsiyonel)</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.link_url')}</Label>
                                     <Input
                                         placeholder="https://..."
                                         value={data.linkUrl || ''}
@@ -199,9 +201,9 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Açıklama (Opsiyonel)</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.caption')}</Label>
                                     <Input
-                                        placeholder="Resim altı yazısı"
+                                        placeholder={t('editor.blocks.editor.caption_placeholder')}
                                         value={data.caption || ''}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, caption: e.target.value })}
                                         className="h-8 text-sm"
@@ -213,8 +215,8 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         {block.type === 'video' && (
                             <div className="space-y-1">
                                 <div className="flex justify-between items-center">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">YouTube URL</Label>
-                                    {isFetchingStats && <span className="text-[10px] text-primary animate-pulse">Veriler Çekiliyor...</span>}
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.video_url')}</Label>
+                                    {isFetchingStats && <span className="text-[10px] text-primary animate-pulse">{t('editor.blocks.editor.fetching')}</span>}
                                 </div>
                                 <Input
                                     placeholder="https://www.youtube.com/watch?v=..."
@@ -232,7 +234,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         {block.type === 'embed' && (
                             <div className="space-y-3">
                                 <div className="space-y-1">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Platform URL (Spotify, YT Music, Takvim)</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.platform_url')}</Label>
                                     <Input
                                         placeholder="https://..."
                                         value={data.url || ''}
@@ -241,7 +243,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                     />
                                 </div>
                                 <div className="space-y-1">
-                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">Veya Embed Kodu</Label>
+                                    <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.blocks.editor.embed_code')}</Label>
                                     <Textarea
                                         placeholder="<iframe... "
                                         value={data.embedCode || ''}
@@ -253,14 +255,14 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         )}
 
                         {block.type === 'divider' && (
-                            <p className="text-xs text-muted-foreground italic">Ayırıcı çizgi ayarları görünüm kısmındadır.</p>
+                            <p className="text-xs text-muted-foreground italic">{t('editor.blocks.editor.divider_hint')}</p>
                         )}
                     </TabsContent>
 
                     <TabsContent value="style" className="space-y-4 pt-2">
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
-                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Arka Plan</Label>
+                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.theme.background')}</Label>
                                 <div className="flex gap-2">
                                     <Input
                                         type="color"
@@ -269,7 +271,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                         className="h-8 w-8 p-1 cursor-pointer"
                                     />
                                     <Input
-                                        placeholder="Özel Renk"
+                                        placeholder={t('editor.theme.colors')}
                                         value={data.backgroundColor || ''}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, backgroundColor: e.target.value })}
                                         className="h-8 text-xs flex-1"
@@ -277,7 +279,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                 </div>
                             </div>
                             <div className="space-y-1">
-                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">Yazı Rengi</Label>
+                                <Label className="text-[10px] uppercase font-bold text-muted-foreground">{t('editor.theme.text')}</Label>
                                 <div className="flex gap-2">
                                     <Input
                                         type="color"
@@ -286,7 +288,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                         className="h-8 w-8 p-1 cursor-pointer"
                                     />
                                     <Input
-                                        placeholder="Özel Renk"
+                                        placeholder={t('editor.theme.colors')}
                                         value={data.textColor || ''}
                                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setData({ ...data, textColor: e.target.value })}
                                         className="h-8 text-xs flex-1"
@@ -300,11 +302,11 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                             <div className="space-y-4 pt-4 border-t mt-2">
                                 <div className="flex items-center gap-2 text-primary">
                                     <Grid2X2 className="h-3 w-3" />
-                                    <span className="text-[10px] uppercase font-bold tracking-tight">Widget Yerleşimi</span>
+                                    <span className="text-[10px] uppercase font-bold tracking-tight">{t('editor.blocks.editor.widget_placement')}</span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="space-y-1.5">
-                                        <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Genişlik</Label>
+                                        <Label className="text-[10px] text-muted-foreground uppercase font-semibold">{t('editor.blocks.editor.width')}</Label>
                                         <Select
                                             value={String(data.gridSpanX || 1)}
                                             onValueChange={(val) => setData({ ...data, gridSpanX: parseInt(val) })}
@@ -313,14 +315,14 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="1">1 Sütun (Küçük)</SelectItem>
-                                                <SelectItem value="2">2 Sütun (Orta)</SelectItem>
-                                                <SelectItem value="4">4 Sütun (Geniş)</SelectItem>
+                                                <SelectItem value="1">1 {t('editor.blocks.editor.columns')} ({t('editor.blocks.editor.small')})</SelectItem>
+                                                <SelectItem value="2">2 {t('editor.blocks.editor.columns')} ({t('editor.blocks.editor.medium')})</SelectItem>
+                                                <SelectItem value="4">4 {t('editor.blocks.editor.columns')} ({t('editor.blocks.editor.wide')})</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
                                     <div className="space-y-1.5">
-                                        <Label className="text-[10px] text-muted-foreground uppercase font-semibold">Yükseklik</Label>
+                                        <Label className="text-[10px] text-muted-foreground uppercase font-semibold">{t('editor.blocks.editor.height')}</Label>
                                         <Select
                                             value={String(data.gridSpanY || 1)}
                                             onValueChange={(val) => setData({ ...data, gridSpanY: parseInt(val) })}
@@ -329,8 +331,8 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                                                 <SelectValue />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="1">1 Satır</SelectItem>
-                                                <SelectItem value="2">2 Satır</SelectItem>
+                                                <SelectItem value="1">1 {t('editor.blocks.editor.rows')}</SelectItem>
+                                                <SelectItem value="2">2 {t('editor.blocks.editor.rows')}</SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -345,10 +347,10 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         setData(block.data);
                         setIsEditing(false);
                     }}>
-                        <X className="h-4 w-4 mr-1" /> İptal
+                        <X className="h-4 w-4 mr-1" /> {t('common.cancel')}
                     </Button>
                     <Button size="sm" onClick={handleSave}>
-                        <Check className="h-4 w-4 mr-1" /> Kaydet
+                        <Check className="h-4 w-4 mr-1" /> {t('common.save')}
                     </Button>
                 </div>
             </div>

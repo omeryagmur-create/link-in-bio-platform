@@ -1,31 +1,6 @@
-'use client'
-
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Page } from '@/types'
-import Link from 'next/link'
-import { ExternalLink, Edit, Trash2 } from 'lucide-react'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-
-interface PageListProps {
-    pages: Page[]
-}
-
 export function PageList({ pages }: PageListProps) {
     const router = useRouter()
+    const { t } = useTranslation()
     const [deletingId, setDeletingId] = useState<string | null>(null)
 
     const handleDelete = async (id: string) => {
@@ -35,12 +10,12 @@ export function PageList({ pages }: PageListProps) {
                 method: 'DELETE',
             })
 
-            if (!res.ok) throw new Error('Silme işlemi başarısız')
+            if (!res.ok) throw new Error(t('common.error'))
 
-            toast.success('Sayfa silindi')
+            toast.success(t('common.success'))
             router.refresh()
         } catch {
-            toast.error('Sayfa silinirken bir hata oluştu')
+            toast.error(t('common.error'))
         } finally {
             setDeletingId(null)
         }
@@ -49,10 +24,7 @@ export function PageList({ pages }: PageListProps) {
     if (pages.length === 0) {
         return (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-                <h3 className="mt-4 text-lg font-semibold">Henüz hiç sayfanız yok</h3>
-                <p className="mb-4 mt-2 text-sm text-muted-foreground">
-                    İlk sayfanızı oluşturarak paylaşımlarınızı bir araya getirin.
-                </p>
+                <h3 className="mt-4 text-lg font-semibold">{t('dashboard.no_pages')}</h3>
             </div>
         )
     }
@@ -68,13 +40,13 @@ export function PageList({ pages }: PageListProps) {
                     <CardContent className="flex-1">
                         <div className="flex items-center space-x-2 text-sm text-muted-foreground">
                             <span className={`inline-block h-2 w-2 rounded-full ${page.is_published ? 'bg-green-500' : 'bg-yellow-500'}`} />
-                            <span>{page.is_published ? 'Yayında' : 'Taslak'}</span>
+                            <span>{page.is_published ? t('dashboard.status_published') : t('dashboard.status_draft')}</span>
                         </div>
                     </CardContent>
                     <CardFooter className="flex justify-between border-t p-4 bg-muted/20">
                         <Link href={`/editor/${page.id}`} passHref>
                             <Button variant="outline" size="sm">
-                                <Edit className="mr-2 h-3 w-3" /> Düzenle
+                                <Edit className="mr-2 h-3 w-3" /> {t('common.edit')}
                             </Button>
                         </Link>
                         <div className="flex space-x-2">
@@ -94,15 +66,12 @@ export function PageList({ pages }: PageListProps) {
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Emin misiniz?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Bu sayfayı silmek üzeresiniz. Bu işlem geri alınamaz.
-                                        </AlertDialogDescription>
+                                        <AlertDialogTitle>{t('editor.blocks.delete_confirm')}</AlertDialogTitle>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
-                                        <AlertDialogCancel>İptal</AlertDialogCancel>
+                                        <AlertDialogCancel>{t('common.cancel')}</AlertDialogCancel>
                                         <AlertDialogAction onClick={() => handleDelete(page.id)} className="bg-destructive hover:bg-destructive/90">
-                                            {deletingId === page.id ? 'Siliniyor...' : 'Sil'}
+                                            {deletingId === page.id ? t('common.loading') : t('common.delete')}
                                         </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>

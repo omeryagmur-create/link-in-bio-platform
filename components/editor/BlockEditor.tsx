@@ -17,6 +17,7 @@ import { ProfileEditor } from '@/components/editor/ProfileEditor'
 import { SeoSettings } from '@/components/editor/SeoSettings'
 import Image from 'next/image'
 import { SpecialPageLayout } from '@/components/public/SpecialPageLayout'
+import { useTranslation } from '@/lib/i18n/provider'
 
 interface BlockEditorProps {
     pageId: string
@@ -29,6 +30,7 @@ interface BlockEditorProps {
 }
 
 export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, layoutType, onLayoutChange, onSavingChange }: BlockEditorProps) {
+    const { t } = useTranslation()
     const [blocks, setBlocks] = useState<Block[]>([])
     const [previewMode, setPreviewMode] = useState<'mobile' | 'desktop'>('mobile')
     const [theme, setTheme] = useState<ThemeConfig>({
@@ -53,14 +55,14 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                     setBlocks(data)
                 }
             } catch {
-                toast.error('Bloklar yüklenemedi')
+                toast.error(t('common.error'))
             } finally {
                 setLoading(false)
             }
         }
 
         fetchBlocks()
-    }, [pageId])
+    }, [pageId, t])
 
     const handleThemeChange = async (newTheme: ThemeConfig) => {
         setTheme(newTheme)
@@ -79,7 +81,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                 body: JSON.stringify({ path: `/${identifier}` })
             })
         } catch {
-            toast.error('Tema kaydedilemedi')
+            toast.error(t('editor.theme.title') + ' ' + t('common.error'))
         } finally {
             onSavingChange?.(false)
         }
@@ -103,7 +105,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
             if (!res.ok) throw new Error()
 
             onLayoutChange(newLayout)
-            toast.success('Düzen güncellendi')
+            toast.success(t('common.updated'))
 
             // Revalidate public page
             const identifier = profile?.username || pageId
@@ -113,7 +115,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                 body: JSON.stringify({ path: `/${identifier}` })
             })
         } catch {
-            toast.error('Düzen değiştirilemedi')
+            toast.error(t('common.error'))
         } finally {
             onSavingChange?.(false)
         }
@@ -147,7 +149,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                 body: JSON.stringify({ updates })
             })
         } catch {
-            toast.error('Sıralama kaydedilemedi')
+            toast.error(t('common.error'))
         }
     }
 
@@ -160,7 +162,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
         try {
             await fetch(`/api/blocks/${id}`, { method: 'DELETE' })
         } catch {
-            toast.error('Blok silinemedi')
+            toast.error(t('common.error'))
         }
     }
 
@@ -178,7 +180,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
             })
             if (!res.ok) throw new Error()
         } catch {
-            toast.error('Görünüm güncellenemedi')
+            toast.error(t('common.error'))
         }
     }
 
@@ -189,10 +191,10 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
             <div className="w-full max-w-md border-r bg-muted/10 p-4 overflow-y-auto">
                 <Tabs defaultValue="blocks" className="w-full">
                     <TabsList className="grid w-full grid-cols-4 mb-6">
-                        <TabsTrigger value="profile" className="text-xs">Profil</TabsTrigger>
-                        <TabsTrigger value="blocks" className="text-xs">İçerik</TabsTrigger>
-                        <TabsTrigger value="theme" className="text-xs">Tasarım</TabsTrigger>
-                        <TabsTrigger value="seo" className="text-xs">SEO</TabsTrigger>
+                        <TabsTrigger value="profile" className="text-xs">{t('editor.tabs.profile')}</TabsTrigger>
+                        <TabsTrigger value="blocks" className="text-xs">{t('editor.tabs.content')}</TabsTrigger>
+                        <TabsTrigger value="theme" className="text-xs">{t('editor.tabs.theme')}</TabsTrigger>
+                        <TabsTrigger value="seo" className="text-xs">{t('editor.tabs.seo')}</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="profile">
@@ -201,7 +203,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
 
                     <TabsContent value="blocks">
                         <div className="mb-6 flex items-center justify-between">
-                            <h2 className="font-semibold">Bloklar</h2>
+                            <h2 className="font-semibold">{t('editor.tabs.content')}</h2>
                             <AddBlockDialog pageId={pageId} onBlockAdded={handleAddBlock} />
                         </div>
 
@@ -230,7 +232,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
 
                         {blocks.length === 0 && !loading && (
                             <div className="text-center py-12 text-muted-foreground border-2 border-dashed rounded-lg">
-                                Henüz blok eklenmemiş
+                                {t('editor.blocks.empty')}
                             </div>
                         )}
                     </TabsContent>
@@ -256,14 +258,14 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                     <button
                         onClick={() => setPreviewMode('mobile')}
                         className={`p-2 rounded-full transition-all ${previewMode === 'mobile' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:bg-muted'}`}
-                        title="Mobil Görünüm"
+                        title={t('editor.preview.mobile')}
                     >
                         <Smartphone className="h-4 w-4" />
                     </button>
                     <button
                         onClick={() => setPreviewMode('desktop')}
                         className={`p-2 rounded-full transition-all ${previewMode === 'desktop' ? 'bg-primary text-white shadow-md' : 'text-muted-foreground hover:bg-muted'}`}
-                        title="Masaüstü Görünüm"
+                        title={t('editor.preview.desktop')}
                     >
                         <Monitor className="h-4 w-4" />
                     </button>
@@ -308,14 +310,14 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                                         <div className="w-full h-full bg-slate-300 flex items-center justify-center text-slate-500 font-bold text-xl">{initials}</div>
                                                     )}
                                                 </div>
-                                                <h2 className="text-lg font-bold mb-1">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
+                                                <h2 className="text-lg font-bold mb-1">{profile?.display_name || profile?.username || t('public.not_found')}</h2>
                                                 {profile?.bio && <p className="text-xs opacity-70 max-w-[400px]">{profile.bio}</p>}
                                             </div>
                                             <div className="mx-auto space-y-3 w-full">
                                                 {blocks.map(block => <BlockRenderer key={block.id} block={block} theme={theme} />)}
                                             </div>
                                             <div className="mt-12 text-center text-[10px] opacity-50 pb-8">
-                                                <p>Powered by Link-in-Bio Platform</p>
+                                                <p>{t('public.powered_by')}</p>
                                             </div>
                                         </div>
                                     )}
@@ -372,7 +374,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                                             <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-4xl">{initials}</div>
                                                         )}
                                                     </div>
-                                                    <h2 className="text-4xl font-bold mb-3 tracking-tight">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
+                                                    <h2 className="text-4xl font-bold mb-3 tracking-tight">{profile?.display_name || profile?.username || t('public.not_found')}</h2>
                                                     {profile?.bio && <p className="text-base opacity-80 max-w-[600px] leading-relaxed">{profile.bio}</p>}
                                                 </div>
 
@@ -387,7 +389,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                                 </div>
 
                                                 <div className="mt-16 text-center text-xs opacity-50 pb-12">
-                                                    <p>Powered by Link-in-Bio Platform</p>
+                                                    <p>{t('public.powered_by')}</p>
                                                 </div>
                                             </div>
                                         )}

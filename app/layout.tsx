@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import { Toaster } from "sonner";
+import { LanguageProvider } from "@/lib/i18n/provider";
 
 export default function RootLayout({
   children,
@@ -35,8 +36,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
-        <Toaster position="top-center" richColors />
+        <LanguageProvider>
+          {children}
+          <Toaster position="top-center" richColors />
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -54,11 +54,11 @@ export const getBlockStyle = (block: any, theme: ThemeConfig) => {
 
 export const themePresets = [
     {
-        name: 'Klasik',
+        name: 'editor.theme.presets_list.classic',
         theme: defaultTheme
     },
     {
-        name: 'Karanlık',
+        name: 'editor.theme.presets_list.dark',
         theme: {
             backgroundColor: '#09090b',
             textColor: '#fafafa',
@@ -69,7 +69,7 @@ export const themePresets = [
         }
     },
     {
-        name: 'Okyanus',
+        name: 'editor.theme.presets_list.ocean',
         theme: {
             backgroundColor: '#f0f9ff',
             textColor: '#0c4a6e',
@@ -80,7 +80,7 @@ export const themePresets = [
         }
     },
     {
-        name: 'Modern Soft',
+        name: 'editor.theme.presets_list.modern_soft',
         theme: {
             backgroundColor: '#fafaf9',
             textColor: '#1c1917',
@@ -91,7 +91,7 @@ export const themePresets = [
         }
     },
     {
-        name: 'Lüks',
+        name: 'editor.theme.presets_list.luxury',
         theme: {
             backgroundColor: '#1a1a1a',
             textColor: '#d4af37',

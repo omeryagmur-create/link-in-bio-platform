@@ -29,7 +29,10 @@ interface PublicPageLayoutProps {
     blocks: Block[]
 }
 
+import { useTranslation } from '@/lib/i18n/provider'
+
 export function PublicPageLayout({ profile, page, blocks }: PublicPageLayoutProps) {
+    const { t } = useTranslation()
     // Analytics... (keep existing useEffect)
     useEffect(() => {
         const trackPageView = async () => {
@@ -118,7 +121,7 @@ export function PublicPageLayout({ profile, page, blocks }: PublicPageLayoutProp
 
                 {/* Footer */}
                 <div className="mt-12 text-center text-sm opacity-50">
-                    <p>Powered by Link-in-Bio Platform</p>
+                    <p>{t('public.powered_by')}</p>
                 </div>
             </div>
         </div>

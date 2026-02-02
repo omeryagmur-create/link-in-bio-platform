@@ -1,20 +1,7 @@
-'use client'
-
-import { useState } from 'react'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { ImageUpload } from './ImageUpload'
-import { toast } from 'sonner'
-import { Save, Loader2 } from 'lucide-react'
-
-interface ProfileEditorProps {
-    profile: any
-    onUpdate: (profile: any) => void
-}
+import { useTranslation } from '@/lib/i18n/provider'
 
 export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
+    const { t } = useTranslation()
     const [data, setData] = useState({
         display_name: profile?.display_name || '',
         bio: profile?.bio || '',
@@ -31,13 +18,13 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                 body: JSON.stringify(data)
             })
 
-            if (!res.ok) throw new Error('Failed to update profile')
+            if (!res.ok) throw new Error(t('common.error'))
 
             const updated = await res.json()
             onUpdate(updated)
-            toast.success('Profil güncellendi')
+            toast.success(t('common.success'))
         } catch (error: any) {
-            toast.error(error.message || 'Hata oluştu')
+            toast.error(t('common.error'))
         } finally {
             setLoading(false)
         }
@@ -49,16 +36,16 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                 <ImageUpload
                     value={data.avatar_url}
                     onChange={(url) => setData({ ...data, avatar_url: url })}
-                    label="Profil Fotoğrafı"
+                    label={t('editor.tabs.profile')}
                 />
             </div>
 
             <div className="space-y-4">
                 <div className="space-y-1.5">
-                    <Label htmlFor="display_name" className="text-xs uppercase font-bold text-muted-foreground">İsim</Label>
+                    <Label htmlFor="display_name" className="text-xs uppercase font-bold text-muted-foreground">{t('common.name')}</Label>
                     <Input
                         id="display_name"
-                        placeholder="Görünen İsim"
+                        placeholder={t('common.name')}
                         value={data.display_name}
                         onChange={(e) => setData({ ...data, display_name: e.target.value })}
                     />
@@ -68,7 +55,7 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                     <Label htmlFor="bio" className="text-xs uppercase font-bold text-muted-foreground">Bio</Label>
                     <Textarea
                         id="bio"
-                        placeholder="Kendinden bahset..."
+                        placeholder="..."
                         value={data.bio}
                         onChange={(e) => setData({ ...data, bio: e.target.value })}
                         className="min-h-[100px]"
@@ -82,7 +69,7 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                 ) : (
                     <Save className="mr-2 h-4 w-4" />
                 )}
-                Profili Kaydet
+                {t('common.save')}
             </Button>
         </div>
     )

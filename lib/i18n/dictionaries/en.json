@@ -1,0 +1,144 @@
+{
+    "common": {
+        "save": "Save",
+        "saving": "Saving...",
+        "saved": "Saved",
+        "updated": "Updated",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "edit": "Edit",
+        "publish": "Publish",
+        "preview": "Preview",
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "logout": "Logout",
+        "name": "Name"
+    },
+    "dashboard": {
+        "title": "My Pages",
+        "description": "Create and manage your link-in-bio pages.",
+        "create_page": "Create New Page",
+        "no_pages": "You don't have any pages yet.",
+        "status_published": "Live",
+        "status_draft": "Draft"
+    },
+    "editor": {
+        "tabs": {
+            "profile": "Profile",
+            "content": "Content",
+            "theme": "Theme",
+            "seo": "SEO"
+        },
+        "layout": {
+            "title": "Page Layout",
+            "classic": "Classic List",
+            "special": "Bento Grid",
+            "type": "Page Layout"
+        },
+        "profile": {
+            "name": "Display Name",
+            "bio": "Biography",
+            "avatar": "Profile Picture",
+            "tags": "Tags"
+        },
+        "theme": {
+            "title": "Pre-made Themes",
+            "colors": "Colors",
+            "background": "Background",
+            "text": "Text",
+            "button": "Button",
+            "button_text": "Button Text",
+            "font": "Font",
+            "layout_type": "Page Layout",
+            "layout_classic": "Classic List",
+            "layout_special": "Bento Grid",
+            "presets": "Pre-made Themes",
+            "presets_list": {
+                "classic": "Classic",
+                "dark": "Dark",
+                "ocean": "Ocean",
+                "modern_soft": "Modern Soft",
+                "luxury": "Luxury"
+            },
+            "typography": "Typography & Style",
+            "button_style": "Button Shape",
+            "style_sharp": "Sharp",
+            "style_rounded": "Rounded",
+            "style_soft": "Soft",
+            "style_pill": "Pill"
+        },
+        "seo": {
+            "preview_title": "Search Engine Preview",
+            "preview_desc": "Check how your page will appear in Google searches.",
+            "placeholder_desc": "Enter a description for your page to make it look better in search results.",
+            "title_label": "SEO Title",
+            "placeholder_title": "Search engine title (optional)",
+            "hint_title": "If left blank, the normal page title will be used.",
+            "desc_label": "SEO Description",
+            "social_preview": "Social Media Preview",
+            "social_preview_desc": "Appearance in WhatsApp, Facebook, and Twitter shares."
+        },
+        "blocks": {
+            "add": "Add New Block",
+            "choose": "Choose Block",
+            "choose_desc": "Select the type of content you want to add to your page.",
+            "added": "block added",
+            "empty": "No blocks added yet.",
+            "delete_confirm": "Are you sure you want to delete this block?",
+            "deleted": "Block deleted",
+            "updated": "Block updated",
+            "types": {
+                "link": "Link",
+                "text": "Text",
+                "image": "Image",
+                "video": "Video",
+                "embed": "Embed",
+                "divider": "Divider"
+            },
+            "editor": {
+                "content": "Content",
+                "style": "Style",
+                "title": "Title",
+                "url": "URL",
+                "fetching": "Fetching Data...",
+                "placeholder_title": "Link Title",
+                "placeholder_text": "Write here...",
+                "image_label": "Image",
+                "link_url": "Redirect URL (Optional)",
+                "caption": "Caption (Optional)",
+                "caption_placeholder": "Image caption",
+                "video_url": "YouTube URL",
+                "platform_url": "Platform URL (Spotify, YT Music, Calendar)",
+                "embed_code": "Or Embed Code",
+                "divider_hint": "Divider settings are in the design tab.",
+                "widget_placement": "Widget Placement",
+                "width": "Width",
+                "height": "Height",
+                "columns": "Columns",
+                "rows": "Rows",
+                "small": "Small",
+                "medium": "Medium",
+                "wide": "Wide"
+            },
+            "untitled_link": "Untitled Link",
+            "text_placeholder": "Text content...",
+            "initial_data": {
+                "link_title": "New Link",
+                "text_content": "Text content..."
+            }
+        }
+    },
+    "premium": {
+        "seo_title": "Premium SEO Features",
+        "seo_description": "Reach more people by customizing your search engine optimization and social media share settings.",
+        "seo_feat1": "Custom Meta Titles",
+        "seo_feat2": "Meta Descriptions",
+        "seo_feat3": "Social Media Share Appearance",
+        "upgrade": "Upgrade to Pro and Activate"
+    },
+    "public": {
+        "powered_by": "Powered by Link-in-Bio Platform",
+        "not_found": "User Not Found"
+    }
+}

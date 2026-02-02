@@ -1,21 +1,7 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Button } from '@/components/ui/button'
-import { Loader2, Search, Share2, Info } from 'lucide-react'
-import { toast } from 'sonner'
-import { createClient } from '@/lib/supabase/client'
-
-interface SeoSettingsProps {
-    pageId: string
-    subscriptionTier: string
-}
+import { useTranslation } from '@/lib/i18n/provider'
 
 export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
+    const { t } = useTranslation()
     const isPro = subscriptionTier === 'pro'
     const supabase = createClient()
     const [loading, setLoading] = useState(true)
@@ -59,9 +45,9 @@ export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
                 .eq('id', pageId)
 
             if (error) throw error
-            toast.success('SEO ayarları kaydedildi')
+            toast.success(t('common.success'))
         } catch (error: any) {
-            toast.error(error.message || 'Bir hata oluştu')
+            toast.error(t('common.error'))
         } finally {
             setSaving(false)
         }
@@ -80,12 +66,12 @@ export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
             <div className="flex items-center justify-between">
                 <h2 className="font-semibold text-lg flex items-center gap-2">
                     <Search className="w-5 h-5 text-primary" />
-                    SEO & Paylaşım
+                    {t('editor.tabs.seo')}
                 </h2>
                 {isPro && (
                     <Button size="sm" onClick={handleSave} disabled={saving}>
                         {saving && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                        Kaydet
+                        {t('common.save')}
                     </Button>
                 )}
             </div>
@@ -96,68 +82,68 @@ export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
                         <Search className="w-8 h-8 text-indigo-500" />
                     </div>
                     <div className="space-y-2">
-                        <h3 className="text-xl font-bold text-slate-900">Premium SEO Özellikleri</h3>
+                        <h3 className="text-xl font-bold text-slate-900">{t('premium.seo_title')}</h3>
                         <p className="text-slate-600 max-w-sm mx-auto">
-                            Arama motoru optimizasyonu ve sosyal medya paylaşım ayarlarını özelleştirerek daha fazla kişiye ulaşın.
+                            {t('premium.seo_description')}
                         </p>
                     </div>
                     <ul className="text-sm text-slate-600 space-y-2 text-left bg-white/50 p-6 rounded-2xl w-full max-w-xs">
                         <li className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            Özel Meta Başlıkları (Title)
+                            {t('premium.seo_feat1')}
                         </li>
                         <li className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            Meta Açıklamaları (Description)
+                            {t('premium.seo_feat2')}
                         </li>
                         <li className="flex items-center gap-2">
                             <div className="w-1.5 h-1.5 rounded-full bg-green-500" />
-                            Sosyal Medya Paylaşım Görünümü
+                            {t('premium.seo_feat3')}
                         </li>
                     </ul>
                     <Button className="w-full bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-200" asChild>
-                        <a href="/pricing">Pro'ya Geç ve Aktive Et</a>
+                        <a href="/pricing">{t('premium.upgrade')}</a>
                     </Button>
                 </Card>
             ) : (
                 <>
                     <Card className="border-none shadow-sm bg-white">
                         <CardHeader className="pb-4">
-                            <CardTitle className="text-sm font-medium">Arama Motoru Önizlemesi</CardTitle>
-                            <CardDescription>Sayfanızın Google aramalarında nasıl görüneceğini kontrol edin.</CardDescription>
+                            <CardTitle className="text-sm font-medium">{t('editor.seo.preview_title')}</CardTitle>
+                            <CardDescription>{t('editor.seo.preview_desc')}</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
                             <div className="p-4 rounded-xl border bg-slate-50 space-y-1">
                                 <div className="text-[#1a0dab] text-lg font-medium hover:underline cursor-pointer truncate">
-                                    {seoData.seo_title || seoData.title || 'Sayfa Başlığı'}
+                                    {seoData.seo_title || seoData.title || t('common.preview')}
                                 </div>
                                 <div className="text-[#006621] text-sm">
                                     link.bio/slug
                                 </div>
                                 <div className="text-[#545454] text-sm line-clamp-2">
-                                    {seoData.seo_description || 'Sayfanız için bir açıklama girerek arama sonuçlarında daha iyi görünmesini sağlayın.'}
+                                    {seoData.seo_description || t('editor.seo.placeholder_desc')}
                                 </div>
                             </div>
 
                             <div className="space-y-4 pt-4">
                                 <div className="space-y-2">
-                                    <Label htmlFor="seo_title">SEO Başlığı</Label>
+                                    <Label htmlFor="seo_title">{t('editor.seo.title_label')}</Label>
                                     <Input
                                         id="seo_title"
                                         value={seoData.seo_title}
                                         onChange={(e) => setSeoData({ ...seoData, seo_title: e.target.value })}
-                                        placeholder="Arama motoru başlığı (opsiyonel)"
+                                        placeholder={t('editor.seo.placeholder_title')}
                                     />
-                                    <p className="text-[10px] text-muted-foreground">Boş bırakılırsa normal sayfa başlığı kullanılır.</p>
+                                    <p className="text-[10px] text-muted-foreground">{t('editor.seo.hint_title')}</p>
                                 </div>
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="seo_description">SEO Açıklaması</Label>
+                                    <Label htmlFor="seo_description">{t('editor.seo.desc_label')}</Label>
                                     <Textarea
-                                        id="seo_description"
+                                        id="bio"
                                         value={seoData.seo_description}
                                         onChange={(e) => setSeoData({ ...seoData, seo_description: e.target.value })}
-                                        placeholder="Sayfa hakkında kısa bir açıklama..."
+                                        placeholder="..."
                                         className="resize-none h-24"
                                     />
                                 </div>
@@ -169,9 +155,9 @@ export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
                         <CardHeader className="pb-4">
                             <CardTitle className="text-sm font-medium flex items-center gap-2">
                                 <Share2 className="w-4 h-4 text-blue-500" />
-                                Sosyal Medya Önizlemesi
+                                {t('editor.seo.social_preview')}
                             </CardTitle>
-                            <CardDescription>WhatsApp, Facebook ve Twitter paylaşımlarında görünüm.</CardDescription>
+                            <CardDescription>{t('editor.seo.social_preview_desc')}</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <div className="rounded-xl border overflow-hidden bg-slate-50">
@@ -181,8 +167,8 @@ export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
                                 </div>
                                 <div className="p-3 bg-white space-y-1">
                                     <div className="text-[11px] text-slate-400 uppercase font-bold tracking-wider">link.bio</div>
-                                    <div className="text-sm font-bold truncate">{seoData.seo_title || seoData.title || 'Sayfa Başlığı'}</div>
-                                    <div className="text-xs text-slate-500 line-clamp-1">{seoData.seo_description || 'Sayfa açıklaması...'}</div>
+                                    <div className="text-sm font-bold truncate">{seoData.seo_title || seoData.title || t('common.preview')}</div>
+                                    <div className="text-xs text-slate-500 line-clamp-1">{seoData.seo_description || '...'}</div>
                                 </div>
                             </div>
                         </CardContent>

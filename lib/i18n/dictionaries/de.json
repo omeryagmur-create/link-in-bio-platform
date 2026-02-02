@@ -1,0 +1,144 @@
+{
+    "common": {
+        "save": "Speichern",
+        "saving": "Speichern...",
+        "saved": "Gespeichert",
+        "updated": "Aktualisiert",
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "publish": "Veröffentlichen",
+        "preview": "Vorschau",
+        "loading": "Laden...",
+        "error": "Fehler",
+        "success": "Erfolg",
+        "logout": "Abmelden",
+        "name": "Name"
+    },
+    "dashboard": {
+        "title": "Meine Seiten",
+        "description": "Erstellen und verwalten Sie Ihre Link-in-Bio-Seiten.",
+        "create_page": "Neue Seite erstellen",
+        "no_pages": "Sie haben noch keine Seiten.",
+        "status_published": "Live",
+        "status_draft": "Entwurf"
+    },
+    "editor": {
+        "tabs": {
+            "profile": "Profil",
+            "content": "Inhalt",
+            "theme": "Design",
+            "seo": "SEO"
+        },
+        "layout": {
+            "title": "Seitenlayout",
+            "classic": "Klassische Liste",
+            "special": "Bento Grid",
+            "type": "Seitenlayout"
+        },
+        "profile": {
+            "name": "Anzeigename",
+            "bio": "Biografie",
+            "avatar": "Profilbild",
+            "tags": "Tags"
+        },
+        "theme": {
+            "title": "Vorgefertigte Themes",
+            "colors": "Farben",
+            "background": "Hintergrund",
+            "text": "Text",
+            "button": "Button",
+            "button_text": "Button-Text",
+            "font": "Schriftart",
+            "layout_type": "Seitenlayout",
+            "layout_classic": "Klassische Liste",
+            "layout_special": "Bento Grid",
+            "presets": "Vorgefertigte Themes",
+            "presets_list": {
+                "classic": "Klassisch",
+                "dark": "Dunkel",
+                "ocean": "Ozean",
+                "modern_soft": "Modern Soft",
+                "luxury": "Luxus"
+            },
+            "typography": "Typografie & Stil",
+            "button_style": "Button-Form",
+            "style_sharp": "Eckig",
+            "style_rounded": "Abgerundet",
+            "style_soft": "Rund",
+            "style_pill": "Oval"
+        },
+        "seo": {
+            "preview_title": "Suchmaschinen-Vorschau",
+            "preview_desc": "Überprüfen Sie, wie Ihre Seite in Google-Suchen erscheint.",
+            "placeholder_desc": "Geben Sie eine Beschreibung für Ihre Seite ein, damit sie in den Suchergebnissen besser aussieht.",
+            "title_label": "SEO-Titel",
+            "placeholder_title": "Suchmaschinen-Titel (optional)",
+            "hint_title": "Wenn leer gelassen, wird der normale Seitentitel verwendet.",
+            "desc_label": "SEO-Beschreibung",
+            "social_preview": "Social-Media-Vorschau",
+            "social_preview_desc": "Aussehen beim Teilen in WhatsApp, Facebook und Twitter."
+        },
+        "blocks": {
+            "add": "Neuen Block hinzufügen",
+            "choose": "Block wählen",
+            "choose_desc": "Wählen Sie den Inhaltstyp aus, den Sie Ihrer Seite hinzufügen möchten.",
+            "added": "Block hinzugefügt",
+            "empty": "Noch keine Blöcke hinzugefügt.",
+            "delete_confirm": "Sind Sie sicher, dass Sie diesen Block löschen möchten?",
+            "deleted": "Block gelöscht",
+            "updated": "Block aktualisiert",
+            "types": {
+                "link": "Link",
+                "text": "Text",
+                "image": "Bild",
+                "video": "Video",
+                "embed": "Einbetten",
+                "divider": "Trenner"
+            },
+            "editor": {
+                "content": "Inhalt",
+                "style": "Stil",
+                "title": "Titel",
+                "url": "URL",
+                "fetching": "Daten werden geladen...",
+                "placeholder_title": "Link-Titel",
+                "placeholder_text": "Hier schreiben...",
+                "image_label": "Bild",
+                "link_url": "Weiterleitungs-URL (Optional)",
+                "caption": "Beschriftung (Optional)",
+                "caption_placeholder": "Bildunterschrift",
+                "video_url": "YouTube-URL",
+                "platform_url": "Plattform-URL (Spotify, YT Music, Kalender)",
+                "embed_code": "Oder Embed-Code",
+                "divider_hint": "Trenner-Einstellungen sind im Design-Tab.",
+                "widget_placement": "Widget-Platzierung",
+                "width": "Breite",
+                "height": "Höhe",
+                "columns": "Spalten",
+                "rows": "Zeilen",
+                "small": "Klein",
+                "medium": "Mittel",
+                "wide": "Breit"
+            },
+            "untitled_link": "Unbenannter Link",
+            "text_placeholder": "Textinhalt...",
+            "initial_data": {
+                "link_title": "Neuer Link",
+                "text_content": "Textinhalt..."
+            }
+        }
+    },
+    "premium": {
+        "seo_title": "Premium SEO-Funktionen",
+        "seo_description": "Erreichen Sie mehr Menschen, indem Sie Ihre Suchmaschinenoptimierung und Social-Media-Einstellungen anpassen.",
+        "seo_feat1": "Eigene Meta-Titel",
+        "seo_feat2": "Meta-Beschreibungen",
+        "seo_feat3": "Aussehen beim Social-Media-Teilen",
+        "upgrade": "Auf Pro upgraden und aktivieren"
+    },
+    "public": {
+        "powered_by": "Präsentiert von Link-in-Bio Platform",
+        "not_found": "Benutzer nicht gefunden"
+    }
+}

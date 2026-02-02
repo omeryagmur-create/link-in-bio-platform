@@ -7,23 +7,26 @@ import { Plus, Link as LinkIcon, Type, Image as ImageIcon, Video, MoreHorizontal
 import { toast } from 'sonner'
 import { Block } from '@/types'
 
+import { useTranslation } from '@/lib/i18n/provider'
+
 interface AddBlockDialogProps {
     pageId: string
     onBlockAdded: (block: Block) => void
 }
 
-const BLOCK_TYPES = [
-    { type: 'link', label: 'Link', icon: LinkIcon, initialData: { title: 'Yeni Link', url: '' } },
-    { type: 'text', label: 'Yazı', icon: Type, initialData: { content: 'Metin içeriği...', align: 'center' } },
-    { type: 'image', label: 'Görsel', icon: ImageIcon, initialData: { url: '', caption: '' } },
-    { type: 'video', label: 'Video', icon: Video, initialData: { url: '', caption: '' } },
-    { type: 'embed', label: 'Eklenti', icon: Music, initialData: { url: '', embedCode: '' } },
-    { type: 'divider', label: 'Ayırıcı', icon: MoreHorizontal, initialData: {} },
-]
-
 export function AddBlockDialog({ pageId, onBlockAdded }: AddBlockDialogProps) {
+    const { t } = useTranslation()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+
+    const BLOCK_TYPES = [
+        { type: 'link', label: t('editor.blocks.types.link'), icon: LinkIcon, initialData: { title: t('editor.blocks.initial_data.link_title'), url: '' } },
+        { type: 'text', label: t('editor.blocks.types.text'), icon: Type, initialData: { content: t('editor.blocks.initial_data.text_content'), align: 'center' } },
+        { type: 'image', label: t('editor.blocks.types.image'), icon: ImageIcon, initialData: { url: '', caption: '' } },
+        { type: 'video', label: t('editor.blocks.types.video'), icon: Video, initialData: { url: '', caption: '' } },
+        { type: 'embed', label: t('editor.blocks.types.embed'), icon: Music, initialData: { url: '', embedCode: '' } },
+        { type: 'divider', label: t('editor.blocks.types.divider'), icon: MoreHorizontal, initialData: {} },
+    ]
 
     const handleAdd = async (type: string, initialData: any) => {
         setLoading(true)
@@ -43,9 +46,9 @@ export function AddBlockDialog({ pageId, onBlockAdded }: AddBlockDialogProps) {
             const block = await res.json()
             onBlockAdded(block)
             setOpen(false)
-            toast.success(`${type} bloğu eklendi`)
+            toast.success(`${t('editor.blocks.types.' + type)} ${t('editor.blocks.added')}`)
         } catch {
-            toast.error('Blok eklenemedi')
+            toast.error(t('common.error'))
         } finally {
             setLoading(false)
         }
@@ -55,14 +58,14 @@ export function AddBlockDialog({ pageId, onBlockAdded }: AddBlockDialogProps) {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button size="sm">
-                    <Plus className="mr-2 h-4 w-4" /> Blok Ekle
+                    <Plus className="mr-2 h-4 w-4" /> {t('editor.blocks.add')}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                    <DialogTitle>Blok Seçin</DialogTitle>
+                    <DialogTitle>{t('editor.blocks.choose')}</DialogTitle>
                     <DialogDescription>
-                        Sayfanıza eklemek istediğiniz içerik türünü seçin.
+                        {t('editor.blocks.choose_desc')}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid grid-cols-2 gap-4 py-4">

@@ -14,6 +14,7 @@ export default function EditorPage() {
     const params = useParams()
     const pageId = params.pageId as string
     const supabase = createClient()
+    const { t } = useTranslation()
     const [page, setPage] = useState<any>(null)
     const [profile, setProfile] = useState<any>(null)
     const [loading, setLoading] = useState(true)
@@ -28,7 +29,7 @@ export default function EditorPage() {
                 .single()
 
             if (pageError) {
-                toast.error('Sayfa yüklenemedi')
+                toast.error(t('common.error'))
                 setLoading(false)
                 return
             }
@@ -49,7 +50,7 @@ export default function EditorPage() {
         }
 
         fetchPageData()
-    }, [pageId, supabase])
+    }, [pageId, supabase, t])
 
     const [isPublishing, setIsPublishing] = useState(false)
     const [internalSaving, setInternalSaving] = useState(false)
@@ -64,9 +65,9 @@ export default function EditorPage() {
             })
             if (!res.ok) throw new Error()
             setPage({ ...page, is_published: true })
-            toast.success('Sayfa başarıyla yayınlandı!')
+            toast.success(t('common.success'))
         } catch {
-            toast.error('Yayınlanırken bir hata oluştu')
+            toast.error(t('common.error'))
         } finally {
             setIsPublishing(false)
         }
@@ -81,7 +82,7 @@ export default function EditorPage() {
     }
 
     if (!page) {
-        return <div>Sayfa bulunamadı</div>
+        return <div>{t('public.not_found')}</div>
     }
 
     const previewUrl = profile?.username ? `/${profile.username}` : `/${page.slug}`
@@ -99,7 +100,7 @@ export default function EditorPage() {
                         <div className="flex items-center gap-2">
                             <h1 className="text-sm font-semibold">{page.title}</h1>
                             {!page.is_published && (
-                                <span className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase">Taslak</span>
+                                <span className="bg-amber-100 text-amber-700 text-[10px] px-1.5 py-0.5 rounded-full font-bold uppercase">{t('dashboard.status_draft')}</span>
                             )}
                         </div>
                         <p className="text-xs text-muted-foreground">{previewUrl}</p>
@@ -118,10 +119,10 @@ export default function EditorPage() {
                         ) : page.is_published ? (
                             <Save className="w-3 h-3 mr-2" />
                         ) : null}
-                        {internalSaving ? 'Kaydediliyor...' : page.is_published ? 'Güncellendi' : 'Yayınla'}
+                        {internalSaving ? t('common.saving') : page.is_published ? t('common.updated') : t('common.publish')}
                     </Button>
                     <Link href={previewUrl} target='_blank'>
-                        <Button variant="outline" size="sm" className="h-8 border-slate-200">Önizle</Button>
+                        <Button variant="outline" size="sm" className="h-8 border-slate-200">{t('common.preview')}</Button>
                     </Link>
                 </div>
             </header>

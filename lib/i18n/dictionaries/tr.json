@@ -1,0 +1,144 @@
+{
+    "common": {
+        "save": "Kaydet",
+        "saving": "Kaydediliyor...",
+        "saved": "Kaydedildi",
+        "updated": "Güncellendi",
+        "cancel": "İptal",
+        "delete": "Sil",
+        "edit": "Düzenle",
+        "publish": "Yayınla",
+        "preview": "Önizle",
+        "loading": "Yükleniyor...",
+        "error": "Hata",
+        "success": "Başarılı",
+        "logout": "Çıkış Yap",
+        "name": "İsim"
+    },
+    "dashboard": {
+        "title": "Sayfalarım",
+        "description": "Link-in-bio sayfalarınızı oluşturun ve yönetin.",
+        "create_page": "Yeni Sayfa Oluştur",
+        "no_pages": "Henüz sayfanız yok.",
+        "status_published": "Yayında",
+        "status_draft": "Taslak"
+    },
+    "editor": {
+        "tabs": {
+            "profile": "Profil",
+            "content": "İçerik",
+            "theme": "Tasarım",
+            "seo": "SEO"
+        },
+        "layout": {
+            "title": "Sayfa Düzeni",
+            "classic": "Klasik Liste",
+            "special": "Bento Grid",
+            "type": "Sayfa Düzeni"
+        },
+        "profile": {
+            "name": "Görünen İsim",
+            "bio": "Biyografi",
+            "avatar": "Profil Fotoğrafı",
+            "tags": "Etiketler"
+        },
+        "theme": {
+            "title": "Hazır Temalar",
+            "colors": "Renkler",
+            "background": "Arka Plan",
+            "text": "Metin",
+            "button": "Buton",
+            "button_text": "Buton Metni",
+            "font": "Yazı Tipi",
+            "layout_type": "Sayfa Düzeni",
+            "layout_classic": "Klasik Liste",
+            "layout_special": "Bento Grid",
+            "presets": "Hazır Temalar",
+            "presets_list": {
+                "classic": "Klasik",
+                "dark": "Karanlık",
+                "ocean": "Okyanus",
+                "modern_soft": "Modern Soft",
+                "luxury": "Lüks"
+            },
+            "typography": "Tipografi & Stil",
+            "button_style": "Buton Şekli",
+            "style_sharp": "Köşeli",
+            "style_rounded": "Yumuşak",
+            "style_soft": "Yuvarlak",
+            "style_pill": "Oval"
+        },
+        "seo": {
+            "preview_title": "Arama Motoru Önizlemesi",
+            "preview_desc": "Sayfanızın Google aramalarında nasıl görüneceğini kontrol edin.",
+            "placeholder_desc": "Sayfanız için bir açıklama girerek arama sonuçlarında daha iyi görünmesini sağlayın.",
+            "title_label": "SEO Başlığı",
+            "placeholder_title": "Arama motoru başlığı (opsiyonel)",
+            "hint_title": "Boş bırakılırsa normal sayfa başlığı kullanılır.",
+            "desc_label": "SEO Açıklaması",
+            "social_preview": "Sosyal Medya Önizlemesi",
+            "social_preview_desc": "WhatsApp, Facebook ve Twitter paylaşımlarında görünüm."
+        },
+        "blocks": {
+            "add": "Yeni Blok Ekle",
+            "choose": "Blok Seçin",
+            "choose_desc": "Sayfanıza eklemek istediğiniz içerik türünü seçin.",
+            "added": "bloğu eklendi",
+            "empty": "Henüz blok eklenmemiş.",
+            "delete_confirm": "Bu bloğu silmek istediğinize emin misiniz?",
+            "deleted": "Blok silindi",
+            "updated": "Blok güncellendi",
+            "types": {
+                "link": "Link",
+                "text": "Yazı",
+                "image": "Görsel",
+                "video": "Video",
+                "embed": "Eklenti",
+                "divider": "Ayırıcı"
+            },
+            "editor": {
+                "content": "İçerik",
+                "style": "Stil",
+                "title": "Başlık",
+                "url": "URL",
+                "fetching": "Veriler Çekiliyor...",
+                "placeholder_title": "Link Başlığı",
+                "placeholder_text": "Buraya yazın...",
+                "image_label": "Resim",
+                "link_url": "Yönlendirilecek Link (Opsiyonel)",
+                "caption": "Açıklama (Opsiyonel)",
+                "caption_placeholder": "Resim altı yazısı",
+                "video_url": "YouTube URL",
+                "platform_url": "Platform URL (Spotify, YT Music, Takvim)",
+                "embed_code": "Veya Embed Kodu",
+                "divider_hint": "Ayırıcı çizgi ayarları görünüm kısmındadır.",
+                "widget_placement": "Widget Yerleşimi",
+                "width": "Genişlik",
+                "height": "Yükseklik",
+                "columns": "Sütun",
+                "rows": "Satır",
+                "small": "Küçük",
+                "medium": "Orta",
+                "wide": "Geniş"
+            },
+            "untitled_link": "Başlıksız Link",
+            "text_placeholder": "Metin içeriği...",
+            "initial_data": {
+                "link_title": "Yeni Link",
+                "text_content": "Metin içeriği..."
+            }
+        }
+    },
+    "premium": {
+        "seo_title": "Premium SEO Özellikleri",
+        "seo_description": "Arama motoru optimizasyonu ve sosyal medya paylaşım ayarlarını özelleştirerek daha fazla kişiye ulaşın.",
+        "seo_feat1": "Özel Meta Başlıkları (Title)",
+        "seo_feat2": "Meta Açıklamaları (Description)",
+        "seo_feat3": "Sosyal Medya Paylaşım Görünümü",
+        "upgrade": "Pro'ya Geç ve Aktive Et"
+    },
+    "public": {
+        "powered_by": "Powered by Link-in-Bio Platform",
+        "not_found": "Kullanıcı Bulunamadı"
+    }
+}

@@ -7,6 +7,7 @@ import { popularFonts, getButtonStyle } from '@/lib/theme'
 import { Trash2, Move, Share2, FileText, ChevronLeft, Plus, X } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { toast } from 'sonner'
+import { useTranslation } from '@/lib/i18n/provider'
 
 interface Profile {
     id: string
@@ -74,7 +75,7 @@ export function SpecialPageLayout({
                     body: JSON.stringify({ tags: updatedTags })
                 })
             } catch {
-                toast.error('Etiket kaydedilemedi')
+                toast.error(t('common.error'))
             }
         }
         setNewTag('')
@@ -94,7 +95,7 @@ export function SpecialPageLayout({
                     body: JSON.stringify({ tags: updatedTags })
                 })
             } catch {
-                toast.error('Etiket silinemedi')
+                toast.error(t('common.error'))
             }
         }
     }
@@ -230,7 +231,7 @@ export function SpecialPageLayout({
 
                         <div className={`space-y-5 ${previewMode === 'mobile' ? 'text-center' : ''}`}>
                             <h1 className={`${previewMode === 'mobile' ? 'text-3xl' : 'text-4xl'} font-bold tracking-tight leading-tight mb-3`}>
-                                {profile.display_name || profile.username || 'İsimsiz'}
+                                {profile.display_name || profile.username || t('public.not_found')}
                             </h1>
 
                             {profile.bio && (
@@ -259,7 +260,7 @@ export function SpecialPageLayout({
                                                         <input
                                                             autoFocus
                                                             className="text-[11px] outline-none bg-transparent w-20"
-                                                            placeholder="Yeni etiket..."
+                                                            placeholder="..."
                                                             value={newTag}
                                                             onChange={(e) => setNewTag(e.target.value)}
                                                             onKeyDown={(e) => e.key === 'Enter' && handleAddTag()}
