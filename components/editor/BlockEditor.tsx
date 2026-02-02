@@ -343,15 +343,15 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                         ) : (
                                             <div className="p-8">
                                                 <div className="flex flex-col items-center pt-12 mb-10 text-center">
-                                                    <div className="w-32 h-32 bg-gray-200 rounded-full mb-4 overflow-hidden border-4 border-white/20 relative shadow-md">
+                                                    <div className="w-52 h-52 rounded-[2.5rem] mb-6 overflow-hidden border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative transform rotate-1">
                                                         {profile?.avatar_url ? (
                                                             <Image src={profile.avatar_url} alt={profile.display_name || 'Profile'} fill className="object-cover" />
                                                         ) : (
-                                                            <div className="w-full h-full bg-slate-300 flex items-center justify-center text-slate-500 font-bold text-2xl">{initials}</div>
+                                                            <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-4xl">{initials}</div>
                                                         )}
                                                     </div>
-                                                    <h2 className="text-3xl font-bold mb-2">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
-                                                    {profile?.bio && <p className="text-lg opacity-70 max-w-[600px]">{profile.bio}</p>}
+                                                    <h2 className="text-4xl font-bold mb-3 tracking-tight">{profile?.display_name || profile?.username || 'İsimsiz'}</h2>
+                                                    {profile?.bio && <p className="text-base opacity-80 max-w-[600px] leading-relaxed">{profile.bio}</p>}
                                                 </div>
 
                                                 <div className="mx-auto space-y-4 max-w-[640px]">

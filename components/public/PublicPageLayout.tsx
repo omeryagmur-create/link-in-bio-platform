@@ -71,36 +71,35 @@ export function PublicPageLayout({ profile, page, blocks }: PublicPageLayoutProp
         >
             <div className="max-w-2xl mx-auto">
                 {/* Profil Header */}
-                <div className="text-center mb-8">
+                <div className="text-center mb-12">
                     {/* Avatar */}
-                    {profile.avatar_url ? (
-                        <div className="mb-4 flex justify-center">
-                            <Image
-                                src={profile.avatar_url}
-                                alt={profile.display_name || profile.username}
-                                width={96}
-                                height={96}
-                                className="rounded-full"
-                            />
-                        </div>
-                    ) : (
-                        <div className="mb-4 flex justify-center">
-                            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                                <span className="text-3xl font-bold text-gray-500">
-                                    {(profile.display_name || profile.username).charAt(0).toUpperCase()}
-                                </span>
+                    <div className="mb-6 flex justify-center">
+                        <div className="relative">
+                            <div className="w-32 h-32 md:w-52 md:h-52 rounded-[2rem] md:rounded-[2.5rem] overflow-hidden border-4 md:border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative transform md:rotate-1">
+                                {profile.avatar_url ? (
+                                    <Image
+                                        src={profile.avatar_url}
+                                        alt={profile.display_name || profile.username}
+                                        fill
+                                        className="object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full bg-slate-100 flex items-center justify-center text-3xl md:text-4xl font-bold text-slate-400">
+                                        {(profile.display_name || profile.username).charAt(0).toUpperCase()}
+                                    </div>
+                                )}
                             </div>
                         </div>
-                    )}
+                    </div>
 
                     {/* Display Name */}
-                    <h1 className="text-2xl font-bold mb-2">
+                    <h1 className="text-2xl md:text-4xl font-bold mb-3 tracking-tight">
                         {profile.display_name || profile.username}
                     </h1>
 
                     {/* Bio */}
                     {profile.bio && (
-                        <p className="text-sm opacity-80 max-w-md mx-auto">
+                        <p className="text-sm md:text-base opacity-80 max-w-md mx-auto leading-relaxed">
                             {profile.bio}
                         </p>
                     )}
