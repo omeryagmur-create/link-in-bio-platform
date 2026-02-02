@@ -12,8 +12,10 @@ import {
   Palette,
   BarChart3,
   Smartphone,
-  ShieldCheck
+  ShieldCheck,
+  Languages
 } from "lucide-react";
+import { LanguageSwitcher } from "@/components/i18n/LanguageSwitcher";
 
 export default function Home() {
   const { t } = useTranslation();
@@ -74,15 +76,18 @@ export default function Home() {
           <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center text-white font-bold">L</div>
           <span className="text-xl font-bold tracking-tight">LinkInBio</span>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <Link href="#features" className="hover:text-primary transition-colors">{t('landing.nav_features')}</Link>
-          <Link href="/login" className="hover:text-primary transition-colors">{t('common.login')}</Link>
+        <div className="flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground mr-4">
+            <Link href="#features" className="hover:text-primary transition-colors">{t('landing.nav_features')}</Link>
+            <Link href="/login" className="hover:text-primary transition-colors">{t('common.login')}</Link>
+          </div>
+          <LanguageSwitcher />
+          <Link href="/signup">
+            <ShimmerButton className="text-sm font-semibold px-6 py-2">
+              {t('landing.hero_cta')}
+            </ShimmerButton>
+          </Link>
         </div>
-        <Link href="/signup">
-          <ShimmerButton className="text-sm font-semibold px-6 py-2">
-            {t('landing.hero_cta')}
-          </ShimmerButton>
-        </Link>
       </nav>
 
       <main className="relative z-10">
