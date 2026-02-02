@@ -52,6 +52,7 @@ export default function EditorPage() {
     }, [pageId, supabase])
 
     const [isPublishing, setIsPublishing] = useState(false)
+    const [internalSaving, setInternalSaving] = useState(false)
 
     const handlePublish = async () => {
         setIsPublishing(true)
@@ -109,11 +110,15 @@ export default function EditorPage() {
                         variant="default"
                         size="sm"
                         onClick={handlePublish}
-                        disabled={isPublishing || page.is_published}
-                        className="bg-emerald-600 hover:bg-emerald-700 h-8"
+                        disabled={isPublishing || internalSaving || (page.is_published && !internalSaving)}
+                        className={`${page.is_published && !internalSaving ? 'bg-emerald-600 hover:bg-emerald-700' : ''} h-8 min-w-[100px]`}
                     >
-                        {isPublishing ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : (page.is_published ? <Save className="w-3 h-3 mr-2" /> : null)}
-                        {page.is_published ? 'Güncellendi' : 'Yayınla'}
+                        {isPublishing || internalSaving ? (
+                            <Loader2 className="w-3 h-3 animate-spin mr-2" />
+                        ) : page.is_published ? (
+                            <Save className="w-3 h-3 mr-2" />
+                        ) : null}
+                        {internalSaving ? 'Kaydediliyor...' : page.is_published ? 'Güncellendi' : 'Yayınla'}
                     </Button>
                     <Link href={previewUrl} target='_blank'>
                         <Button variant="outline" size="sm" className="h-8 border-slate-200">Önizle</Button>
@@ -129,6 +134,7 @@ export default function EditorPage() {
                     onProfileUpdate={setProfile}
                     layoutType={page.layout_type}
                     onLayoutChange={(newLayout) => setPage({ ...page, layout_type: newLayout })}
+                    onSavingChange={setInternalSaving}
                 />
             </main>
         </div>

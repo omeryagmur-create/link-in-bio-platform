@@ -25,9 +25,10 @@ interface BlockEditorProps {
     onProfileUpdate: (profile: any) => void
     layoutType: 'classic' | 'special'
     onLayoutChange: (layout: 'classic' | 'special') => void
+    onSavingChange?: (isSaving: boolean) => void
 }
 
-export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, layoutType, onLayoutChange }: BlockEditorProps) {
+export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, layoutType, onLayoutChange, onSavingChange }: BlockEditorProps) {
     const [blocks, setBlocks] = useState<Block[]>([])
     const [previewMode, setPreviewMode] = useState<'mobile' | 'desktop'>('mobile')
     const [theme, setTheme] = useState<ThemeConfig>({
@@ -63,18 +64,29 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
 
     const handleThemeChange = async (newTheme: ThemeConfig) => {
         setTheme(newTheme)
+        onSavingChange?.(true)
         try {
             await fetch(`/api/pages/${pageId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ theme: newTheme })
             })
+            // Revalidate public page
+            const identifier = profile?.username || pageId
+            await fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: `/${identifier}` })
+            })
         } catch {
             toast.error('Tema kaydedilemedi')
+        } finally {
+            onSavingChange?.(false)
         }
     }
 
     const handleLayoutChangeLocal = async (newLayout: 'classic' | 'special') => {
+        onSavingChange?.(true)
         try {
             const res = await fetch(`/api/pages/${pageId}`, {
                 method: 'PATCH',
@@ -92,8 +104,18 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
 
             onLayoutChange(newLayout)
             toast.success('Düzen güncellendi')
+
+            // Revalidate public page
+            const identifier = profile?.username || pageId
+            await fetch('/api/revalidate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ path: `/${identifier}` })
+            })
         } catch {
             toast.error('Düzen değiştirilemedi')
+        } finally {
+            onSavingChange?.(false)
         }
     }
 

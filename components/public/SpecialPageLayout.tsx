@@ -211,18 +211,7 @@ export function SpecialPageLayout({
             className="min-h-full transition-all duration-500 overflow-x-hidden w-full flex flex-col relative"
             style={{ backgroundColor, color: textColor, fontFamily }}
         >
-            {/* Top Navigation Row (Simplified) */}
-            <div className={`w-full flex justify-between items-center p-6 ${previewMode === 'mobile' ? 'max-w-md mx-auto' : 'max-w-[1200px] mx-auto'}`}>
-                <div className="flex gap-4">
-                    <button className="w-10 h-10 rounded-full bg-white/50 backdrop-blur shadow-sm flex items-center justify-center hover:bg-white transition-colors">
-                        <ChevronLeft className="h-5 w-5 opacity-60" />
-                    </button>
-                    <button className="w-10 h-10 rounded-full bg-white/50 backdrop-blur shadow-sm flex items-center justify-center hover:bg-white transition-colors">
-                        <FileText className="h-5 w-5 opacity-60" />
-                    </button>
-                </div>
-                {/* Dots removed as requested */}
-            </div>
+            {/* Top Navigation Row Removed as requested */}
 
             <div className={`mx-auto w-full ${previewMode === 'mobile' ? 'px-6 pb-12' : 'max-w-[1200px] px-8 py-10 pb-32'}`}>
                 <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-row gap-12 items-start'}`}>
@@ -316,7 +305,7 @@ export function SpecialPageLayout({
                                     >
                                         <div className={`h-full w-full relative group/widget ${isEditing ? 'hover:z-30 cursor-grab active:cursor-grabbing' : ''}`}>
                                             <div
-                                                className="h-full w-full overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/[0.04] pointer-events-none transition-transform group-hover/widget:scale-[1.01] duration-300"
+                                                className="h-full w-full overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/[0.04] transition-transform group-hover/widget:scale-[1.01] duration-300"
                                                 style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
                                             >
                                                 <BlockRenderer block={block} theme={theme} layoutType="special" />
