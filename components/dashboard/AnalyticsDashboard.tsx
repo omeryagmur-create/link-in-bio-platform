@@ -7,7 +7,10 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Loader2, TrendingUp, MousePointer2, Percent, Users } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
+import { useTranslation } from '@/lib/i18n/provider'
+
 export function AnalyticsDashboard() {
+    const { t } = useTranslation()
     const [data, setData] = useState<any>(null)
     const [loading, setLoading] = useState(true)
     const [range, setRange] = useState('7')
@@ -33,7 +36,7 @@ export function AnalyticsDashboard() {
         return (
             <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                <p className="text-sm text-muted-foreground">İstatistikler yükleniyor...</p>
+                <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
             </div>
         )
     }
@@ -47,15 +50,15 @@ export function AnalyticsDashboard() {
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h2 className="text-2xl font-bold tracking-tight">Analiz</h2>
+                <h2 className="text-2xl font-bold tracking-tight">{t('dashboard.analytics')}</h2>
                 <Select value={range} onValueChange={setRange}>
                     <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Zaman Aralığı" />
+                        <SelectValue placeholder={t('dashboard.time_range')} />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="7">Son 7 Gün</SelectItem>
-                        <SelectItem value="30">Son 30 Gün</SelectItem>
-                        <SelectItem value="90">Son 90 Gün</SelectItem>
+                        <SelectItem value="7">{t('dashboard.range_7')}</SelectItem>
+                        <SelectItem value="30">{t('dashboard.range_30')}</SelectItem>
+                        <SelectItem value="90">{t('dashboard.range_90')}</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
@@ -67,13 +70,13 @@ export function AnalyticsDashboard() {
                         <Users className="w-16 h-16" />
                     </div>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Toplam Görüntülenme</CardTitle>
+                        <CardTitle className="text-sm font-medium">{t('dashboard.analytics_views')}</CardTitle>
                         <Users className="h-4 w-4 text-primary" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">{summary.views}</div>
                         <p className="text-xs text-muted-foreground mt-1">
-                            Sayfalarınızın toplam trafiği.
+                            {t('dashboard.analytics_views_desc')}
                         </p>
                     </CardContent>
                 </Card>
@@ -83,13 +86,13 @@ export function AnalyticsDashboard() {
                         <MousePointer2 className="w-16 h-16" />
                     </div>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Toplam Tıklanma</CardTitle>
+                        <CardTitle className="text-sm font-medium">{t('dashboard.analytics_clicks')}</CardTitle>
                         <MousePointer2 className="h-4 w-4 text-emerald-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">{summary.clicks}</div>
                         <p className="text-xs text-muted-foreground mt-1">
-                            Linklerinize yapılan toplam etkileşim.
+                            {t('dashboard.analytics_clicks_desc')}
                         </p>
                     </CardContent>
                 </Card>
@@ -99,13 +102,13 @@ export function AnalyticsDashboard() {
                         <Percent className="w-16 h-16" />
                     </div>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Ortalama CTR</CardTitle>
+                        <CardTitle className="text-sm font-medium">{t('dashboard.analytics_ctr')}</CardTitle>
                         <TrendingUp className="h-4 w-4 text-blue-500" />
                     </CardHeader>
                     <CardContent>
                         <div className="text-3xl font-bold">%{summary.ctr}</div>
                         <p className="text-xs text-muted-foreground mt-1">
-                            Görüntülenme başına tıklama oranı.
+                            {t('dashboard.analytics_ctr_desc')}
                         </p>
                     </CardContent>
                 </Card>
@@ -114,8 +117,8 @@ export function AnalyticsDashboard() {
             {/* Performance Chart */}
             <Card className="shadow-sm border-none bg-white">
                 <CardHeader>
-                    <CardTitle className="text-lg">Performans Grafiği</CardTitle>
-                    <CardDescription>Son {range} günlük trafik ve etkileşim gelişimi.</CardDescription>
+                    <CardTitle className="text-lg">{t('dashboard.performance_chart')}</CardTitle>
+                    <CardDescription>{t('dashboard.performance_chart_desc').replace('{range}', range)}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="h-[350px] w-full pt-4">
@@ -154,7 +157,7 @@ export function AnalyticsDashboard() {
                                     strokeWidth={2}
                                     fillOpacity={1}
                                     fill="url(#colorViews)"
-                                    name="Görüntülenme"
+                                    name={t('dashboard.analytics_views')}
                                 />
                                 <Area
                                     type="monotone"
@@ -163,7 +166,7 @@ export function AnalyticsDashboard() {
                                     strokeWidth={2}
                                     fillOpacity={1}
                                     fill="url(#colorClicks)"
-                                    name="Tıklanma"
+                                    name={t('dashboard.analytics_clicks')}
                                 />
                             </AreaChart>
                         </ResponsiveContainer>
@@ -175,8 +178,8 @@ export function AnalyticsDashboard() {
             <div className="grid gap-4 md:grid-cols-2">
                 <Card className="shadow-sm border-none">
                     <CardHeader>
-                        <CardTitle className="text-lg">En Çok Tıklananlar</CardTitle>
-                        <CardDescription>En popüler 5 link ve etkileşim sayıları.</CardDescription>
+                        <CardTitle className="text-lg">{t('dashboard.top_links')}</CardTitle>
+                        <CardDescription>{t('dashboard.top_links_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="space-y-4">
@@ -190,11 +193,11 @@ export function AnalyticsDashboard() {
                                     </div>
                                     <div className="flex items-center gap-2">
                                         <span className="font-bold">{link.count}</span>
-                                        <span className="text-[10px] text-muted-foreground uppercase font-semibold">Tık</span>
+                                        <span className="text-[10px] text-muted-foreground uppercase font-semibold">{t('dashboard.page_url_placeholder')}</span>
                                     </div>
                                 </div>
                             )) : (
-                                <p className="text-sm text-muted-foreground text-center py-8">Henüz veri yok.</p>
+                                <p className="text-sm text-muted-foreground text-center py-8">{t('dashboard.no_data')}</p>
                             )}
                         </div>
                     </CardContent>
@@ -202,8 +205,8 @@ export function AnalyticsDashboard() {
 
                 <Card className="shadow-sm border-none bg-primary/5">
                     <CardHeader>
-                        <CardTitle className="text-lg">Akıllı İpuçları</CardTitle>
-                        <CardDescription>Verilerinize dayalı performans önerileri.</CardDescription>
+                        <CardTitle className="text-lg">{t('dashboard.smart_tips')}</CardTitle>
+                        <CardDescription>{t('dashboard.tips_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex gap-3">
@@ -211,8 +214,8 @@ export function AnalyticsDashboard() {
                                 <TrendingUp className="w-5 h-5 text-primary" />
                             </div>
                             <div>
-                                <h4 className="font-semibold text-sm">Trafiği Artır</h4>
-                                <p className="text-xs text-muted-foreground mt-0.5">Linkinizi Instagram ve TikTok bio'nuza ekleyerek görüntülenme sayısını %40 artırabilirsiniz.</p>
+                                <h4 className="font-semibold text-sm">{t('dashboard.tip_increase_traffic_title')}</h4>
+                                <p className="text-xs text-muted-foreground mt-0.5">{t('dashboard.tip_increase_traffic_desc')}</p>
                             </div>
                         </div>
                         <div className="flex gap-3">
@@ -220,8 +223,8 @@ export function AnalyticsDashboard() {
                                 <MousePointer2 className="w-5 h-5 text-emerald-500" />
                             </div>
                             <div>
-                                <h4 className="font-semibold text-sm">Daha Fazla Tıklama</h4>
-                                <p className="text-xs text-muted-foreground mt-0.5">En çok tıklanan linkinizi en tepeye taşıyarak etkileşimi maksimize edin.</p>
+                                <h4 className="font-semibold text-sm">{t('dashboard.tip_maximize_clicks_title')}</h4>
+                                <p className="text-xs text-muted-foreground mt-0.5">{t('dashboard.tip_maximize_clicks_desc')}</p>
                             </div>
                         </div>
                     </CardContent>

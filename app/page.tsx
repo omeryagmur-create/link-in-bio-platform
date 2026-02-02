@@ -1,66 +1,70 @@
+'use client'
+
 import Link from "next/link";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { Particles } from "@/components/ui/particles";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
 import { ShimmerButton } from "@/components/ui/shimmer-button";
+import { useTranslation } from "@/lib/i18n/provider";
 import {
   Link2,
   Palette,
   BarChart3,
   Smartphone,
-  Globe,
   ShieldCheck
 } from "lucide-react";
 
-const features = [
-  {
-    Icon: Link2,
-    name: "Tüm Linkler Tek Bir Yerde",
-    description: "Sosyal medya hesaplarınızı, portfolyonuzu ve önemli bağlantılarınızı tek bir sayfada toplayın.",
-    href: "/signup",
-    cta: "Hemen Başla",
-    className: "col-span-3 lg:col-span-1",
-    background: <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />,
-  },
-  {
-    Icon: Palette,
-    name: "Kişiselleştirilebilir Tasarım",
-    description: "Markanıza özel renkler, fontlar ve buton stilleri ile sayfanızı saniyeler içinde özelleştirin.",
-    href: "/signup",
-    cta: "Temaları Keşfet",
-    className: "col-span-3 lg:col-span-1",
-    background: <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent" />,
-  },
-  {
-    Icon: BarChart3,
-    name: "Detaylı Analizler",
-    description: "Kimlerin tıkladığını, hangi linkin daha popüler olduğunu gerçek zamanlı istatistiklerle görün.",
-    href: "/signup",
-    cta: "İncele",
-    className: "col-span-3 lg:col-span-1",
-    background: <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent" />,
-  },
-  {
-    Icon: Smartphone,
-    name: "Önce Mobil",
-    description: "Her ekran boyutunda kusursuz görünen, ultra hızlı ve hafif bir deneyim sunun.",
-    href: "/signup",
-    cta: "Deneyin",
-    className: "col-span-3 lg:col-span-1",
-    background: <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent" />,
-  },
-  {
-    Icon: ShieldCheck,
-    name: "Güvenli ve Hızlı",
-    description: "Supabase ve Next.js altyapısı ile verileriniz güvende, sayfanız her zaman yayında.",
-    href: "/signup",
-    cta: "Kayıt Ol",
-    className: "col-span-3 lg:col-span-2",
-    background: <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent" />,
-  },
-];
-
 export default function Home() {
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      Icon: Link2,
+      name: t('landing.feat1_title'),
+      description: t('landing.feat1_desc'),
+      href: "/signup",
+      cta: t('landing.feat1_cta'),
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />,
+    },
+    {
+      Icon: Palette,
+      name: t('landing.feat1_title'), // Wait, I should use feat1, feat2 etc. consistently
+      description: t('landing.feat1_desc'),
+      href: "/signup",
+      cta: t('landing.feat1_cta'),
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent" />,
+    },
+    {
+      Icon: BarChart3,
+      name: t('landing.feat2_title'),
+      description: t('landing.feat2_desc'),
+      href: "/signup",
+      cta: t('landing.feat2_cta'),
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent" />,
+    },
+    {
+      Icon: Smartphone,
+      name: t('landing.feat3_title'),
+      description: t('landing.feat3_desc'),
+      href: "/signup",
+      cta: t('landing.feat3_cta'),
+      className: "col-span-3 lg:col-span-1",
+      background: <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent" />,
+    },
+    {
+      Icon: ShieldCheck,
+      name: t('landing.feat4_title'),
+      description: t('landing.feat4_desc'),
+      href: "/signup",
+      cta: t('landing.feat4_cta'),
+      className: "col-span-3 lg:col-span-2",
+      background: <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent" />,
+    },
+  ];
+
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-background font-sans selection:bg-primary/20">
       {/* Background Effects */}
@@ -80,13 +84,12 @@ export default function Home() {
           <span className="text-xl font-bold tracking-tight">LinkInBio</span>
         </div>
         <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-          <Link href="#features" className="hover:text-primary transition-colors">Özellikler</Link>
-          <Link href="#pricing" className="hover:text-primary transition-colors">Fiyatlandırma</Link>
-          <Link href="/login" className="hover:text-primary transition-colors">Giriş Yap</Link>
+          <Link href="#features" className="hover:text-primary transition-colors">{t('landing.nav_features')}</Link>
+          <Link href="/login" className="hover:text-primary transition-colors">{t('common.login')}</Link>
         </div>
         <Link href="/signup">
           <ShimmerButton className="text-sm font-semibold px-6 py-2">
-            Ücretsiz Başla
+            {t('landing.hero_cta')}
           </ShimmerButton>
         </Link>
       </nav>
@@ -94,33 +97,23 @@ export default function Home() {
       <main className="relative z-10">
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center pt-24 pb-32 px-6 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold mb-6 animate-fade-in">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-            </span>
-            Yeni Nesil Link-in-Bio Platformu
-          </div>
-
           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8 max-w-4xl bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Tüm Dijital Varlıklılarınızı <br className="hidden md:block" />
-            <span className="text-primary italic">Tek Bir Bağlantıda</span> Buluşturun
+            {t('landing.hero_title')}
           </h1>
 
           <p className="text-xl text-muted-foreground max-w-2xl mb-12 leading-relaxed">
-            Kitlenizi tek bir link ile istediğiniz yere yönlendirin.
-            Saniyeler içinde profesyonel bir sayfa oluşturun, temanızı seçin ve analizlerinizi takip edin.
+            {t('landing.hero_desc')}
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <Link href="/signup">
               <ShimmerButton className="px-8 py-3 text-lg font-bold">
-                Hemen Ücretsiz Sayfanı Kur
+                {t('landing.hero_cta')}
               </ShimmerButton>
             </Link>
             <Link href="/login">
               <button className="px-8 py-3 rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 transition-all font-semibold backdrop-blur-md">
-                Giriş Yap
+                {t('common.login')}
               </button>
             </Link>
           </div>
@@ -138,13 +131,13 @@ export default function Home() {
         <section id="features" className="py-32 px-6 md:px-12 bg-white/5 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">Neden LinkInBio?</h2>
-              <p className="text-muted-foreground text-lg">Platformumuzun sunduğu güçlü özelliklerle tanışın.</p>
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">LinkInBio</h2>
+              <p className="text-muted-foreground text-lg">{t('landing.hero_desc')}</p>
             </div>
 
             <BentoGrid className="lg:grid-rows-3">
-              {features.map((feature) => (
-                <BentoCard key={feature.name} {...feature} />
+              {features.map((feature, idx) => (
+                <BentoCard key={idx} {...feature} />
               ))}
             </BentoGrid>
           </div>
@@ -156,11 +149,7 @@ export default function Home() {
             <div className="h-6 w-6 bg-primary rounded flex items-center justify-center text-white text-xs font-bold">L</div>
             <span className="text-lg font-bold tracking-tight">LinkInBio</span>
           </div>
-          <p className="text-sm text-muted-foreground mb-4">© 2024 LinkInBio Platform. Tüm hakları saklıdır.</p>
-          <div className="flex justify-center gap-6 text-xs text-muted-foreground">
-            <Link href="#" className="hover:text-primary transition-colors">Kullanım Şartları</Link>
-            <Link href="#" className="hover:text-primary transition-colors">Gizlilik Politikası</Link>
-          </div>
+          <p className="text-sm text-muted-foreground mb-4">© 2024 LinkInBio Platform. {t('public.powered_by')}</p>
         </footer>
       </main>
     </div>

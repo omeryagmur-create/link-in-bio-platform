@@ -1,4 +1,20 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { useTranslation } from '@/lib/i18n/provider'
+import { createClient } from '@/lib/supabase/client'
+import { toast } from 'sonner'
+import { Loader2, Search, Share2, Info } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+
+interface SeoSettingsProps {
+    pageId: string
+    subscriptionTier: string
+}
 
 export function SeoSettings({ pageId, subscriptionTier }: SeoSettingsProps) {
     const { t } = useTranslation()

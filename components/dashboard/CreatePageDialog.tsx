@@ -9,6 +9,8 @@ import { Label } from '@/components/ui/label'
 import { Plus, Loader2, Layout, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { useTranslation } from '@/lib/i18n/provider'
+
 // Slugify utility
 const slugify = (text: string) => {
     return text
@@ -21,6 +23,7 @@ const slugify = (text: string) => {
 }
 
 export function CreatePageDialog() {
+    const { t } = useTranslation()
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
     const [title, setTitle] = useState('')
@@ -50,10 +53,10 @@ export function CreatePageDialog() {
             const data = await res.json()
 
             if (!res.ok) {
-                throw new Error(data.error || 'Bir hata oluştu')
+                throw new Error(data.error || t('common.error'))
             }
 
-            toast.success('Sayfa oluşturuldu')
+            toast.success(t('common.success'))
             setOpen(false)
             setTitle('')
             setSlug('')
@@ -70,19 +73,19 @@ export function CreatePageDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button>
-                    <Plus className="mr-2 h-4 w-4" /> Yeni Sayfa
+                    <Plus className="mr-2 h-4 w-4" /> {t('dashboard.create_page')}
                 </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[500px]">
                 <DialogHeader>
-                    <DialogTitle>Yeni Sayfa Oluştur</DialogTitle>
+                    <DialogTitle>{t('dashboard.create_page')}</DialogTitle>
                     <DialogDescription>
-                        Sayfanız için bir tasarım ve adres belirleyin.
+                        {t('dashboard.create_page_desc')}
                     </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleSubmit} className="space-y-6 py-4">
                     <div className="space-y-4">
-                        <Label className="text-sm font-semibold">Tasarım Seçimi</Label>
+                        <Label className="text-sm font-semibold">{t('dashboard.layout_choice')}</Label>
                         <div className="grid grid-cols-2 gap-4">
                             <div
                                 onClick={() => setLayoutType('classic')}
@@ -90,9 +93,9 @@ export function CreatePageDialog() {
                             >
                                 <div className="flex items-center gap-2 mb-2">
                                     <Layout className={`h-4 w-4 ${layoutType === 'classic' ? 'text-primary' : 'text-muted-foreground'}`} />
-                                    <span className="font-bold text-sm">Klasik</span>
+                                    <span className="font-bold text-sm">{t('editor.layout.classic')}</span>
                                 </div>
-                                <p className="text-[10px] text-muted-foreground leading-relaxed">Dikey liste şeklinde, klasik link-in-bio görünümü.</p>
+                                <p className="text-[10px] text-muted-foreground leading-relaxed">{t('dashboard.layout_classic_desc')}</p>
                             </div>
                             <div
                                 onClick={() => setLayoutType('special')}
@@ -100,18 +103,18 @@ export function CreatePageDialog() {
                             >
                                 <div className="flex items-center gap-2 mb-2">
                                     <Sparkles className={`h-4 w-4 ${layoutType === 'special' ? 'text-primary' : 'text-muted-foreground'}`} />
-                                    <span className="font-bold text-sm">Özel (Premium)</span>
+                                    <span className="font-bold text-sm">{t('editor.layout.special')}</span>
                                 </div>
-                                <p className="text-[10px] text-muted-foreground leading-relaxed">Modern, kart tabanlı ve ızgara yerleşimli dinamik tasarım.</p>
+                                <p className="text-[10px] text-muted-foreground leading-relaxed">{t('dashboard.layout_special_desc')}</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="title">Sayfa Başlığı</Label>
+                        <Label htmlFor="title">{t('dashboard.page_title_label')}</Label>
                         <Input
                             id="title"
-                            placeholder="Örn: Kişisel Linklerim"
+                            placeholder={t('dashboard.page_title_placeholder')}
                             value={title}
                             onChange={handleTitleChange}
                             required
@@ -119,12 +122,12 @@ export function CreatePageDialog() {
                     </div>
 
                     <div className="space-y-2">
-                        <Label htmlFor="slug">Sayfa Linki (URL)</Label>
+                        <Label htmlFor="slug">{t('dashboard.page_url_label')}</Label>
                         <div className="flex items-center space-x-2">
                             <span className="text-sm text-muted-foreground whitespace-nowrap">link-platform.com/</span>
                             <Input
                                 id="slug"
-                                placeholder="kullanici-adi"
+                                placeholder={t('dashboard.page_url_placeholder')}
                                 value={slug}
                                 onChange={(e) => setSlug(e.target.value)}
                                 required
@@ -133,10 +136,10 @@ export function CreatePageDialog() {
                     </div>
 
                     <DialogFooter className="pt-4 border-t">
-                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>Vazgeç</Button>
+                        <Button type="button" variant="outline" onClick={() => setOpen(false)}>{t('common.cancel')}</Button>
                         <Button type="submit" disabled={loading}>
                             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Sayfayı Oluştur
+                            {t('dashboard.create_confirm')}
                         </Button>
                     </DialogFooter>
                 </form>

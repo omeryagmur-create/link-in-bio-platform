@@ -1,3 +1,30 @@
+'use client'
+
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useTranslation } from '@/lib/i18n/provider'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Edit, ExternalLink, Trash2 } from 'lucide-react'
+import Link from 'next/link'
+import { toast } from 'sonner'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { Page } from '@/types'
+
+interface PageListProps {
+    pages: Page[]
+}
+
 export function PageList({ pages }: PageListProps) {
     const router = useRouter()
     const { t } = useTranslation()

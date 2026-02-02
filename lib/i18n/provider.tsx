@@ -20,7 +20,7 @@ type Dictionary = typeof tr
 interface LanguageContextType {
     language: Language
     setLanguage: (lang: Language) => void
-    t: (key: string) => string
+    t: (key: string, variables?: Record<string, string | number>) => string
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined)
@@ -41,7 +41,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     }
 
     // Simple nested key accessor (e.g., "common.save")
-    const t = (path: string): string => {
+    const t = (path: string, variables?: Record<string, string | number>): string => {
         const keys = path.split('.')
         let result: any = dictionaries[language]
 
@@ -53,7 +53,16 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
             }
         }
 
-        return typeof result === 'string' ? result : path
+        let translated = typeof result === 'string' ? result : path
+
+        // Simple interpolation: replaces {varName} with value
+        if (variables) {
+            Object.entries(variables).forEach(([key, value]) => {
+                translated = translated.replace(`{${key}}`, String(value))
+            })
+        }
+
+        return translated
     }
 
     return (

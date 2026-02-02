@@ -2,18 +2,21 @@
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import { useTranslation } from '@/lib/i18n/provider'
 
 interface AnalyticsChartsProps {
     data: any[]
 }
 
 export function AnalyticsCharts({ data }: AnalyticsChartsProps) {
+    const { t } = useTranslation()
+
     return (
         <Card className="col-span-4">
             <CardHeader>
-                <CardTitle>Zaman İçindeki Performans</CardTitle>
+                <CardTitle>{t('dashboard.performance_chart')}</CardTitle>
                 <CardDescription>
-                    Son 30 günlük görüntülenme ve tıklama trendi
+                    {t('dashboard.performance_chart_desc', { range: 30 })}
                 </CardDescription>
             </CardHeader>
             <CardContent className="pl-2">
@@ -51,7 +54,7 @@ export function AnalyticsCharts({ data }: AnalyticsChartsProps) {
                             stroke="#8884d8"
                             fillOpacity={1}
                             fill="url(#colorViews)"
-                            name="Görüntülenme"
+                            name={t('dashboard.analytics_views')}
                         />
                         <Area
                             type="monotone"
@@ -59,7 +62,7 @@ export function AnalyticsCharts({ data }: AnalyticsChartsProps) {
                             stroke="#82ca9d"
                             fillOpacity={1}
                             fill="url(#colorClicks)"
-                            name="Tıklama"
+                            name={t('dashboard.analytics_clicks')}
                         />
                     </AreaChart>
                 </ResponsiveContainer>

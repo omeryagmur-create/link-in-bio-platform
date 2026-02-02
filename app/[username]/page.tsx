@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import { PublicPageLayout } from '@/components/public/PublicPageLayout'
+import { getTranslation } from '@/lib/i18n/server'
 import type { Metadata } from 'next'
 
 interface PageProps {
@@ -11,6 +12,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
     const { username: identifier } = await params
+    const { t } = await getTranslation()
     const supabase = await createClient()
 
     // 1. Önce bu identifier bir sayfa slug'ı mı diye bak
@@ -53,12 +55,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
     if (!profile) {
         return {
-            title: 'Kullanıcı Bulunamadı',
+            title: t('public.not_found'),
         }
     }
 
     const title = page?.seo_title || page?.title || profile.display_name || identifier
-    const description = page?.seo_description || profile.bio || `${identifier} adlı kullanıcının Link-in-Bio sayfası`
+    const description = page?.seo_description || profile.bio || t('public.description_fallback', { username: identifier })
 
     return {
         title: title,

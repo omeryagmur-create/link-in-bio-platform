@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowLeft, Loader2, Save } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { useTranslation } from '@/lib/i18n/provider'
 // Will be created next
 import { BlockEditor } from '@/components/editor/BlockEditor'
 

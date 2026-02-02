@@ -13,15 +13,73 @@
         "error": "Hata",
         "success": "Başarılı",
         "logout": "Çıkış Yap",
-        "name": "İsim"
+        "name": "İsim",
+        "back": "Geri",
+        "email": "E-posta",
+        "password": "Şifre",
+        "login": "Giriş Yap",
+        "signup": "Kayıt Ol",
+        "or": "veya",
+        "welcome": "Hoşgeldiniz"
+    },
+    "auth": {
+        "login_title": "Giriş Yap",
+        "login_desc": "Link-in-Bio platformuna giriş yapın",
+        "signup_title": "Hesap Oluştur",
+        "signup_desc": "Saniyeler içinde sayfanızı oluşturun",
+        "google_login": "Google ile Devam Et",
+        "email_login_hint": "veya e-posta ile",
+        "no_account": "Hesabınız yok mu?",
+        "have_account": "Zaten bir hesabınız var mı?",
+        "signing_up": "Hesap Oluşturuluyor...",
+        "logging_in": "Giriş Yapılıyor...",
+        "username_placeholder": "kullanici_adi",
+        "username_hint": "Sadece harf, rakam ve alt çizgi.",
+        "email_placeholder": "e-posta@örnek.com",
+        "password_placeholder": "Şifre (en az 6 karakter)",
+        "signup_success": "Hesap oluşturuldu! Lütfen e-postanıza gönderilen onay linkine tıklayın.",
+        "login_success": "Başarıyla giriş yapıldı",
+        "db_error": "Veritabanı hatası: Bu kullanıcı adı veya e-posta zaten kullanımda olabilir.",
+        "generic_error": "Giriş yapılırken bir hata oluştu"
     },
     "dashboard": {
         "title": "Sayfalarım",
         "description": "Link-in-bio sayfalarınızı oluşturun ve yönetin.",
         "create_page": "Yeni Sayfa Oluştur",
+        "create_page_desc": "Sayfanız için bir tasarım ve adres belirleyin.",
         "no_pages": "Henüz sayfanız yok.",
         "status_published": "Yayında",
-        "status_draft": "Taslak"
+        "status_draft": "Taslak",
+        "layout_choice": "Tasarım Seçimi",
+        "layout_classic_desc": "Dikey liste şeklinde, klasik link-in-bio görünümü.",
+        "layout_special_desc": "Modern, kart tabanlı ve ızgara yerleşimli dinamik tasarım.",
+        "page_title_label": "Sayfa Başlığı",
+        "page_title_placeholder": "Örn: Kişisel Linklerim",
+        "page_url_label": "Sayfa Linki (URL)",
+        "page_url_placeholder": "kullanici-adi",
+        "create_confirm": "Sayfayı Oluştur",
+        "analytics": "Analiz",
+        "analytics_views": "Toplam Görüntülenme",
+        "analytics_views_desc": "Sayfalarınızın toplam trafiği.",
+        "analytics_clicks": "Toplam Tıklanma",
+        "analytics_clicks_desc": "Linklerinize yapılan toplam etkileşim.",
+        "analytics_ctr": "Ortalama CTR",
+        "analytics_ctr_desc": "Görüntülenme başına tıklama oranı.",
+        "performance_chart": "Performans Grafiği",
+        "performance_chart_desc": "Son {range} günlük trafik ve etkileşim gelişimi.",
+        "top_links": "En Çok Tıklananlar",
+        "top_links_desc": "En popüler 5 link ve etkileşim sayıları.",
+        "no_data": "Henüz veri yok.",
+        "smart_tips": "Akıllı İpuçları",
+        "tips_desc": "Verilerinize dayalı performans önerileri.",
+        "tip_increase_traffic_title": "Trafiği Artır",
+        "tip_increase_traffic_desc": "Linkinizi Instagram ve TikTok bio'nuza ekleyerek görüntülenme sayısını %40 artırabilirsiniz.",
+        "tip_maximize_clicks_title": "Daha Fazla Tıklama",
+        "tip_maximize_clicks_desc": "En çok tıklanan linkinizi en tepeye taşıyarak etkileşimi maksimize edin.",
+        "time_range": "Zaman Aralığı",
+        "range_7": "Son 7 Gün",
+        "range_30": "Son 30 Gün",
+        "range_90": "Son 90 Gün"
     },
     "editor": {
         "tabs": {
@@ -79,6 +137,10 @@
             "social_preview": "Sosyal Medya Önizlemesi",
             "social_preview_desc": "WhatsApp, Facebook ve Twitter paylaşımlarında görünüm."
         },
+        "preview": {
+            "mobile": "Mobil Görünüm",
+            "desktop": "Masaüstü Görünüm"
+        },
         "blocks": {
             "add": "Yeni Blok Ekle",
             "choose": "Blok Seçin",
@@ -127,6 +189,11 @@
                 "link_title": "Yeni Link",
                 "text_content": "Metin içeriği..."
             }
+        },
+        "upload": {
+            "invalid_file": "Lütfen geçerli bir resim dosyası seçin",
+            "success": "Resim yüklendi",
+            "failed": "Yükleme başarısız"
         }
     },
     "premium": {
@@ -137,8 +204,28 @@
         "seo_feat3": "Sosyal Medya Paylaşım Görünümü",
         "upgrade": "Pro'ya Geç ve Aktive Et"
     },
+    "landing": {
+        "hero_title": "Tüm Linkler Tek Bir Yerde",
+        "hero_desc": "Sosyal medya hesaplarınızı, portfolyonuzu ve önemli bağlantılarınızı tek bir sayfada toplayın.",
+        "hero_cta": "Hemen Başla",
+        "feat1_title": "Kişiselleştirilebilir Tasarım",
+        "feat1_desc": "Markanıza özel renkler, fontlar ve buton stilleri ile sayfanızı saniyeler içinde özelleştirin.",
+        "feat1_cta": "Temaları Keşfet",
+        "feat2_title": "Detaylı Analizler",
+        "feat2_desc": "Kimlerin tıkladığını, hangi linkin daha popüler olduğunu gerçek zamanlı istatistiklerle görün.",
+        "feat2_cta": "İncele",
+        "feat3_title": "Önce Mobil",
+        "feat3_desc": "Her ekran boyutunda kusursuz görünen, ultra hızlı ve hafif bir deneyim sunun.",
+        "feat4_title": "Güvenli ve Hızlı",
+        "feat4_desc": "Supabase ve Next.js altyapısı ile verileriniz güvende, sayfanız her zaman yayında.",
+        "feat4_cta": "Kayıt Ol",
+        "nav_features": "Özellikler"
+    },
     "public": {
         "powered_by": "Powered by Link-in-Bio Platform",
-        "not_found": "Kullanıcı Bulunamadı"
+        "not_found": "Kullanıcı Bulunamadı",
+        "page_not_found": "Sayfa Bulunamadı",
+        "no_image": "Görüntülenecek resim yok",
+        "invalid_video": "Geçerli bir YouTube URL'si girin"
     }
 }

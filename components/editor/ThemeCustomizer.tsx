@@ -1,4 +1,37 @@
+'use client'
+
 import { useTranslation } from '@/lib/i18n/provider'
+import { ThemeConfig, themePresets, popularFonts } from '@/lib/theme'
+import { Label } from '@/components/ui/label'
+import { Layout, Grid, Lock, Sparkles } from 'lucide-react'
+import Link from 'next/link'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
+
+interface ThemeCustomizerProps {
+    theme: ThemeConfig
+    onChange: (theme: ThemeConfig) => void
+    layoutType: 'classic' | 'special'
+    onLayoutChange: (layout: 'classic' | 'special') => void
+    subscriptionTier: string
+}
+
+const getButtonStyle = (style: string) => {
+    switch (style) {
+        case 'sharp': return '0'
+        case 'rounded': return '8px'
+        case 'soft': return '16px'
+        case 'pill': return '9999px'
+        default: return '8px'
+    }
+}
 
 export function ThemeCustomizer({ theme, onChange, layoutType, onLayoutChange, subscriptionTier }: ThemeCustomizerProps) {
     const { t } = useTranslation()

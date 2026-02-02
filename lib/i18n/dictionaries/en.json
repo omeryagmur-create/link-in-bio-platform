@@ -13,15 +13,73 @@
         "error": "Error",
         "success": "Success",
         "logout": "Logout",
-        "name": "Name"
+        "name": "Name",
+        "back": "Back",
+        "email": "Email",
+        "password": "Password",
+        "login": "Login",
+        "signup": "Sign Up",
+        "or": "or",
+        "welcome": "Welcome"
+    },
+    "auth": {
+        "login_title": "Login",
+        "login_desc": "Login to Link-in-Bio platform",
+        "signup_title": "Create Account",
+        "signup_desc": "Create your page in seconds",
+        "google_login": "Continue with Google",
+        "email_login_hint": "or with email",
+        "no_account": "Don't have an account?",
+        "have_account": "Already have an account?",
+        "signing_up": "Creating Account...",
+        "logging_in": "Logging in...",
+        "username_placeholder": "username",
+        "username_hint": "Letters, numbers, and underscores only.",
+        "email_placeholder": "email@example.com",
+        "password_placeholder": "Password (min. 6 chars)",
+        "signup_success": "Account created! Please click the confirmation link sent to your email.",
+        "login_success": "Successfully logged in",
+        "db_error": "Database error: This username or email might already be in use.",
+        "generic_error": "An error occurred during login"
     },
     "dashboard": {
         "title": "My Pages",
         "description": "Create and manage your link-in-bio pages.",
         "create_page": "Create New Page",
+        "create_page_desc": "Set a design and address for your page.",
         "no_pages": "You don't have any pages yet.",
         "status_published": "Live",
-        "status_draft": "Draft"
+        "status_draft": "Draft",
+        "layout_choice": "Layout Choice",
+        "layout_classic_desc": "Vertical list style, classic link-in-bio look.",
+        "layout_special_desc": "Modern, card-based and grid-layout dynamic design.",
+        "page_title_label": "Page Title",
+        "page_title_placeholder": "e.g. My Personal Links",
+        "page_url_label": "Page Link (URL)",
+        "page_url_placeholder": "username",
+        "create_confirm": "Create Page",
+        "analytics": "Analytics",
+        "analytics_views": "Total Views",
+        "analytics_views_desc": "Total traffic to your pages.",
+        "analytics_clicks": "Total Clicks",
+        "analytics_clicks_desc": "Total interactions with your links.",
+        "analytics_ctr": "Average CTR",
+        "analytics_ctr_desc": "Click-through rate per view.",
+        "performance_chart": "Performance Chart",
+        "performance_chart_desc": "Traffic and interaction progress for the last {range} days.",
+        "top_links": "Top Clicked Links",
+        "top_links_desc": "Top 5 popular links and their interaction counts.",
+        "no_data": "No data yet.",
+        "smart_tips": "Smart Tips",
+        "tips_desc": "Performance suggestions based on your data.",
+        "tip_increase_traffic_title": "Increase Traffic",
+        "tip_increase_traffic_desc": "Add your link to your Instagram and TikTok bio to increase views by 40%.",
+        "tip_maximize_clicks_title": "More Clicks",
+        "tip_maximize_clicks_desc": "Maximize engagement by moving your most clicked link to the top.",
+        "time_range": "Time Range",
+        "range_7": "Last 7 Days",
+        "range_30": "Last 30 Days",
+        "range_90": "Last 90 Days"
     },
     "editor": {
         "tabs": {
@@ -79,6 +137,10 @@
             "social_preview": "Social Media Preview",
             "social_preview_desc": "Appearance in WhatsApp, Facebook, and Twitter shares."
         },
+        "preview": {
+            "mobile": "Mobile View",
+            "desktop": "Desktop View"
+        },
         "blocks": {
             "add": "Add New Block",
             "choose": "Choose Block",
@@ -127,6 +189,11 @@
                 "link_title": "New Link",
                 "text_content": "Text content..."
             }
+        },
+        "upload": {
+            "invalid_file": "Please select a valid image file",
+            "success": "Image uploaded",
+            "failed": "Upload failed"
         }
     },
     "premium": {
@@ -137,8 +204,28 @@
         "seo_feat3": "Social Media Share Appearance",
         "upgrade": "Upgrade to Pro and Activate"
     },
+    "landing": {
+        "hero_title": "All Your Links in One Place",
+        "hero_desc": "Collect your social media accounts, portfolio, and important links on a single page.",
+        "hero_cta": "Get Started Now",
+        "feat1_title": "Customizable Design",
+        "feat1_desc": "Customize your page in seconds with colors, fonts, and button styles specific to your brand.",
+        "feat1_cta": "Explore Themes",
+        "feat2_title": "Detailed Analytics",
+        "feat2_desc": "See who clicked and which link is more popular with real-time statistics.",
+        "feat2_cta": "Review",
+        "feat3_title": "Mobile First",
+        "feat3_desc": "Provide an ultra-fast and lightweight experience that looks flawless on every screen size.",
+        "feat4_title": "Secure and Fast",
+        "feat4_desc": "Your data is safe with Supabase and Next.js infrastructure, and your page is always live.",
+        "feat4_cta": "Sign Up",
+        "nav_features": "Features"
+    },
     "public": {
         "powered_by": "Powered by Link-in-Bio Platform",
-        "not_found": "User Not Found"
+        "not_found": "User Not Found",
+        "page_not_found": "Page Not Found",
+        "no_image": "No image to display",
+        "invalid_video": "Enter a valid YouTube URL"
     }
 }

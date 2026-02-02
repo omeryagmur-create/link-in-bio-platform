@@ -3,6 +3,7 @@
 import { Block } from '@/types'
 import Image from 'next/image'
 import { getBlockStyle, ThemeConfig } from '@/lib/theme'
+import { useTranslation } from '@/lib/i18n/provider'
 
 interface ImageBlockProps {
     block: Block
@@ -11,9 +12,10 @@ interface ImageBlockProps {
 }
 
 export function ImageBlock({ block, theme, layoutType = 'classic' }: ImageBlockProps) {
+    const { t } = useTranslation()
     const data = block.data as any
     const imageUrl = data.imageUrl || data.url || ''
-    const alt = data.alt || 'Resim'
+    const alt = data.alt || t('editor.blocks.types.image')
     const caption = data.caption || ''
     const linkUrl = data.linkUrl || ''
 
@@ -39,7 +41,7 @@ export function ImageBlock({ block, theme, layoutType = 'classic' }: ImageBlockP
         </div>
     ) : (
         <div className="w-full aspect-video bg-gray-200 flex items-center justify-center text-gray-400 rounded-lg">
-            Görüntülenecek resim yok
+            {t('public.no_image')}
         </div>
     )
 

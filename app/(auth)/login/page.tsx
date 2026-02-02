@@ -11,7 +11,10 @@ import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 
+import { useTranslation } from '@/lib/i18n/provider'
+
 export default function LoginPage() {
+    const { t } = useTranslation()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
@@ -20,7 +23,6 @@ export default function LoginPage() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log('Login attempt with:', email)
         setLoading(true)
 
         try {
@@ -30,16 +32,15 @@ export default function LoginPage() {
             })
 
             if (error) {
-                console.error('Login error:', error)
                 toast.error(error.message)
                 return
             }
 
-            toast.success('Başarıyla giriş yapıldı')
+            toast.success(t('auth.login_success'))
             router.push('/dashboard')
             router.refresh()
         } catch {
-            toast.error('Giriş yapılırken bir hata oluştu')
+            toast.error(t('auth.generic_error'))
         } finally {
             setLoading(false)
         }
@@ -84,10 +85,10 @@ export default function LoginPage() {
                         </svg>
                     </div>
                     <CardTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                        Hoşgeldiniz
+                        {t('common.welcome')}
                     </CardTitle>
                     <CardDescription className="text-base">
-                        Link-in-Bio platformuna giriş yapın
+                        {t('auth.login_desc')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -96,7 +97,7 @@ export default function LoginPage() {
                             <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
                                 <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
                             </svg>
-                            Google ile Devam Et
+                            {t('auth.google_login')}
                             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
                         </Button>
 
@@ -106,7 +107,7 @@ export default function LoginPage() {
                             </div>
                             <div className="relative flex justify-center text-xs uppercase">
                                 <span className="bg-background px-2 text-muted-foreground backdrop-blur-sm bg-white/50 dark:bg-black/50 rounded-full">
-                                    veya e-posta ile
+                                    {t('auth.email_login_hint')}
                                 </span>
                             </div>
                         </div>
@@ -127,7 +128,7 @@ export default function LoginPage() {
                                 <Input
                                     id="password"
                                     type="password"
-                                    placeholder="Şifre"
+                                    placeholder={t('common.password')}
                                     required
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
@@ -146,10 +147,10 @@ export default function LoginPage() {
                                     {loading ? (
                                         <div className="flex items-center justify-center gap-2">
                                             <Loader2 className="h-4 w-4 animate-spin" />
-                                            Giriş Yapılıyor...
+                                            {t('auth.logging_in')}
                                         </div>
                                     ) : (
-                                        <span className="text-white dark:text-black">Giriş Yap</span>
+                                        <span className="text-white dark:text-black">{t('common.login')}</span>
                                     )}
                                 </ShimmerButton>
                             </div>
@@ -158,9 +159,9 @@ export default function LoginPage() {
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <div className="text-sm text-muted-foreground">
-                        Hesabınız yok mu?{' '}
+                        {t('auth.no_account')}{' '}
                         <Link href="/signup" className="text-primary hover:text-primary/80 font-medium hover:underline transition-all">
-                            Kayıt Ol
+                            {t('common.signup')}
                         </Link>
                     </div>
                 </CardFooter>

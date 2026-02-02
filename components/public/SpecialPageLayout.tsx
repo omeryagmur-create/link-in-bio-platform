@@ -48,6 +48,7 @@ export function SpecialPageLayout({
     onUpdateProfile,
     previewMode = 'desktop'
 }: SpecialPageLayoutProps) {
+    const { t } = useTranslation()
     const theme = page.theme || {}
     const backgroundColor = theme.backgroundColor || '#fdf7f7'
     const textColor = theme.textColor || '#2d2d2d'

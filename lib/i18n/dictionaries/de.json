@@ -13,15 +13,73 @@
         "error": "Fehler",
         "success": "Erfolg",
         "logout": "Abmelden",
-        "name": "Name"
+        "name": "Name",
+        "back": "Zurück",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "login": "Anmelden",
+        "signup": "Registrieren",
+        "or": "oder",
+        "welcome": "Willkommen"
+    },
+    "auth": {
+        "login_title": "Anmelden",
+        "login_desc": "Melden Sie sich bei der Link-in-Bio-Plattform an",
+        "signup_title": "Konto erstellen",
+        "signup_desc": "Erstellen Sie Ihre Seite in Sekundenschnelle",
+        "google_login": "Mit Google fortfahren",
+        "email_login_hint": "oder mit E-Mail",
+        "no_account": "Haben Sie noch kein Konto?",
+        "have_account": "Haben Sie bereits ein Konto?",
+        "signing_up": "Konto wird erstellt...",
+        "logging_in": "Anmeldung läuft...",
+        "username_placeholder": "benutzername",
+        "username_hint": "Nur Buchstaben, Zahlen und Unterstriche.",
+        "email_placeholder": "email@beispiel.de",
+        "password_placeholder": "Passwort (mind. 6 Zeichen)",
+        "signup_success": "Konto erstellt! Bitte klicken Sie auf den Bestätigungslink, der an Ihre E-Mail gesendet wurde.",
+        "login_success": "Erfolgreich angemeldet",
+        "db_error": "Datenbankfehler: Dieser Benutzername oder diese E-Mail wird möglicherweise bereits verwendet.",
+        "generic_error": "Ein Fehler ist bei der Anmeldung aufgetreten"
     },
     "dashboard": {
         "title": "Meine Seiten",
         "description": "Erstellen und verwalten Sie Ihre Link-in-Bio-Seiten.",
         "create_page": "Neue Seite erstellen",
+        "create_page_desc": "Legen Sie ein Design und eine Adresse für Ihre Seite fest.",
         "no_pages": "Sie haben noch keine Seiten.",
         "status_published": "Live",
-        "status_draft": "Entwurf"
+        "status_draft": "Entwurf",
+        "layout_choice": "Layout-Auswahl",
+        "layout_classic_desc": "Vertikaler Listenstil, klassischer Link-in-Bio-Look.",
+        "layout_special_desc": "Modernes, kartenbasiertes und dynamisches Design mit Gitter-Layout.",
+        "page_title_label": "Seitentitel",
+        "page_title_placeholder": "z.B. Meine persönlichen Links",
+        "page_url_label": "Seitenlink (URL)",
+        "page_url_placeholder": "benutzername",
+        "create_confirm": "Seite erstellen",
+        "analytics": "Analyse",
+        "analytics_views": "Gesamtansichten",
+        "analytics_views_desc": "Gesamtverkehr auf Ihren Seiten.",
+        "analytics_clicks": "Gesamtklicks",
+        "analytics_clicks_desc": "Gesamtinteraktionen mit Ihren Links.",
+        "analytics_ctr": "Durchschnittliche CTR",
+        "analytics_ctr_desc": "Klickrate pro Ansicht.",
+        "performance_chart": "Leistungsdiagramm",
+        "performance_chart_desc": "Verkehrs- und Interaktionsfortschritt der letzten {range} Tage.",
+        "top_links": "Meistgekickte Links",
+        "top_links_desc": "Top 5 der beliebtesten Links und deren Interaktionszahlen.",
+        "no_data": "Noch keine Daten.",
+        "smart_tips": "Smarte Tipps",
+        "tips_desc": "Leistungsvorschläge basierend auf Ihren Daten.",
+        "tip_increase_traffic_title": "Verkehr steigern",
+        "tip_increase_traffic_desc": "Fügen Sie Ihren Link zu Ihrer Instagram- und TikTok-Bio hinzu, um die Ansichten um 40% zu steigern.",
+        "tip_maximize_clicks_title": "Mehr Klicks",
+        "tip_maximize_clicks_desc": "Maximieren Sie das Engagement, indem Sie Ihren am häufigsten geklickten Link nach oben verschieben.",
+        "time_range": "Zeitraum",
+        "range_7": "Letzte 7 Tage",
+        "range_30": "Letzte 30 Tage",
+        "range_90": "Letzte 90 Tage"
     },
     "editor": {
         "tabs": {
@@ -48,7 +106,7 @@
             "background": "Hintergrund",
             "text": "Text",
             "button": "Button",
-            "button_text": "Button-Text",
+            "button_text": "Buttontext",
             "font": "Schriftart",
             "layout_type": "Seitenlayout",
             "layout_classic": "Klassische Liste",
@@ -62,27 +120,31 @@
                 "luxury": "Luxus"
             },
             "typography": "Typografie & Stil",
-            "button_style": "Button-Form",
+            "button_style": "Buttonform",
             "style_sharp": "Eckig",
             "style_rounded": "Abgerundet",
-            "style_soft": "Rund",
+            "style_soft": "Soft",
             "style_pill": "Oval"
         },
         "seo": {
             "preview_title": "Suchmaschinen-Vorschau",
-            "preview_desc": "Überprüfen Sie, wie Ihre Seite in Google-Suchen erscheint.",
-            "placeholder_desc": "Geben Sie eine Beschreibung für Ihre Seite ein, damit sie in den Suchergebnissen besser aussieht.",
+            "preview_desc": "Prüfen Sie, wie Ihre Seite in der Google-Suche erscheinen wird.",
+            "placeholder_desc": "Geben Sie eine Beschreibung für Ihre Seite ein, um sie in den Suchergebnissen besser aussehen zu lassen.",
             "title_label": "SEO-Titel",
-            "placeholder_title": "Suchmaschinen-Titel (optional)",
+            "placeholder_title": "Suchmaschinentitel (optional)",
             "hint_title": "Wenn leer gelassen, wird der normale Seitentitel verwendet.",
             "desc_label": "SEO-Beschreibung",
             "social_preview": "Social-Media-Vorschau",
-            "social_preview_desc": "Aussehen beim Teilen in WhatsApp, Facebook und Twitter."
+            "social_preview_desc": "Aussehen in WhatsApp, Facebook und Twitter Shares."
+        },
+        "preview": {
+            "mobile": "Mobilansicht",
+            "desktop": "Desktopansicht"
         },
         "blocks": {
-            "add": "Neuen Block hinzufügen",
+            "add": "Block hinzufügen",
             "choose": "Block wählen",
-            "choose_desc": "Wählen Sie den Inhaltstyp aus, den Sie Ihrer Seite hinzufügen möchten.",
+            "choose_desc": "Wählen Sie die Art des Inhalts, den Sie Ihrer Seite hinzufügen möchten.",
             "added": "Block hinzugefügt",
             "empty": "Noch keine Blöcke hinzugefügt.",
             "delete_confirm": "Sind Sie sicher, dass Sie diesen Block löschen möchten?",
@@ -93,8 +155,8 @@
                 "text": "Text",
                 "image": "Bild",
                 "video": "Video",
-                "embed": "Einbetten",
-                "divider": "Trenner"
+                "embed": "Widget",
+                "divider": "Trennlinie"
             },
             "editor": {
                 "content": "Inhalt",
@@ -102,16 +164,16 @@
                 "title": "Titel",
                 "url": "URL",
                 "fetching": "Daten werden geladen...",
-                "placeholder_title": "Link-Titel",
+                "placeholder_title": "Linktitel",
                 "placeholder_text": "Hier schreiben...",
                 "image_label": "Bild",
                 "link_url": "Weiterleitungs-URL (Optional)",
-                "caption": "Beschriftung (Optional)",
+                "caption": "Bildunterschrift (Optional)",
                 "caption_placeholder": "Bildunterschrift",
-                "video_url": "YouTube-URL",
+                "video_url": "YouTube URL",
                 "platform_url": "Plattform-URL (Spotify, YT Music, Kalender)",
                 "embed_code": "Oder Embed-Code",
-                "divider_hint": "Trenner-Einstellungen sind im Design-Tab.",
+                "divider_hint": "Trennlinien-Einstellungen sind im Design-Tab.",
                 "widget_placement": "Widget-Platzierung",
                 "width": "Breite",
                 "height": "Höhe",
@@ -127,18 +189,43 @@
                 "link_title": "Neuer Link",
                 "text_content": "Textinhalt..."
             }
+        },
+        "upload": {
+            "invalid_file": "Bitte wählen Sie eine gültige Bilddatei aus",
+            "success": "Bild hochgeladen",
+            "failed": "Upload fehlgeschlagen"
         }
     },
     "premium": {
-        "seo_title": "Premium SEO-Funktionen",
-        "seo_description": "Erreichen Sie mehr Menschen, indem Sie Ihre Suchmaschinenoptimierung und Social-Media-Einstellungen anpassen.",
+        "seo_title": "Premium SEO Features",
+        "seo_description": "Erreichen Sie mehr Menschen, indem Sie Ihre Suchmaschinenoptimierung und Social-Media-Share-Einstellungen anpassen.",
         "seo_feat1": "Eigene Meta-Titel",
         "seo_feat2": "Meta-Beschreibungen",
-        "seo_feat3": "Aussehen beim Social-Media-Teilen",
-        "upgrade": "Auf Pro upgraden und aktivieren"
+        "seo_feat3": "Social-Media-Share-Aussehen",
+        "upgrade": "Zu Pro wechseln und aktivieren"
+    },
+    "landing": {
+        "hero_title": "Alle Ihre Links an einem Ort",
+        "hero_desc": "Sammeln Sie Ihre Social-Media-Konten, Ihr Portfolio und wichtige Links auf einer einzigen Seite.",
+        "hero_cta": "Jetzt starten",
+        "feat1_title": "Anpassbares Design",
+        "feat1_desc": "Passen Sie Ihre Seite in Sekundenschnelle mit Farben, Schriftarten und Button-Stilen passend zu Ihrer Marke an.",
+        "feat1_cta": "Themes entdecken",
+        "feat2_title": "Detaillierte Analysen",
+        "feat2_desc": "Sehen Sie mit Echtzeit-Statistiken, wer geklickt hat und welcher Link beliebter ist.",
+        "feat2_cta": "Überprüfen",
+        "feat3_title": "Mobile First",
+        "feat3_desc": "Bieten Sie ein ultraschnelles und leichtgewichtiges Erlebnis, das auf jeder Bildschirmgröße fehlerfrei aussieht.",
+        "feat4_title": "Sicher und schnell",
+        "feat4_desc": "Ihre Daten sind mit der Supabase- und Next.js-Infrastruktur sicher, und Ihre Seite ist immer live.",
+        "feat4_cta": "Registrieren",
+        "nav_features": "Funktionen"
     },
     "public": {
-        "powered_by": "Präsentiert von Link-in-Bio Platform",
-        "not_found": "Benutzer nicht gefunden"
+        "powered_by": "Powered by Link-in-Bio Platform",
+        "not_found": "Benutzer nicht gefunden",
+        "page_not_found": "Seite nicht gefunden",
+        "no_image": "Kein Bild zur Anzeige",
+        "invalid_video": "Geben Sie eine gültige YouTube URL ein"
     }
 }

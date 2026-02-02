@@ -4,6 +4,7 @@ import { Block } from '@/types'
 import { getBlockStyle, ThemeConfig } from '@/lib/theme'
 import { Youtube, Play } from 'lucide-react'
 import Image from 'next/image'
+import { useTranslation } from '@/lib/i18n/provider'
 
 interface VideoBlockProps {
     block: Block
@@ -12,6 +13,7 @@ interface VideoBlockProps {
 }
 
 export function VideoBlock({ block, theme, layoutType = 'classic' }: VideoBlockProps) {
+    const { t } = useTranslation()
     const data = block.data as any
     const videoUrl = data.videoUrl || data.url || ''
     const title = data.title || 'YouTube'
@@ -122,7 +124,7 @@ export function VideoBlock({ block, theme, layoutType = 'classic' }: VideoBlockP
                 </div>
             ) : (
                 <div className="w-full aspect-video bg-gray-200 flex items-center justify-center text-gray-400 rounded-lg">
-                    Geçerli bir YouTube URL&apos;si girin
+                    {t('public.invalid_video')}
                 </div>
             )}
         </div>

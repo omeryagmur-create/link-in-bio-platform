@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useTranslation } from '@/lib/i18n/provider'
 import { Button } from '@/components/ui/button'
 import { Upload, X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
@@ -13,6 +14,7 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
+    const { t } = useTranslation()
     const [uploading, setUploading] = useState(false)
     const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -21,7 +23,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
         if (!file) return
 
         if (!file.type.startsWith('image/')) {
-            toast.error('Lütfen geçerli bir resim dosyası seçin')
+            toast.error(t('editor.upload.invalid_file'))
             return
         }
 
@@ -38,12 +40,12 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
             const data = await res.json()
             if (data.url) {
                 onChange(data.url)
-                toast.success('Resim yüklendi')
+                toast.success(t('editor.upload.success'))
             } else {
-                throw new Error(data.error || 'Yükleme başarısız')
+                throw new Error(data.error || t('editor.upload.failed'))
             }
         } catch (error: any) {
-            toast.error(error.message || 'Resim yüklenirken bir hata oluştu')
+            toast.error(error.message || t('common.error'))
         } finally {
             setUploading(false)
         }
@@ -74,7 +76,7 @@ export function ImageUpload({ value, onChange, label }: ImageUploadProps) {
                         ) : (
                             <>
                                 <Upload className="h-6 w-6 text-muted-foreground" />
-                                <span className="text-[10px] text-muted-foreground mt-1">Yükle</span>
+                                <span className="text-[10px] text-muted-foreground mt-1">{t('common.preview')}</span>
                             </>
                         )}
                     </div>

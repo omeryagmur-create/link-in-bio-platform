@@ -1,4 +1,19 @@
+'use client'
+
+import { useState } from 'react'
 import { useTranslation } from '@/lib/i18n/provider'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+import { Label } from '@/components/ui/label'
+import { ImageUpload } from './ImageUpload'
+import { toast } from 'sonner'
+import { Loader2, Save } from 'lucide-react'
+
+interface ProfileEditorProps {
+    profile: any
+    onUpdate: (profile: any) => void
+}
 
 export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
     const { t } = useTranslation()
@@ -52,10 +67,10 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                 </div>
 
                 <div className="space-y-1.5">
-                    <Label htmlFor="bio" className="text-xs uppercase font-bold text-muted-foreground">Bio</Label>
+                    <Label htmlFor="bio" className="text-xs uppercase font-bold text-muted-foreground">{t('editor.profile.bio')}</Label>
                     <Textarea
                         id="bio"
-                        placeholder="..."
+                        placeholder={t('editor.profile.bio')}
                         value={data.bio}
                         onChange={(e) => setData({ ...data, bio: e.target.value })}
                         className="min-h-[100px]"

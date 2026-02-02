@@ -12,14 +12,18 @@ import { Loader2 } from 'lucide-react'
 import { z } from 'zod'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 
-// Validation schema
-const signupSchema = z.object({
-    username: z.string().min(3, 'Kullanıcı adı en az 3 karakter olmalı').regex(/^[a-zA-Z0-9_-]+$/, 'Sadece harf, rakam, tire ve alt çizgi kullanılabilir'),
-    email: z.string().email('Geçersiz e-posta adresi'),
-    password: z.string().min(6, 'Şifre en az 6 karakter olmalı'),
-})
+import { useTranslation } from '@/lib/i18n/provider'
 
 export default function SignupPage() {
+    const { t } = useTranslation()
+
+    // Validation schema
+    const signupSchema = z.object({
+        username: z.string().min(3, t('auth.username_hint')).regex(/^[a-zA-Z0-9_-]+$/, t('auth.username_hint')),
+        email: z.string().email(t('auth.email_placeholder')),
+        password: z.string().min(6, t('auth.password_placeholder')),
+    })
+
     const [formData, setFormData] = useState({
         username: '',
         email: '',
@@ -31,7 +35,6 @@ export default function SignupPage() {
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault()
-        console.log('Signup initiation:', formData.email)
         setLoading(true)
 
         try {
@@ -45,7 +48,6 @@ export default function SignupPage() {
             }
 
             // 1. Sign up user
-            // options.data içinde gönderdiğimiz 'username', SQL trigger tarafından 'profiles' tablosuna yazılacak.
             const { data: authData, error: authError } = await supabase.auth.signUp({
                 email: formData.email,
                 password: formData.password,
@@ -58,9 +60,8 @@ export default function SignupPage() {
             })
 
             if (authError) {
-                console.error('Auth signup error:', authError)
                 if (authError.message.includes('Database error')) {
-                    toast.error('Veritabanı hatası: Bu kullanıcı adı veya e-posta zaten kullanımda olabilir.')
+                    toast.error(t('auth.db_error'))
                 } else {
                     toast.error(authError.message)
                 }
@@ -69,15 +70,13 @@ export default function SignupPage() {
             }
 
             if (authData.user) {
-                console.log('Signup successful, awaiting confirmation')
-                toast.success('Hesap oluşturuldu! Lütfen e-postanıza gönderilen onay linkine tıklayın.', {
+                toast.success(t('auth.signup_success'), {
                     duration: 6000,
                 })
                 router.push('/login')
             }
         } catch (err: any) {
-            console.error('Signup exception:', err)
-            toast.error('Beklenmedik bir hata oluştu.')
+            toast.error(t('common.error'))
         } finally {
             setLoading(false)
         }
@@ -110,10 +109,10 @@ export default function SignupPage() {
                         </svg>
                     </div>
                     <CardTitle className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-400">
-                        Hesap Oluştur
+                        {t('auth.signup_title')}
                     </CardTitle>
                     <CardDescription className="text-base">
-                        Saniyeler içinde sayfanızı oluşturun
+                        {t('auth.signup_desc')}
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -121,21 +120,21 @@ export default function SignupPage() {
                         <div className="grid gap-2">
                             <Input
                                 id="username"
-                                placeholder="kullanici_adi"
+                                placeholder={t('auth.username_placeholder')}
                                 required
                                 value={formData.username}
                                 onChange={(e) => setFormData({ ...formData, username: e.target.value.toLowerCase() })}
                                 className="bg-white/50 dark:bg-black/50 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-primary/20 transition-all"
                             />
                             <p className="text-[10px] text-muted-foreground px-1 italic">
-                                Sadece harf, rakam ve alt çizgi.
+                                {t('auth.username_hint')}
                             </p>
                         </div>
                         <div className="grid gap-2">
                             <Input
                                 id="email"
                                 type="email"
-                                placeholder="e-posta@örnek.com"
+                                placeholder={t('auth.email_placeholder')}
                                 required
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -146,7 +145,7 @@ export default function SignupPage() {
                             <Input
                                 id="password"
                                 type="password"
-                                placeholder="Şifre (en az 6 karakter)"
+                                placeholder={t('auth.password_placeholder')}
                                 required
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
@@ -166,10 +165,10 @@ export default function SignupPage() {
                                 {loading ? (
                                     <div className="flex items-center justify-center gap-2">
                                         <Loader2 className="h-4 w-4 animate-spin" />
-                                        Hesap Oluşturuluyor...
+                                        {t('auth.signing_up')}
                                     </div>
                                 ) : (
-                                    <span className="text-white dark:text-black">Kayıt Ol</span>
+                                    <span className="text-white dark:text-black">{t('common.signup')}</span>
                                 )}
                             </ShimmerButton>
                         </div>
@@ -177,9 +176,9 @@ export default function SignupPage() {
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <div className="text-sm text-muted-foreground">
-                        Zaten bir hesabınız var mı?{' '}
+                        {t('auth.have_account')}{' '}
                         <Link href="/login" className="text-primary hover:text-primary/80 font-medium hover:underline transition-all">
-                            Giriş Yap
+                            {t('common.login')}
                         </Link>
                     </div>
                 </CardFooter>
