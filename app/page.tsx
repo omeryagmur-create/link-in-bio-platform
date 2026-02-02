@@ -1,6 +1,7 @@
 'use client'
 
 import Link from "next/link";
+import Image from "next/image";
 import { RetroGrid } from "@/components/ui/retro-grid";
 import { Particles } from "@/components/ui/particles";
 import { BentoGrid, BentoCard } from "@/components/ui/bento-grid";
@@ -16,7 +17,6 @@ import {
 
 export default function Home() {
   const { t } = useTranslation();
-
   const features = [
     {
       Icon: Link2,
@@ -28,19 +28,10 @@ export default function Home() {
       background: <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent" />,
     },
     {
-      Icon: Palette,
-      name: t('landing.feat1_title'), // Wait, I should use feat1, feat2 etc. consistently
-      description: t('landing.feat1_desc'),
-      href: "/signup",
-      cta: t('landing.feat1_cta'),
-      className: "col-span-3 lg:col-span-1",
-      background: <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent" />,
-    },
-    {
       Icon: BarChart3,
       name: t('landing.feat2_title'),
       description: t('landing.feat2_desc'),
-      href: "/signup",
+      href: "/analytics",
       cta: t('landing.feat2_cta'),
       className: "col-span-3 lg:col-span-1",
       background: <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent" />,
@@ -50,7 +41,7 @@ export default function Home() {
       name: t('landing.feat3_title'),
       description: t('landing.feat3_desc'),
       href: "/signup",
-      cta: t('landing.feat3_cta'),
+      cta: t('landing.hero_cta'),
       className: "col-span-3 lg:col-span-1",
       background: <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent" />,
     },
@@ -60,7 +51,7 @@ export default function Home() {
       description: t('landing.feat4_desc'),
       href: "/signup",
       cta: t('landing.feat4_cta'),
-      className: "col-span-3 lg:col-span-2",
+      className: "col-span-3 lg:col-span-3",
       background: <div className="absolute inset-0 bg-gradient-to-br from-red-500/10 to-transparent" />,
     },
   ];
@@ -97,7 +88,7 @@ export default function Home() {
       <main className="relative z-10">
         {/* Hero Section */}
         <section className="flex flex-col items-center justify-center pt-24 pb-32 px-6 text-center">
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8 max-w-4xl bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent">
+          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter mb-8 max-w-4xl bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent leading-[1.1]">
             {t('landing.hero_title')}
           </h1>
 
@@ -119,20 +110,32 @@ export default function Home() {
           </div>
 
           {/* Mockup Preview */}
-          <div className="mt-20 relative w-full max-w-5xl mx-auto px-4 overflow-hidden rounded-2xl border border-white/10 shadow-2xl skew-y-2 hover:skew-y-0 transition-transform duration-700">
-            <div className="w-full aspect-[16/9] bg-slate-900 flex items-center justify-center text-slate-700 font-bold text-4xl">
-              PREVIEW MOCKUP
+          <div className="mt-20 relative w-full max-w-5xl mx-auto px-4 group">
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.3)] skew-y-1 group-hover:skew-y-0 transition-all duration-700 bg-slate-900/50 backdrop-blur-sm">
+              <Image
+                src="/landing_hero_mockup.png"
+                alt="Platform Mockup"
+                width={1200}
+                height={675}
+                className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                priority
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent opacity-60" />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+
+            {/* Ambient Glows */}
+            <div className="absolute -top-20 -left-20 w-64 h-64 bg-primary/20 rounded-full blur-[100px] -z-10" />
+            <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-500/20 rounded-full blur-[100px] -z-10" />
           </div>
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-32 px-6 md:px-12 bg-white/5 backdrop-blur-sm">
+        <section id="features" className="py-32 px-6 md:px-12 relative overflow-hidden">
+          <div className="absolute inset-0 bg-slate-50/50 -z-10" />
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
-              <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight">LinkInBio</h2>
-              <p className="text-muted-foreground text-lg">{t('landing.hero_desc')}</p>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight text-slate-900">{t('landing.nav_features')}</h2>
+              <p className="text-slate-600 text-lg max-w-2xl mx-auto">{t('landing.hero_desc')}</p>
             </div>
 
             <BentoGrid className="lg:grid-rows-3">
