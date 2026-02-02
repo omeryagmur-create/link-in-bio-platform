@@ -10,15 +10,46 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { username } = await params
+    const { username: identifier } = await params
     const supabase = await createClient()
 
-    // Kullanıcıyı bul
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('id, display_name, bio')
-        .eq('username', username)
-        .single()
+    // 1. Önce bu identifier bir sayfa slug'ı mı diye bak
+    const { data: pageBySlug } = await supabase
+        .from('pages')
+        .select('id, user_id, title, seo_title, seo_description')
+        .eq('slug', identifier)
+        .maybeSingle()
+
+    let profile = null
+    let page = pageBySlug
+
+    if (pageBySlug) {
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, display_name, bio')
+            .eq('id', pageBySlug.user_id)
+            .single()
+        profile = profileData
+    } else {
+        // 2. Sayfa bulunamadıysa, identifier bir kullanıcı adı mı diye bak
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, display_name, bio')
+            .eq('username', identifier)
+            .single()
+
+        if (profileData) {
+            profile = profileData
+            // Kullanıcının ana sayfasını bul
+            const { data: primaryPage } = await supabase
+                .from('pages')
+                .select('id, user_id, title, seo_title, seo_description')
+                .eq('user_id', profileData.id)
+                .eq('is_primary', true)
+                .maybeSingle()
+            page = primaryPage as any
+        }
+    }
 
     if (!profile) {
         return {
@@ -26,16 +57,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         }
     }
 
-    // Ana sayfayı bul (SEO ayarları için)
-    const { data: page } = await supabase
-        .from('pages')
-        .select('title, seo_title, seo_description')
-        .eq('user_id', profile.id)
-        .eq('is_primary', true)
-        .maybeSingle()
-
-    const title = page?.seo_title || page?.title || profile.display_name || username
-    const description = page?.seo_description || profile.bio || `${username} adlı kullanıcının Link-in-Bio sayfası`
+    const title = page?.seo_title || page?.title || profile.display_name || identifier
+    const description = page?.seo_description || profile.bio || `${identifier} adlı kullanıcının Link-in-Bio sayfası`
 
     return {
         title: title,
@@ -44,8 +67,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
             title: title,
             description: description,
             type: 'website',
-            url: `https://link.bio/${username}`,
-            // og:image will be added later or can use profile.avatar_url
+            url: `https://link.bio/${identifier}`,
         },
         twitter: {
             card: 'summary_large_image',
@@ -56,45 +78,71 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 }
 
 export default async function PublicProfilePage({ params }: PageProps) {
-    const { username } = await params
+    const { username: identifier } = await params
     const supabase = await createClient()
 
-    // 1. Kullanıcıyı username'e göre bul
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('id, username, display_name, bio, avatar_url')
-        .eq('username', username)
-        .single()
-
-    if (!profile) {
-        notFound()
-    }
-
-    // 2. Kullanıcının sayfalarını bul
-    // Eğer giriş yapmış kullanıcı sayfa sahibiyse taslakları da görebilsin
-    const { data: { user: currentUser } } = await supabase.auth.getUser()
-    const isOwner = currentUser?.id === profile.id
-
-    let query = supabase
+    // 1. Önce identifier'ı bir sayfa slug'ı olarak ara
+    const { data: pageBySlug } = await supabase
         .from('pages')
         .select('*')
-        .eq('user_id', profile.id)
+        .eq('slug', identifier)
+        .maybeSingle()
 
-    if (!isOwner) {
-        query = query.eq('is_published', true)
+    let profile = null
+    let page = pageBySlug
+
+    if (pageBySlug) {
+        // Sayfa bulundu, sahibini getir
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, display_name, bio, avatar_url')
+            .eq('id', pageBySlug.user_id)
+            .single()
+        profile = profileData
+    } else {
+        // 2. Sayfa bulunamadıysa, identifier'ı bir kullanıcı adı olarak ara
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, username, display_name, bio, avatar_url')
+            .eq('username', identifier)
+            .single()
+
+        if (profileData) {
+            profile = profileData
+            // Kullanıcının yayınlanmış sayfalarına bak
+            const { data: { user: currentUser } } = await supabase.auth.getUser()
+            const isOwner = currentUser?.id === profile.id
+
+            let query = supabase
+                .from('pages')
+                .select('*')
+                .eq('user_id', profile.id)
+
+            if (!isOwner) {
+                query = query.eq('is_published', true)
+            }
+
+            const { data: pages } = await query
+                .order('is_primary', { ascending: false })
+                .order('created_at', { ascending: false })
+
+            if (pages && pages.length > 0) {
+                page = pages[0]
+            }
+        }
     }
 
-    const { data: pages } = await query
-        .order('is_primary', { ascending: false })
-        .order('created_at', { ascending: false })
-
-    if (!pages || pages.length === 0) {
+    if (!profile || !page) {
         notFound()
     }
 
-    const page = pages[0] // İlk yayınlanmış sayfa (primary varsa o)
+    // Ek Güvenlik: Eğer sayfa yayınlanmamışsa ve sahibi değilse 404
+    const { data: { user: currentUser } } = await supabase.auth.getUser()
+    if (!page.is_published && currentUser?.id !== profile.id) {
+        notFound()
+    }
 
-    // 3. Sayfa bloklarını position'a göre sırala
+    // 3. Sayfa bloklarını getir
     const { data: blocks } = await supabase
         .from('blocks')
         .select('*')

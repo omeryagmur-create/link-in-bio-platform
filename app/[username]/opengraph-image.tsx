@@ -12,23 +12,59 @@ export const size = {
 export const contentType = 'image/png'
 
 export default async function Image({ params }: { params: Promise<{ username: string }> }) {
-    const { username } = await params
+    const { username: identifier } = await params
     const supabase = await createClient()
 
-    const { data: profile } = await supabase
-        .from('profiles')
-        .select('id, display_name, bio, avatar_url')
-        .eq('username', username)
-        .single()
-
-    const { data: page } = await supabase
+    // 1. Önce identifier'ı bir sayfa slug'ı olarak ara
+    const { data: pageBySlug } = await supabase
         .from('pages')
-        .select('title, theme')
-        .eq('user_id', profile?.id)
-        .eq('is_primary', true)
+        .select('id, user_id, title, theme')
+        .eq('slug', identifier)
         .maybeSingle()
 
-    const displayName = profile?.display_name || username
+    let profile = null
+    let page = pageBySlug
+
+    if (pageBySlug) {
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, display_name, bio, avatar_url')
+            .eq('id', pageBySlug.user_id)
+            .single()
+        profile = profileData
+    } else {
+        // 2. Sayfa bulunamadıysa, identifier'ı bir kullanıcı adı olarak ara
+        const { data: profileData } = await supabase
+            .from('profiles')
+            .select('id, display_name, bio, avatar_url')
+            .eq('username', identifier)
+            .single()
+
+        if (profileData) {
+            profile = profileData
+            const { data: primaryPage } = await supabase
+                .from('pages')
+                .select('id, user_id, title, theme')
+                .eq('user_id', profileData.id)
+                .eq('is_primary', true)
+                .maybeSingle()
+            page = primaryPage as any
+        }
+    }
+
+    if (!profile) {
+        // Fallback image context if no profile found
+        return new ImageResponse(
+            (
+                <div style={{ height: '100%', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#000', color: '#fff' }}>
+                    Kullanıcı Bulunamadı
+                </div>
+            ),
+            { ...size }
+        )
+    }
+
+    const displayName = profile?.display_name || identifier
     const bio = profile?.bio || ''
     const bgColor = (page?.theme as any)?.backgroundColor || '#ffffff'
     const textColor = (page?.theme as any)?.textColor || '#000000'
@@ -89,7 +125,7 @@ export default async function Image({ params }: { params: Promise<{ username: st
                         opacity: 0.5,
                     }}
                 >
-                    link.bio/{username}
+                    link.bio/{identifier}
                 </div>
             </div>
         ),
