@@ -56,7 +56,7 @@ export async function POST(request: Request) {
             .eq('id', user.id)
             .single()
 
-        const isFree = profile?.subscription_tier === 'free'
+        const isFree = false // profile?.subscription_tier === 'free' (Temporarily disabled: everything is free)
 
         if (isFree) {
             const { count } = await supabase

@@ -44,8 +44,8 @@ export default function DashboardLayout({
 
     if (isEditor) {
         return (
-            <div className="min-h-screen bg-slate-50/50 flex flex-col">
-                <main className="flex-1 flex flex-col h-full bg-white">
+            <div className="min-h-screen bg-muted/20 flex flex-col">
+                <main className="flex-1 flex flex-col h-full bg-background">
                     {children}
                 </main>
             </div>
@@ -53,11 +53,11 @@ export default function DashboardLayout({
     }
 
     return (
-        <div className="min-h-screen bg-slate-50/50">
-            <header className="border-b bg-white sticky top-0 z-40">
+        <div className="min-h-screen bg-muted/20">
+            <header className="border-b bg-background/80 backdrop-blur-md sticky top-0 z-40">
                 <div className="container mx-auto flex h-16 items-center justify-between px-6">
                     <div className="flex items-center gap-8">
-                        <div className="font-bold text-xl tracking-tighter text-primary">Link Platform</div>
+                        <div className="font-bold text-xl tracking-tighter text-foreground">Link Platform</div>
                         <nav className="hidden md:flex items-center gap-1">
                             {navItems.map((item) => (
                                 <Link key={item.href} href={item.href}>
@@ -75,13 +75,13 @@ export default function DashboardLayout({
                     </div>
                     <div className="flex items-center gap-3">
                         <LanguageSwitcher />
-                        <div className="h-4 w-px bg-slate-200 mx-1"></div>
+                        <div className="h-4 w-px bg-border mx-1"></div>
                         <Link href="/settings">
                             <Button variant="ghost" size="icon" className="text-muted-foreground">
                                 <Settings className="w-4 h-4" />
                             </Button>
                         </Link>
-                        <div className="h-4 w-px bg-slate-200 mx-1"></div>
+                        <div className="h-4 w-px bg-border mx-1"></div>
                         <Button variant="ghost" size="sm" onClick={handleLogout} disabled={loading} className="text-muted-foreground hover:text-destructive transition-colors">
                             {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogOut className="mr-2 h-4 w-4" />}
                             {t('common.logout')}

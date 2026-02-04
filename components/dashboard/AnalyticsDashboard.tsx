@@ -65,7 +65,7 @@ export function AnalyticsDashboard() {
 
             {/* Summary Cards */}
             <div className="grid gap-4 md:grid-cols-3">
-                <Card className="bg-gradient-to-br from-white to-slate-50 border-none shadow-sm overflow-hidden relative group">
+                <Card className="bg-card border-border shadow-sm overflow-hidden relative group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <Users className="w-16 h-16" />
                     </div>
@@ -81,7 +81,7 @@ export function AnalyticsDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-white to-slate-50 border-none shadow-sm overflow-hidden relative group">
+                <Card className="bg-card border-border shadow-sm overflow-hidden relative group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <MousePointer2 className="w-16 h-16" />
                     </div>
@@ -97,7 +97,7 @@ export function AnalyticsDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-white to-slate-50 border-none shadow-sm overflow-hidden relative group">
+                <Card className="bg-card border-border shadow-sm overflow-hidden relative group">
                     <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
                         <Percent className="w-16 h-16" />
                     </div>
@@ -115,7 +115,7 @@ export function AnalyticsDashboard() {
             </div>
 
             {/* Performance Chart */}
-            <Card className="shadow-sm border-none bg-white">
+            <Card className="shadow-sm border-border bg-card">
                 <CardHeader>
                     <CardTitle className="text-lg">{t('dashboard.performance_chart')}</CardTitle>
                     <CardDescription>{t('dashboard.performance_chart_desc').replace('{range}', range)}</CardDescription>
@@ -126,34 +126,34 @@ export function AnalyticsDashboard() {
                             <AreaChart data={chartData}>
                                 <defs>
                                     <linearGradient id="colorViews" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.1} />
-                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                        <stop offset="5%" stopColor="#8884d8" stopOpacity={0.1} />
+                                        <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
                                     </linearGradient>
                                     <linearGradient id="colorClicks" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="#10b981" stopOpacity={0.1} />
                                         <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" />
                                 <XAxis
                                     dataKey="date"
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fontSize: 12, fill: '#64748b' }}
+                                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
                                     dy={10}
                                 />
                                 <YAxis
                                     axisLine={false}
                                     tickLine={false}
-                                    tick={{ fontSize: 12, fill: '#64748b' }}
+                                    tick={{ fontSize: 12, fill: 'hsl(var(--muted-foreground))' }}
                                 />
                                 <Tooltip
-                                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
+                                    contentStyle={{ borderRadius: '12px', border: '1px solid hsl(var(--border))', backgroundColor: 'hsl(var(--card))', color: 'hsl(var(--foreground))', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' }}
                                 />
                                 <Area
                                     type="monotone"
                                     dataKey="views"
-                                    stroke="#3b82f6"
+                                    stroke="#8884d8"
                                     strokeWidth={2}
                                     fillOpacity={1}
                                     fill="url(#colorViews)"
@@ -176,7 +176,7 @@ export function AnalyticsDashboard() {
 
             {/* Bottom Grid: Top Links & Insights */}
             <div className="grid gap-4 md:grid-cols-2">
-                <Card className="shadow-sm border-none">
+                <Card className="shadow-sm border-border bg-card">
                     <CardHeader>
                         <CardTitle className="text-lg">{t('dashboard.top_links')}</CardTitle>
                         <CardDescription>{t('dashboard.top_links_desc')}</CardDescription>
@@ -203,14 +203,14 @@ export function AnalyticsDashboard() {
                     </CardContent>
                 </Card>
 
-                <Card className="shadow-sm border-none bg-primary/5">
+                <Card className="shadow-sm border-border bg-primary/5">
                     <CardHeader>
                         <CardTitle className="text-lg">{t('dashboard.smart_tips')}</CardTitle>
                         <CardDescription>{t('dashboard.tips_desc')}</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <div className="flex gap-3">
-                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center shrink-0 border border-border">
                                 <TrendingUp className="w-5 h-5 text-primary" />
                             </div>
                             <div>
@@ -219,7 +219,7 @@ export function AnalyticsDashboard() {
                             </div>
                         </div>
                         <div className="flex gap-3">
-                            <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
+                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center shrink-0 border border-border">
                                 <MousePointer2 className="w-5 h-5 text-emerald-500" />
                             </div>
                             <div>

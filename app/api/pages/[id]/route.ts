@@ -41,8 +41,8 @@ export async function PATCH(
     try {
         const json = await request.json()
 
-        // Restrict Special Layout for Free users
-        if (json.layout_type === 'special') {
+        // Restrict Special Layout for Free users (DISABLED: Everything is free)
+        /* if (json.layout_type === 'special') {
             const { data: profile } = await supabase
                 .from('profiles')
                 .select('subscription_tier')
@@ -55,7 +55,7 @@ export async function PATCH(
                     code: 'PRO_FEATURE_REQUIRED'
                 }, { status: 403 })
             }
-        }
+        } */
 
         const { data: page, error } = await supabase
             .from('pages')
