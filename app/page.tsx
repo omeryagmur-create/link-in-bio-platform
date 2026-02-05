@@ -35,6 +35,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import IsoLevelWarp from "@/components/ui/isometric-wave-grid-background";
 import { Logo } from "@/components/ui/logo";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { DashboardMockup } from "@/components/landing/DashboardMockup";
 
 
 const faqData = [
@@ -186,13 +187,7 @@ export default function Home() {
           }
         >
           <div className="relative h-full w-full bg-neutral-900/50 rounded-2xl overflow-hidden">
-            <Image
-              src="/landing_hero_mockup.png"
-              alt="Dashboard Preview"
-              fill
-              className="object-cover object-top"
-              priority
-            />
+            <DashboardMockup />
           </div>
         </ContainerScroll>
       </section>

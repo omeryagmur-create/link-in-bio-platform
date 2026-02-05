@@ -46,18 +46,7 @@ export default function LoginPage() {
         }
     }
 
-    const handleGoogleLogin = async () => {
-        const { error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-                redirectTo: `${location.origin}/auth/callback`,
-            },
-        })
 
-        if (error) {
-            toast.error(error.message)
-        }
-    }
 
     return (
         <div className="relative w-full max-w-md mx-auto">
@@ -92,70 +81,49 @@ export default function LoginPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="grid gap-6">
-                        <Button variant="outline" className="w-full relative overflow-hidden group hover:border-primary/50 transition-colors" onClick={handleGoogleLogin}>
-                            <svg className="mr-2 h-4 w-4" aria-hidden="true" focusable="false" data-prefix="fab" data-icon="google" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512">
-                                <path fill="currentColor" d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"></path>
-                            </svg>
-                            {t('auth.google_login')}
-                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000" />
-                        </Button>
-
-                        <div className="relative">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t border-gray-200 dark:border-gray-800" />
-                            </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-background px-2 text-muted-foreground backdrop-blur-sm bg-white/50 dark:bg-black/50 rounded-full">
-                                    {t('auth.email_login_hint')}
-                                </span>
-                            </div>
+                    <form onSubmit={handleLogin} className="grid gap-4">
+                        <div className="grid gap-2">
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="m@example.com"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="bg-white/50 dark:bg-black/50 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
+                        </div>
+                        <div className="grid gap-2">
+                            <Input
+                                id="password"
+                                type="password"
+                                placeholder={t('common.password')}
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="bg-white/50 dark:bg-black/50 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-primary/20 transition-all"
+                            />
                         </div>
 
-                        <form onSubmit={handleLogin} className="grid gap-4">
-                            <div className="grid gap-2">
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="m@example.com"
-                                    required
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="bg-white/50 dark:bg-black/50 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-primary/20 transition-all"
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    placeholder={t('common.password')}
-                                    required
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="bg-white/50 dark:bg-black/50 border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-primary/20 transition-all"
-                                />
-                            </div>
-
-                            <div className="mt-2">
-                                <ShimmerButton
-                                    type="submit"
-                                    className="w-full text-center font-medium"
-                                    background="#000000"
-                                    shimmerColor="#ffffff"
-                                    shimmerSize="2px"
-                                >
-                                    {loading ? (
-                                        <div className="flex items-center justify-center gap-2">
-                                            <Loader2 className="h-4 w-4 animate-spin" />
-                                            {t('auth.logging_in')}
-                                        </div>
-                                    ) : (
-                                        <span className="text-white dark:text-black">{t('common.login')}</span>
-                                    )}
-                                </ShimmerButton>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="mt-2">
+                            <ShimmerButton
+                                type="submit"
+                                className="w-full text-center font-medium"
+                                background="#000000"
+                                shimmerColor="#ffffff"
+                                shimmerSize="2px"
+                            >
+                                {loading ? (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                        {t('auth.logging_in')}
+                                    </div>
+                                ) : (
+                                    <span className="text-white dark:text-black">{t('common.login')}</span>
+                                )}
+                            </ShimmerButton>
+                        </div>
+                    </form>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                     <div className="text-sm text-muted-foreground">
@@ -166,6 +134,6 @@ export default function LoginPage() {
                     </div>
                 </CardFooter>
             </Card>
-        </div>
+        </div >
     )
 }

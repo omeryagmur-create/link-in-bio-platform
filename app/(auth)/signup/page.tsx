@@ -82,6 +82,8 @@ export default function SignupPage() {
         }
     }
 
+
+
     return (
         <div className="relative w-full max-w-md mx-auto">
             {/* Ambient Background Effect */}
@@ -183,7 +185,7 @@ export default function SignupPage() {
                     </div>
                 </CardFooter>
             </Card>
-        </div>
+        </div >
     )
 }
 
