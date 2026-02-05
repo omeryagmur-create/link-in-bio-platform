@@ -1,14 +1,24 @@
 'use client'
 
-// Vercel build fix - Ensure latest commit is used
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ShimmerButton } from '@/components/ui/shimmer-button'
 import { useTranslation } from '@/lib/i18n/provider'
 import { Sparkles } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default function PricingPage() {
     const { t } = useTranslation()
+    const [mounted, setMounted] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
+
+    if (!mounted) {
+        return <div className="h-full flex items-center justify-center p-6"><div className="animate-pulse text-muted-foreground">Loading...</div></div>
+    }
 
     return (
         <div className="h-full flex items-center justify-center p-6">
