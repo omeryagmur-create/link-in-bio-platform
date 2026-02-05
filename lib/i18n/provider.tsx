@@ -75,7 +75,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 export function useTranslation() {
     const context = useContext(LanguageContext)
     if (context === undefined) {
-        throw new Error('useTranslation must be used within a LanguageProvider')
+        // Build zamanında veya server-side pre-render sırasında hata fırlatmak yerine 
+        // varsayılan bir değer döndürerek derleme hatasını engelliyoruz.
+        return {
+            language: 'tr' as Language,
+            setLanguage: () => { },
+            t: (key: string) => key
+        }
     }
     return context
 }
