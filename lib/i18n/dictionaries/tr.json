@@ -283,8 +283,8 @@
         "invalid_video": "Geçerli bir YouTube URL'si girin"
     },
     "pricing": {
-        "early_access_bonus": "Eğer erken erişimde hesap açtıysanız, sitenin tam sürümünde Pro özellikleri bedava olarak kullanmaya devam edebilirsiniz.",
         "title": "Şimdilik her şey ücretsiz.",
+        "early_access_bonus": "Erken erişim sürecinde tüm premium özellikleri ücretsiz kullanabilirsiniz. Erken erişimde hesap açanlar, tam sürümde de Pro özelliklerini bedava kullanmaya devam edecekler.",
         "cta": "Keşfetmeye Başla"
     }
 }

@@ -274,10 +274,10 @@ export default function Home() {
 
           <div className="flex flex-col items-center justify-center py-16 px-6 bg-muted/10 rounded-[2.5rem] border border-white/10 backdrop-blur-md max-w-2xl mx-auto shadow-2xl">
             <h3 className="text-3xl md:text-5xl font-black tracking-tighter bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent mb-6 text-center">
-              Şimdilik her şey ücretsiz.
+              {t('pricing.title')}
             </h3>
             <p className="text-muted-foreground text-lg md:text-xl font-medium text-center max-w-lg mb-8 leading-relaxed">
-              Erken erişim sürecinde tüm premium özellikleri hiçbir ücret ödemeden sınırsızca kullanabilirsiniz.
+              {t('pricing.early_access_bonus')}
             </p>
             <Link href="/signup">
               <ShimmerButton className="px-10 py-4 text-lg font-bold shadow-xl shadow-primary/20">

@@ -283,8 +283,8 @@
         "invalid_video": "Geben Sie eine gültige YouTube-URL ein"
     },
     "pricing": {
-        "early_access_bonus": "Wenn Sie während des Early Access ein Konto erstellt haben, können Sie die Pro-Funktionen in der Vollversion der Website weiterhin kostenlos nutzen.",
-        "title": "Alles ist vorerst kostenlos.",
-        "cta": "Erkundung starten"
+        "title": "Aktuell ist alles kostenlos.",
+        "early_access_bonus": "Während der Early-Access-Phase können Sie alle Premium-Funktionen kostenlos nutzen. Nutzer, die sich jetzt anmelden, werden Pro-Funktionen auch in der Vollversion weiterhin kostenlos nutzen können.",
+        "cta": "Jetzt entdecken"
     }
 }

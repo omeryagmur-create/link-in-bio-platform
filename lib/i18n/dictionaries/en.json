@@ -283,8 +283,8 @@
         "invalid_video": "Enter a valid YouTube URL"
     },
     "pricing": {
-        "early_access_bonus": "If you opened an account during early access, you can continue to use Pro features for free in the full version of the site.",
         "title": "Everything is free for now.",
+        "early_access_bonus": "You can use all premium features for free during the early access period. Users who sign up now will continue to enjoy Pro features for free in the full version.",
         "cta": "Start Exploring"
     }
 }
