@@ -1,5 +1,6 @@
 'use client'
 
+// Forced redeploy to clear Vercel cache and ensure translations are live
 import React, { useState, useEffect } from "react";
 import { useTheme } from "next-themes";
 import Link from "next/link";

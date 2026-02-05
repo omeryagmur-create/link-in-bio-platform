@@ -285,6 +285,7 @@
     "pricing": {
         "title": "Everything is free for now.",
         "early_access_bonus": "You can use all premium features for free during the early access period. Users who sign up now will continue to enjoy Pro features for free in the full version.",
-        "cta": "Start Exploring"
+        "cta": "Start Exploring",
+        "badge": "Early Access Bonus"
     }
 }

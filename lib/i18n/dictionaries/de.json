@@ -285,6 +285,7 @@
     "pricing": {
         "title": "Aktuell ist alles kostenlos.",
         "early_access_bonus": "Während der Early-Access-Phase können Sie alle Premium-Funktionen kostenlos nutzen. Nutzer, die sich jetzt anmelden, werden Pro-Funktionen auch in der Vollversion weiterhin kostenlos nutzen können.",
-        "cta": "Jetzt entdecken"
+        "cta": "Jetzt entdecken",
+        "badge": "Early Access Bonus"
     }
 }

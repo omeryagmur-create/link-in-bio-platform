@@ -28,10 +28,7 @@ export default function PricingPage() {
                 <div className="relative z-10 flex flex-col items-center text-center">
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-6 text-xs font-bold tracking-widest text-primary uppercase bg-primary/10 rounded-full border border-primary/20 animate-pulse">
                         <Sparkles className="w-3 h-3" />
-                        {t('dashboard.status_draft') === 'Draft' ? 'Early Access Bonus' :
-                            t('dashboard.status_draft') === 'Черновик' ? 'Бонус раннего доступа' :
-                                t('dashboard.status_draft') === 'Entwurf' ? 'Early Access Bonus' :
-                                    'Erken Erişim Bonusu'}
+                        {t('pricing.badge')}
                     </div>
 
                     <h1 className="text-3xl md:text-5xl font-black tracking-tighter bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent mb-6">

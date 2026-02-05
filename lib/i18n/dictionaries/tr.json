@@ -285,6 +285,7 @@
     "pricing": {
         "title": "Şimdilik her şey ücretsiz.",
         "early_access_bonus": "Erken erişim sürecinde tüm premium özellikleri ücretsiz kullanabilirsiniz. Erken erişimde hesap açanlar, tam sürümde de Pro özelliklerini bedava kullanmaya devam edecekler.",
-        "cta": "Keşfetmeye Başla"
+        "cta": "Keşfetmeye Başla",
+        "badge": "Erken Erişim Bonusu"
     }
 }
