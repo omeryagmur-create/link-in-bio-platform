@@ -54,7 +54,26 @@ export default function EditorPage() {
     }, [pageId, supabase, t])
 
     const [isPublishing, setIsPublishing] = useState(false)
+    const [isUnpublishing, setIsUnpublishing] = useState(false)
     const [internalSaving, setInternalSaving] = useState(false)
+
+    const handleUnpublish = async () => {
+        setIsUnpublishing(true)
+        try {
+            const res = await fetch(`/api/pages/${pageId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_published: false })
+            })
+            if (!res.ok) throw new Error()
+            setPage({ ...page, is_published: false })
+            toast.success(t('common.success'))
+        } catch {
+            toast.error(t('common.error'))
+        } finally {
+            setIsUnpublishing(false)
+        }
+    }
 
     const handlePublish = async () => {
         setIsPublishing(true)
@@ -108,6 +127,18 @@ export default function EditorPage() {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
+                    {page.is_published && (
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleUnpublish}
+                            disabled={isUnpublishing || internalSaving}
+                            className="h-8 border-slate-200"
+                        >
+                            {isUnpublishing ? <Loader2 className="w-3 h-3 animate-spin mr-2" /> : null}
+                            {isUnpublishing ? t('common.unpublishing') : t('common.unpublish')}
+                        </Button>
+                    )}
                     <Button
                         variant="default"
                         size="sm"

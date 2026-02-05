@@ -8,8 +8,10 @@
         "delete": "Sil",
         "edit": "Düzenle",
         "publish": "Yayınla",
+        "unpublish": "Yayından Kaldır",
         "preview": "Önizle",
         "loading": "Yükleniyor...",
+        "unpublishing": "Yayından Kaldırılıyor...",
         "error": "Hata",
         "success": "Başarılı",
         "logout": "Çıkış Yap",
@@ -79,7 +81,9 @@
         "time_range": "Zaman Aralığı",
         "range_7": "Son 7 Gün",
         "range_30": "Son 30 Gün",
-        "range_90": "Son 90 Gün"
+        "range_90": "Son 90 Gün",
+        "analytics_nav": "Analiz",
+        "my_plan_nav": "Planım"
     },
     "editor": {
         "tabs": {
@@ -277,5 +281,10 @@
         "page_not_found": "Sayfa Bulunamadı",
         "no_image": "Görüntülenecek resim yok",
         "invalid_video": "Geçerli bir YouTube URL'si girin"
+    },
+    "pricing": {
+        "early_access_bonus": "Eğer erken erişimde hesap açtıysanız, sitenin tam sürümünde Pro özellikleri bedava olarak kullanmaya devam edebilirsiniz.",
+        "title": "Şimdilik her şey ücretsiz.",
+        "cta": "Keşfetmeye Başla"
     }
 }

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useTranslation } from '@/lib/i18n/provider'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Edit, ExternalLink, Trash2 } from 'lucide-react'
+import { Edit, ExternalLink, Trash2, Loader2 } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import {
@@ -29,6 +29,27 @@ export function PageList({ pages }: PageListProps) {
     const router = useRouter()
     const { t } = useTranslation()
     const [deletingId, setDeletingId] = useState<string | null>(null)
+    const [unpublishingId, setUnpublishingId] = useState<string | null>(null)
+
+    const handleUnpublish = async (id: string) => {
+        setUnpublishingId(id)
+        try {
+            const res = await fetch(`/api/pages/${id}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ is_published: false })
+            })
+
+            if (!res.ok) throw new Error(t('common.error'))
+
+            toast.success(t('common.success'))
+            router.refresh()
+        } catch {
+            toast.error(t('common.error'))
+        } finally {
+            setUnpublishingId(null)
+        }
+    }
 
     const handleDelete = async (id: string) => {
         setDeletingId(id)
@@ -78,11 +99,23 @@ export function PageList({ pages }: PageListProps) {
                         </Link>
                         <div className="flex space-x-2">
                             {page.is_published && (
-                                <Link href={`/${page.slug}`} target="_blank">
-                                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                                        <ExternalLink className="h-4 w-4" />
+                                <>
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => handleUnpublish(page.id)}
+                                        disabled={unpublishingId === page.id}
+                                        className="h-8 text-xs text-muted-foreground hover:text-foreground"
+                                    >
+                                        {unpublishingId === page.id ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : null}
+                                        {t('common.unpublish')}
                                     </Button>
-                                </Link>
+                                    <Link href={`/${page.slug}`} target="_blank">
+                                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                                            <ExternalLink className="h-4 w-4" />
+                                        </Button>
+                                    </Link>
+                                </>
                             )}
 
                             <AlertDialog>

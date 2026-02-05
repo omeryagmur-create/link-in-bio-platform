@@ -36,8 +36,8 @@ export default function DashboardLayout({
 
     const navItems = [
         { label: t('dashboard.title'), icon: LayoutDashboard, href: '/dashboard' },
-        { label: 'Analiz', icon: BarChart3, href: '/analytics' }, // Add to dict if needed, keeping as is for now or use common
-        { label: 'Planım', icon: Sparkles, href: '/pricing' },
+        { label: t('dashboard.analytics_nav'), icon: BarChart3, href: '/analytics' },
+        { label: t('dashboard.my_plan_nav'), icon: Sparkles, href: '/pricing' },
     ]
 
     const isEditor = pathname?.includes('/editor/')

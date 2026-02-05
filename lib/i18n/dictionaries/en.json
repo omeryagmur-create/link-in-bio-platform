@@ -8,8 +8,10 @@
         "delete": "Delete",
         "edit": "Edit",
         "publish": "Publish",
+        "unpublish": "Unpublish",
         "preview": "Preview",
         "loading": "Loading...",
+        "unpublishing": "Unpublishing...",
         "error": "Error",
         "success": "Success",
         "logout": "Logout",
@@ -79,7 +81,9 @@
         "time_range": "Time Range",
         "range_7": "Last 7 Days",
         "range_30": "Last 30 Days",
-        "range_90": "Last 90 Days"
+        "range_90": "Last 90 Days",
+        "analytics_nav": "Analytics",
+        "my_plan_nav": "My Plan"
     },
     "editor": {
         "tabs": {
@@ -277,5 +281,10 @@
         "page_not_found": "Page Not Found",
         "no_image": "No image to display",
         "invalid_video": "Enter a valid YouTube URL"
+    },
+    "pricing": {
+        "early_access_bonus": "If you opened an account during early access, you can continue to use Pro features for free in the full version of the site.",
+        "title": "Everything is free for now.",
+        "cta": "Start Exploring"
     }
 }
