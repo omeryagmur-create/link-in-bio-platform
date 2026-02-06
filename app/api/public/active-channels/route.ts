@@ -30,7 +30,7 @@ export async function GET(request: Request) {
         // Now fetch profiles for these users
         const { data: profiles, error: profilesError } = await supabase
             .from('profiles')
-            .select('id, username, display_name, bio, avatar_url, created_at')
+            .select('id, username, display_name, bio, avatar_url, tags, created_at')
             .in('id', userIds)
             .not('username', 'is', null)
             .order('created_at', { ascending: false })
@@ -46,7 +46,8 @@ export async function GET(request: Request) {
             username: p.username,
             display_name: p.display_name,
             bio: p.bio,
-            avatar_url: p.avatar_url
+            avatar_url: p.avatar_url,
+            tags: p.tags || []
         })) || []
 
         return NextResponse.json({ profiles: formattedProfiles })

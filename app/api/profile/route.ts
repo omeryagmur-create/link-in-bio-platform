@@ -11,7 +11,7 @@ export async function PATCH(req: Request) {
         }
 
         const body = await req.json()
-        const { display_name, bio, avatar_url } = body
+        const { display_name, bio, avatar_url, tags } = body
 
         const { data, error } = await supabase
             .from('profiles')
@@ -19,6 +19,7 @@ export async function PATCH(req: Request) {
                 display_name,
                 bio,
                 avatar_url,
+                tags,
                 updated_at: new Date().toISOString()
             })
             .eq('id', user.id)

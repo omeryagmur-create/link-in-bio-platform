@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { ImageUpload } from './ImageUpload'
 import { toast } from 'sonner'
-import { Loader2, Save } from 'lucide-react'
+import { Loader2, Save, Plus, X } from 'lucide-react'
 
 interface ProfileEditorProps {
     profile: any
@@ -21,8 +21,21 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
         display_name: profile?.display_name || '',
         bio: profile?.bio || '',
         avatar_url: profile?.avatar_url || '',
+        tags: profile?.tags || []
     })
+    const [newTag, setNewTag] = useState('')
     const [loading, setLoading] = useState(false)
+
+    const addTag = () => {
+        if (newTag.trim() && !data.tags.includes(newTag.trim())) {
+            setData({ ...data, tags: [...data.tags, newTag.trim()] })
+            setNewTag('')
+        }
+    }
+
+    const removeTag = (tagToRemove: string) => {
+        setData({ ...data, tags: data.tags.filter((tag: string) => tag !== tagToRemove) })
+    }
 
     const handleSave = async () => {
         setLoading(true)
@@ -75,6 +88,42 @@ export function ProfileEditor({ profile, onUpdate }: ProfileEditorProps) {
                         onChange={(e) => setData({ ...data, bio: e.target.value })}
                         className="min-h-[100px]"
                     />
+                </div>
+
+                <div className="space-y-1.5">
+                    <Label className="text-xs uppercase font-bold text-muted-foreground">Tags</Label>
+                    <div className="flex gap-2">
+                        <Input
+                            placeholder="Add a tag..."
+                            value={newTag}
+                            onChange={(e) => setNewTag(e.target.value)}
+                            onKeyPress={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    addTag()
+                                }
+                            }}
+                        />
+                        <Button type="button" variant="outline" size="icon" onClick={addTag}>
+                            <Plus className="h-4 w-4" />
+                        </Button>
+                    </div>
+                    {data.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mt-2">
+                            {data.tags.map((tag: string) => (
+                                <div key={tag} className="flex items-center gap-1 bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => removeTag(tag)}
+                                        className="hover:bg-primary/20 rounded-full p-0.5"
+                                    >
+                                        <X className="h-3 w-3" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
 
