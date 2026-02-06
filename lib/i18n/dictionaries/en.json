@@ -22,7 +22,8 @@
         "login": "Login",
         "signup": "Sign Up",
         "or": "or",
-        "welcome": "Welcome"
+        "welcome": "Welcome",
+        "view_all": "View All"
     },
     "auth": {
         "login_title": "Login",
@@ -273,7 +274,9 @@
         "faq_a3": "Mobile-first from day one.",
         "final_cta_title": "Ready to simplify your online presence?",
         "final_cta_button": "Create Your Free Page",
-        "nav_features": "Features"
+        "nav_features": "Features",
+        "community_spotlight": "Community Spotlight",
+        "community_desc": "Discover amazing pages created by our community."
     },
     "public": {
         "powered_by": "Powered by Link-in-Bio Platform",

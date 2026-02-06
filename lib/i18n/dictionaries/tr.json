@@ -22,7 +22,8 @@
         "login": "Giriş Yap",
         "signup": "Kayıt Ol",
         "or": "veya",
-        "welcome": "Hoşgeldiniz"
+        "welcome": "Hoşgeldiniz",
+        "view_all": "Tümünü Gör"
     },
     "auth": {
         "login_title": "Giriş Yap",
@@ -273,7 +274,9 @@
         "faq_a3": "İlk günden mobil öncelikli olarak geliştirildi.",
         "final_cta_title": "Çevrimiçi varlığınızı basitleştirmeye hazır mısınız?",
         "final_cta_button": "Ücretsiz Sayfanızı Oluşturun",
-        "nav_features": "Özellikler"
+        "nav_features": "Özellikler",
+        "community_spotlight": "Topluluk Vitrini",
+        "community_desc": "Topluluğumuz tarafından oluşturulan harika sayfaları keşfedin."
     },
     "public": {
         "powered_by": "Powered by Link-in-Bio Platform",

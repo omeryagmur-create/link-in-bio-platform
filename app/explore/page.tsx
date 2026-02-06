@@ -10,22 +10,28 @@ export const dynamic = 'force-dynamic'
 
 async function getPublishedProfiles() {
     const supabase = await createClient()
+
+    // First get published pages
+    const { data: publishedPages } = await supabase
+        .from('pages')
+        .select('user_id')
+        .eq('is_published', true)
+
+    // Get unique user IDs
+    const userIds = [...new Set(publishedPages?.map(p => p.user_id) || [])]
+
+    if (userIds.length === 0) {
+        return []
+    }
+
+    // Fetch profiles for these users
     const { data: profiles } = await supabase
         .from('profiles')
-        .select(`
-            id,
-            username,
-            display_name,
-            bio,
-            avatar_url,
-            tags,
-            pages!inner(is_published)
-        `)
-        .eq('pages.is_published', true)
+        .select('id, username, display_name, bio, avatar_url, tags, created_at')
+        .in('id', userIds)
         .not('username', 'is', null)
-        .not('avatar_url', 'is', null)
         .order('created_at', { ascending: false })
-        .limit(50)
+        .limit(100)
 
     return profiles || []
 }
