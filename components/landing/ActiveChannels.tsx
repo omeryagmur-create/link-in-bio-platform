@@ -1,141 +1,126 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { motion } from 'framer-motion'
-import { useTranslation } from '@/lib/i18n/provider'
 import Image from 'next/image'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
+import Marquee from '@/components/ui/marquee'
+import { useTranslation } from '@/lib/i18n/provider'
 
-// Mock data for active channels/pages
-const activeChannels = [
-    {
-        id: '1',
-        name: 'Sarah Designs',
-        username: '@sarah.ui',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah',
-        bio: 'Digital Designer & Content Creator',
-        tags: ['Design', 'UI/UX'],
-        color: 'bg-pink-500/10 text-pink-500',
-    },
-    {
-        id: '2',
-        name: 'Tech Insider',
-        username: '@tech.insider',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Tech',
-        bio: 'Latest tech news and reviews daily.',
-        tags: ['Tech', 'News'],
-        color: 'bg-blue-500/10 text-blue-500',
-    },
-    {
-        id: '3',
-        name: 'Fitness Pro',
-        username: '@fit.life',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Fitness',
-        bio: 'Personal trainer ensuring you get fit.',
-        tags: ['Fitness', 'Health'],
-        color: 'bg-green-500/10 text-green-500',
-    },
-    {
-        id: '4',
-        name: 'Photo Journey',
-        username: '@photo.j',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Photo',
-        bio: 'Capturing moments around the world.',
-        tags: ['Photography', 'Travel'],
-        color: 'bg-purple-500/10 text-purple-500',
-    },
-    {
-        id: '5',
-        name: 'Dev Station',
-        username: '@code.master',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Dev',
-        bio: 'Coding tutorials and developer tips.',
-        tags: ['Coding', 'Dev'],
-        color: 'bg-orange-500/10 text-orange-500',
-    },
-    {
-        id: '6',
-        name: 'Music Vibes',
-        username: '@music.vibes',
-        avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Music',
-        bio: 'Independent artist sharing new beats.',
-        tags: ['Music', 'Art'],
-        color: 'bg-indigo-500/10 text-indigo-500',
-    }
-]
+interface Channel {
+    id: string
+    username: string
+    display_name: string | null
+    avatar_url: string | null
+    bio: string | null
+    tags: string[]
+}
+
+const ReviewCard = ({
+    img,
+    name,
+    username,
+    body,
+}: {
+    img: string;
+    name: string;
+    username: string;
+    body: string;
+}) => {
+    return (
+        <figure
+            className="group relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4
+            border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]
+            dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]
+            transition-all duration-300 hover:scale-[1.02] mx-4"
+        >
+            <div className="flex flex-row items-center gap-2">
+                <div className="relative h-10 w-10 overflow-hidden rounded-full border border-black/10 dark:border-white/10">
+                    <Image
+                        className="object-cover"
+                        fill
+                        alt=""
+                        src={img}
+                    />
+                </div>
+                <div className="flex flex-col">
+                    <figcaption className="text-sm font-medium dark:text-white truncate max-w-[120px]">
+                        {name}
+                    </figcaption>
+                    <p className="text-xs font-medium text-black/40 dark:text-white/40 truncate max-w-[120px]">@{username}</p>
+                </div>
+            </div>
+            <blockquote className="mt-2 text-sm line-clamp-2 min-h-[40px] text-muted-foreground">
+                {body}
+            </blockquote>
+        </figure>
+    );
+};
 
 export function ActiveChannels() {
     const { t } = useTranslation()
+    const [channels, setChannels] = useState<Channel[]>([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchChannels = async () => {
+            try {
+                const res = await fetch('/api/public/active-channels?limit=20')
+                const data = await res.json()
+                if (data.profiles) {
+                    setChannels(data.profiles)
+                }
+            } catch (error) {
+                console.error('Failed to fetch channels', error)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchChannels()
+    }, [])
+
+    if (loading) return null; // Or skeleton
+    if (channels.length < 5) return null; // Don't show if too few
+
+    // Split into two rows if desired, or just one flow. User asked for "single horizontal row".
 
     return (
-        <section className="py-24 px-6 relative overflow-hidden">
-            <div className="max-w-6xl mx-auto">
-                <div className="flex flex-col md:flex-row items-end justify-between mb-12 gap-6">
-                    <div>
-                        <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
-                            {t('landing.active_channels_title') || 'Active Channels'}
-                        </h2>
-                        <p className="text-muted-foreground text-lg max-w-xl">
-                            {t('landing.active_channels_desc') || 'Explore trending pages created by our community members.'}
-                        </p>
-                    </div>
-                    <Link href="/explore" className="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors">
-                        View All <ArrowUpRight className="w-4 h-4" />
-                    </Link>
+        <section className="py-24 px-6 relative overflow-hidden bg-muted/20">
+            <div className="max-w-6xl mx-auto mb-10 flex flex-col md:flex-row items-end justify-between gap-6 px-4">
+                <div>
+                    <h2 className="text-3xl md:text-5xl font-black tracking-tight mb-4">
+                        {t('landing.community_spotlight') || 'Community Spotlight'}
+                    </h2>
+                    <p className="text-muted-foreground text-lg max-w-xl">
+                        {t('landing.community_desc') || 'Discover amazing pages created by our community.'}
+                    </p>
                 </div>
+                <Link href="/explore" className="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors group">
+                    {t('common.view_all') || 'View All'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+            </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {activeChannels.map((channel, idx) => (
-                        <motion.div
-                            key={channel.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="group relative bg-muted/20 border border-white/5 rounded-3xl p-6 hover:bg-muted/40 transition-all hover:-translate-y-1"
-                        >
-                            <div className="flex items-start justify-between mb-6">
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full overflow-hidden bg-white/10 border border-white/10">
-                                        <Image
-                                            src={channel.avatar}
-                                            alt={channel.name}
-                                            width={48}
-                                            height={48}
-                                            className="object-cover"
-                                        />
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-lg leading-tight">{channel.name}</h3>
-                                        <p className="text-sm text-muted-foreground">{channel.username}</p>
-                                    </div>
-                                </div>
-                                <div className={`p-2 rounded-full ${channel.color} opacity-0 group-hover:opacity-100 transition-opacity`}>
-                                    <ArrowUpRight className="w-4 h-4" />
-                                </div>
-                            </div>
-
-                            <p className="text-muted-foreground mb-6 line-clamp-2 min-h-[3rem]">
-                                {channel.bio}
-                            </p>
-
-                            <div className="flex flex-wrap gap-2">
-                                {channel.tags.map(tag => (
-                                    <span key={tag} className="px-3 py-1 rounded-full bg-white/5 text-xs font-medium border border-white/5">
-                                        #{tag}
-                                    </span>
-                                ))}
-                            </div>
-                        </motion.div>
+            <div className="relative flex w-full flex-col items-center justify-center overflow-hidden">
+                <Marquee pauseOnHover className="[--duration:40s]">
+                    {channels.map((channel) => (
+                        <Link key={channel.id} href={`/${channel.username}`} target="_blank">
+                            <ReviewCard
+                                img={channel.avatar_url || ''}
+                                name={channel.display_name || channel.username}
+                                username={channel.username}
+                                body={channel.bio || 'Check out my page!'}
+                            />
+                        </Link>
                     ))}
-                </div>
+                </Marquee>
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-background to-transparent dark:from-background"></div>
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-background to-transparent dark:from-background"></div>
+            </div>
 
-                <div className="mt-8 md:hidden flex justify-center">
-                    <Link href="/explore" className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors">
-                        View All <ArrowUpRight className="w-4 h-4" />
-                    </Link>
-                </div>
+            <div className="mt-8 md:hidden flex justify-center">
+                <Link href="/explore" className="flex items-center gap-2 text-sm font-bold uppercase tracking-wider hover:text-primary transition-colors">
+                    {t('common.view_all') || 'View All'} <ArrowRight className="w-4 h-4" />
+                </Link>
             </div>
         </section>
     )

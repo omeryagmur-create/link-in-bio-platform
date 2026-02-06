@@ -382,9 +382,9 @@ export function SpecialPageLayout({
 
                                                                 {/* Move Handle (Explicit) - Primary for reordering */}
                                                                 <div
-                                                                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors action-handle cursor-grab active:cursor-grabbing border-2 border-transparent hover:border-black/5"
-                                                                    onMouseDown={(e) => startMove(e, block.id, index)}
-                                                                    onTouchStart={(e) => startMove(e, block.id, index)}
+                                                                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors cursor-grab active:cursor-grabbing border-2 border-transparent hover:border-black/5"
+                                                                    onMouseDown={(e) => { e.stopPropagation(); startMove(e, block.id, index); }}
+                                                                    onTouchStart={(e) => { e.stopPropagation(); startMove(e, block.id, index); }}
                                                                     title={t('editor.blocks.move') || 'Move'}
                                                                 >
                                                                     <Move className="w-4 h-4" />
