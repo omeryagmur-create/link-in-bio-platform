@@ -105,24 +105,25 @@ export function SeoSettings({ pageId }: { pageId: string }) {
 
                     <div className="space-y-4 pt-4">
                         <div className="space-y-2">
-                            <Label htmlFor="seo_title">{t('editor.seo.title_label')}</Label>
+                            <Label htmlFor="seo_title" className="text-slate-700 font-semibold">{t('editor.seo.title_label')}</Label>
                             <Input
                                 id="seo_title"
                                 value={seoData.seo_title}
                                 onChange={(e) => setSeoData({ ...seoData, seo_title: e.target.value })}
                                 placeholder={t('editor.seo.placeholder_title')}
+                                className="bg-white border-slate-200"
                             />
-                            <p className="text-[10px] text-muted-foreground">{t('editor.seo.hint_title')}</p>
+                            <p className="text-[10px] text-slate-500">{t('editor.seo.hint_title')}</p>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="seo_description">{t('editor.seo.desc_label')}</Label>
+                            <Label htmlFor="seo_description" className="text-slate-700 font-semibold">{t('editor.seo.desc_label')}</Label>
                             <Textarea
-                                id="bio"
+                                id="seo_description"
                                 value={seoData.seo_description}
                                 onChange={(e) => setSeoData({ ...seoData, seo_description: e.target.value })}
-                                placeholder="..."
-                                className="resize-none h-24"
+                                placeholder={t('editor.seo.placeholder_desc')}
+                                className="resize-none h-24 bg-white border-slate-200 focus:ring-primary"
                             />
                         </div>
                     </div>
