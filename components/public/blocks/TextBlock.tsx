@@ -20,7 +20,7 @@ export function TextBlock({ block, theme, layoutType = 'classic' }: TextBlockPro
 
         return (
             <div
-                className={`w-full h-full p-6 flex flex-col justify-center relative overflow-hidden text-center group`}
+                className={`w-full h-full relative overflow-hidden group`}
                 style={{
                     backgroundColor: styles.backgroundColor,
                     color: styles.textColor,
@@ -31,9 +31,13 @@ export function TextBlock({ block, theme, layoutType = 'classic' }: TextBlockPro
                 {!isSmall && (
                     <Quote className="absolute -top-4 -left-4 w-24 h-24 opacity-5 transform -rotate-12 transition-transform group-hover:rotate-0" />
                 )}
-                <p className={`${isSmall ? 'text-sm' : 'text-xl md:text-2xl'} font-medium leading-relaxed relative z-10`}>
-                    {content}
-                </p>
+                <div className="w-full h-full overflow-y-auto">
+                    <div className="min-h-full p-6 flex flex-col justify-center items-center">
+                        <p className={`${isSmall ? 'text-sm' : 'text-xl md:text-2xl'} font-medium leading-relaxed relative z-10 whitespace-pre-wrap break-words text-center`}>
+                            {content}
+                        </p>
+                    </div>
+                </div>
             </div>
         )
     }

@@ -345,7 +345,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                                 {/* Content Area */}
                                 <div className="w-full h-[calc(100%-40px)] overflow-hidden bg-white rounded-b-[12px]">
                                     <div
-                                        className="h-full w-full overflow-y-auto scrollbar-hide"
+                                        className="h-full w-full overflow-y-auto"
                                         style={{
                                             backgroundColor: theme.backgroundColor,
                                             color: theme.textColor,

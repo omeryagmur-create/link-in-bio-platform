@@ -7,8 +7,6 @@ import { ImageBlock } from './blocks/ImageBlock'
 import { VideoBlock } from './blocks/VideoBlock'
 import { DividerBlock } from './blocks/DividerBlock'
 
-import { EmbedBlock } from './blocks/EmbedBlock'
-
 interface BlockRendererProps {
     block: Block
     theme: any
@@ -29,8 +27,6 @@ export function BlockRenderer({ block, theme, layoutType = 'classic' }: BlockRen
             return <VideoBlock {...props} />
         case 'divider':
             return <DividerBlock {...props} />
-        case 'embed':
-            return <EmbedBlock {...props} />
         default:
             return null
     }

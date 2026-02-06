@@ -23,7 +23,7 @@ export function ImageBlock({ block, theme, layoutType = 'classic' }: ImageBlockP
 
     const content = imageUrl ? (
         <div
-            className={`relative w-full h-full overflow-hidden shadow-sm ${linkUrl ? 'cursor-pointer' : ''}`}
+            className={`relative w-full ${layoutType === 'special' ? 'h-full' : 'aspect-video'} overflow-hidden shadow-sm ${linkUrl ? 'cursor-pointer' : ''}`}
             style={{ borderRadius: styles.borderRadius }}
         >
             <Image

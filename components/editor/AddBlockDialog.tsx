@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
-import { Plus, Link as LinkIcon, Type, Image as ImageIcon, Video, MoreHorizontal, LayoutGrid, Music } from 'lucide-react'
+import { Plus, Link as LinkIcon, Type, Image as ImageIcon, Video, MoreHorizontal, LayoutGrid } from 'lucide-react'
 import { toast } from 'sonner'
 import { Block } from '@/types'
 
@@ -24,7 +24,7 @@ export function AddBlockDialog({ pageId, onBlockAdded }: AddBlockDialogProps) {
         { type: 'text', label: t('editor.blocks.types.text'), icon: Type, initialData: { content: t('editor.blocks.initial_data.text_content'), align: 'center' } },
         { type: 'image', label: t('editor.blocks.types.image'), icon: ImageIcon, initialData: { url: '', caption: '' } },
         { type: 'video', label: t('editor.blocks.types.video'), icon: Video, initialData: { url: '', caption: '' } },
-        { type: 'embed', label: t('editor.blocks.types.embed'), icon: Music, initialData: { url: '', embedCode: '' } },
+
         { type: 'divider', label: t('editor.blocks.types.divider'), icon: MoreHorizontal, initialData: {} },
     ]
 
