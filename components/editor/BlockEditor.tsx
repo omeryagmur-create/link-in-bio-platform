@@ -248,7 +248,7 @@ export function BlockEditor({ pageId, initialTheme, profile, onProfileUpdate, la
                     </TabsContent>
 
                     <TabsContent value="seo">
-                        <SeoSettings pageId={pageId} subscriptionTier={profile?.subscription_tier || 'free'} />
+                        <SeoSettings pageId={pageId} />
                     </TabsContent>
                 </Tabs>
             </div>
