@@ -65,10 +65,15 @@ export function ActiveChannels() {
     useEffect(() => {
         const fetchChannels = async () => {
             try {
+                console.log('Fetching active channels...')
                 const res = await fetch('/api/public/active-channels?limit=20')
                 const data = await res.json()
+                console.log('Active channels response:', data)
                 if (data.profiles) {
+                    console.log('Number of profiles:', data.profiles.length)
                     setChannels(data.profiles)
+                } else {
+                    console.log('No profiles field in response')
                 }
             } catch (error) {
                 console.error('Failed to fetch channels', error)
