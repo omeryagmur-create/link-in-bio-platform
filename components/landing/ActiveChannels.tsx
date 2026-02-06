@@ -13,7 +13,6 @@ interface Channel {
     display_name: string | null
     avatar_url: string | null
     bio: string | null
-    tags: string[]
 }
 
 const ReviewCard = ({

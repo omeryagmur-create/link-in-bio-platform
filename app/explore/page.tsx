@@ -27,7 +27,7 @@ async function getPublishedProfiles() {
     // Fetch profiles for these users
     const { data: profiles } = await supabase
         .from('profiles')
-        .select('id, username, display_name, bio, avatar_url, tags, created_at')
+        .select('id, username, display_name, bio, avatar_url, created_at')
         .in('id', userIds)
         .not('username', 'is', null)
         .order('created_at', { ascending: false })
@@ -106,13 +106,13 @@ export default async function ExplorePage() {
                                     {profile.bio || 'Welcome to my page!'}
                                 </p>
 
-                                <div className="flex flex-wrap gap-2">
+                                {/* <div className="flex flex-wrap gap-2">
                                     {profile.tags?.slice(0, 3).map((tag: string) => (
                                         <span key={tag} className="text-[10px] font-bold uppercase tracking-wider px-2 py-1 bg-background/50 rounded-md border border-border/50">
                                             #{tag}
                                         </span>
                                     ))}
-                                </div>
+                                </div> */}
                             </div>
                             <div className="h-2 w-full bg-gradient-to-r from-primary to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </Link>
