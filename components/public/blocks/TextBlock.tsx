@@ -31,12 +31,17 @@ export function TextBlock({ block, theme, layoutType = 'classic' }: TextBlockPro
                 {!isSmall && (
                     <Quote className="absolute -top-4 -left-4 w-24 h-24 opacity-5 transform -rotate-12 transition-transform group-hover:rotate-0" />
                 )}
-                <div className="w-full h-full overflow-y-auto">
-                    <div className="min-h-full p-6 flex flex-col justify-center items-center">
-                        <p className={`${isSmall ? 'text-sm' : 'text-xl md:text-2xl'} font-medium leading-relaxed relative z-10 whitespace-pre-wrap break-words text-center`}>
-                            {content}
-                        </p>
-                    </div>
+                <div className="w-full h-full p-6 flex flex-col justify-center items-center">
+                    <p className={`${isSmall
+                            ? 'text-sm'
+                            : content.length < 50
+                                ? 'text-3xl md:text-4xl'
+                                : content.length < 100
+                                    ? 'text-xl md:text-2xl'
+                                    : 'text-sm md:text-base'
+                        } font-medium leading-relaxed relative z-10 whitespace-pre-wrap break-words text-center`}>
+                        {content}
+                    </p>
                 </div>
             </div>
         )
