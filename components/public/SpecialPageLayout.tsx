@@ -8,6 +8,7 @@ import { Trash2, Move, Share2, FileText, ChevronLeft, Plus, X } from 'lucide-rea
 import { useState, useRef, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useTranslation } from '@/lib/i18n/provider'
+import { motion, AnimatePresence } from 'framer-motion'
 
 interface Profile {
     id: string
@@ -106,31 +107,49 @@ export function SpecialPageLayout({
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
+    const getClientCoords = (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
+        if ('touches' in e) {
+            return { x: e.touches[0].clientX, y: e.touches[0].clientY }
+        }
+        return { x: e.clientX, y: e.clientY }
+    }
+
     // Resize Logic
-    const startResize = (e: React.MouseEvent, id: string, axis: 'x' | 'y', initialValue: number) => {
-        e.preventDefault();
+    const startResize = (e: React.MouseEvent | React.TouchEvent, id: string, axis: 'x' | 'y', initialValue: number) => {
+        // Prevent scrolling on mobile while resizing
+        if (e.type === 'touchstart') {
+            document.body.style.overflow = 'hidden';
+        }
+
         e.stopPropagation();
+        const coords = getClientCoords(e);
+
         setDragging({
             id,
             type: 'resize',
             axis,
             initialValue,
-            initialMouseX: e.clientX,
-            initialMouseY: e.clientY
+            initialMouseX: coords.x,
+            initialMouseY: coords.y
         });
     }
 
     // Move Logic
-    const startMove = (e: React.MouseEvent, id: string, index: number) => {
+    const startMove = (e: React.MouseEvent | React.TouchEvent, id: string, index: number) => {
         if (!isEditing) return;
         if ((e.target as HTMLElement).closest('.action-handle')) return;
 
-        e.preventDefault();
+        // Prevent scrolling on mobile while dragging
+        if (e.type === 'touchstart') {
+            document.body.style.overflow = 'hidden';
+        }
+
+        const coords = getClientCoords(e);
         setDragging({
             id,
             type: 'move',
-            initialMouseX: e.clientX,
-            initialMouseY: e.clientY,
+            initialMouseX: coords.x,
+            initialMouseY: coords.y,
             currentIndex: index
         });
         setDragOverIndex(index);
@@ -139,7 +158,14 @@ export function SpecialPageLayout({
     useEffect(() => {
         if (!dragging) return;
 
-        const handleMouseMove = (e: MouseEvent) => {
+        const handleMove = (e: MouseEvent | TouchEvent) => {
+            // Prevent default behavior if needed (e.g. scroll)
+            if (e.cancelable && e.type === 'touchmove') {
+                e.preventDefault();
+            }
+
+            const coords = getClientCoords(e);
+
             if (dragging.type === 'resize' && onUpdateBlock) {
                 const block = blocks.find(b => b.id === dragging.id);
                 if (!block) return;
@@ -152,8 +178,8 @@ export function SpecialPageLayout({
                 const cellWidth = rect.width / columns;
                 const cellHeight = previewMode === 'mobile' ? 140 : 160;
 
-                const deltaX = e.clientX - dragging.initialMouseX;
-                const deltaY = e.clientY - dragging.initialMouseY;
+                const deltaX = coords.x - dragging.initialMouseX;
+                const deltaY = coords.y - dragging.initialMouseY;
 
                 const data = (block.data as any) || {};
 
@@ -178,7 +204,7 @@ export function SpecialPageLayout({
                 }
             }
             else if (dragging.type === 'move') {
-                const elements = document.elementsFromPoint(e.clientX, e.clientY);
+                const elements = document.elementsFromPoint(coords.x, coords.y);
                 const widgetElement = elements.find(el => el.hasAttribute('data-widget-index'));
                 if (widgetElement) {
                     const hoverIndex = parseInt(widgetElement.getAttribute('data-widget-index')!);
@@ -189,7 +215,9 @@ export function SpecialPageLayout({
             }
         };
 
-        const handleMouseUp = () => {
+        const handleEnd = () => {
+            document.body.style.overflow = ''; // Restore scrolling
+
             if (dragging?.type === 'move' && dragOverIndex !== null && dragging.currentIndex !== undefined && dragging.currentIndex !== dragOverIndex) {
                 const newBlocks = [...blocks];
                 const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
@@ -200,11 +228,17 @@ export function SpecialPageLayout({
             setDragOverIndex(null);
         };
 
-        window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('mouseup', handleMouseUp);
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseup', handleEnd);
+        window.addEventListener('touchmove', handleMove, { passive: false });
+        window.addEventListener('touchend', handleEnd);
+
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener('mousemove', handleMove);
+            window.removeEventListener('mouseup', handleEnd);
+            window.removeEventListener('touchmove', handleMove);
+            window.removeEventListener('touchend', handleEnd);
+            document.body.style.overflow = ''; // Ensure overflow restoration on cleanup
         };
     }, [dragging, blocks, onUpdateBlock, onReorderBlocks, previewMode, dragOverIndex]);
 
@@ -290,61 +324,91 @@ export function SpecialPageLayout({
                     {/* Bento Grid */}
                     <div className="flex-1 w-full" ref={gridRef}>
                         <div className={`grid gap-4 ${previewMode === 'mobile' ? 'grid-cols-2 auto-rows-[135px]' : 'grid-cols-4 auto-rows-[160px]'} ${isEditing ? 'border-2 border-dashed border-primary/5 rounded-[2.5rem] p-4 -m-4' : ''}`}>
-                            {blocks.map((block, index) => {
-                                const data = (block.data as any) || {}
-                                const spanX = previewMode === 'mobile' ? (data.mobileSpanX || 1) : (data.gridSpanX || 1)
-                                const spanY = previewMode === 'mobile' ? (data.mobileSpanY || 1) : (data.gridSpanY || 1)
-                                const isBeingDragged = dragging?.type === 'move' && dragging.id === block.id;
+                            <AnimatePresence>
+                                {blocks.map((block, index) => {
+                                    const data = (block.data as any) || {}
+                                    const spanX = previewMode === 'mobile' ? (data.mobileSpanX || 1) : (data.gridSpanX || 1)
+                                    const spanY = previewMode === 'mobile' ? (data.mobileSpanY || 1) : (data.gridSpanY || 1)
+                                    const isBeingDragged = dragging?.type === 'move' && dragging.id === block.id;
 
-                                return (
-                                    <div
-                                        key={block.id}
-                                        data-widget-index={index}
-                                        onMouseDown={(e) => startMove(e, block.id, index)}
-                                        className={`group relative transition-all duration-500 ease-out ${spanX === 1 ? 'col-span-1' : spanX === 2 ? 'col-span-2' : spanX === 3 ? 'col-span-3' : 'col-span-4'
-                                            } ${spanY === 1 ? 'row-span-1' : spanY === 2 ? 'row-span-2' : spanY === 3 ? 'row-span-3' : 'row-span-4'
-                                            } ${isBeingDragged ? 'opacity-30 scale-90 z-0' : 'z-10'} ${dragOverIndex === index && dragging?.type === 'move' && !isBeingDragged ? 'ring-4 ring-primary/20 ring-offset-4 scale-[1.03]' : ''}`}
-                                    >
-                                        <div className={`h-full w-full relative group/widget ${isEditing ? 'hover:z-30 cursor-grab active:cursor-grabbing' : ''}`}>
-                                            <div
-                                                className="h-full w-full overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/[0.04] transition-transform group-hover/widget:scale-[1.01] duration-300"
-                                                style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
-                                            >
-                                                <BlockRenderer block={block} theme={theme} layoutType="special" />
+                                    return (
+                                        <motion.div
+                                            layout
+                                            key={block.id}
+                                            data-widget-index={index}
+                                            onMouseDown={(e) => startMove(e, block.id, index)}
+                                            onTouchStart={(e) => startMove(e, block.id, index)}
+                                            className={`group relative ${spanX === 1 ? 'col-span-1' : spanX === 2 ? 'col-span-2' : spanX === 3 ? 'col-span-3' : 'col-span-4'
+                                                } ${spanY === 1 ? 'row-span-1' : spanY === 2 ? 'row-span-2' : spanY === 3 ? 'row-span-3' : 'row-span-4'
+                                                } ${isBeingDragged ? 'opacity-30 z-50' : 'z-10'} ${dragOverIndex === index && dragging?.type === 'move' && !isBeingDragged ? 'scale-[1.02]' : ''}`}
+                                            transition={{
+                                                layout: { duration: 0.3, ease: "easeInOut" }
+                                            }}
+                                        >
+                                            <div className={`h-full w-full relative group/widget ${isEditing ? 'hover:z-30 cursor-grab active:cursor-grabbing' : ''}`}>
+                                                <div
+                                                    className="h-full w-full overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/[0.04] transition-all duration-300"
+                                                    style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
+                                                >
+                                                    <BlockRenderer block={block} theme={theme} layoutType="special" />
+                                                </div>
+
+                                                {isEditing && (
+                                                    <>
+                                                        <div
+                                                            className="absolute inset-0 border-2 border-transparent group-hover/widget:border-primary/40 pointer-events-none z-20 transition-all"
+                                                            style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
+                                                        ></div>
+
+                                                        <button
+                                                            onClick={(e) => { e.stopPropagation(); onDeleteBlock?.(block.id); }}
+                                                            className={`absolute -top-3 -right-3 p-2 bg-black text-white rounded-full transition-all z-40 border-2 border-white hover:bg-red-500 action-handle shadow-lg ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
+                                                        >
+                                                            <Trash2 className="h-3 w-3" />
+                                                        </button>
+
+                                                        {/* Resize Handles - Right */}
+                                                        <div
+                                                            onMouseDown={(e) => startResize(e, block.id, 'x', spanX)}
+                                                            onTouchStart={(e) => startResize(e, block.id, 'x', spanX)}
+                                                            className={`absolute top-1/2 -right-2 -translate-y-1/2 w-6 h-10 flex items-center justify-center cursor-ew-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
+                                                        >
+                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
+                                                        </div>
+
+                                                        {/* Resize Handles - Left */}
+                                                        <div
+                                                            onMouseDown={(e) => startResize(e, block.id, 'x', spanX)}
+                                                            onTouchStart={(e) => startResize(e, block.id, 'x', spanX)}
+                                                            className={`absolute top-1/2 -left-2 -translate-y-1/2 w-6 h-10 flex items-center justify-center cursor-ew-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
+                                                        >
+                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
+                                                        </div>
+
+                                                        {/* Resize Handles - Bottom */}
+                                                        <div
+                                                            onMouseDown={(e) => startResize(e, block.id, 'y', spanY)}
+                                                            onTouchStart={(e) => startResize(e, block.id, 'y', spanY)}
+                                                            className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-6 flex items-center justify-center cursor-ns-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
+                                                        >
+                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
+                                                        </div>
+
+                                                        {/* Resize Handles - Top */}
+                                                        <div
+                                                            onMouseDown={(e) => startResize(e, block.id, 'y', spanY)}
+                                                            onTouchStart={(e) => startResize(e, block.id, 'y', spanY)}
+                                                            className={`absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-6 flex items-center justify-center cursor-ns-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
+                                                        >
+                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
+                                                        </div>
+                                                    </>
+                                                )}
                                             </div>
-
-                                            {isEditing && (
-                                                <>
-                                                    <div
-                                                        className="absolute inset-0 border-2 border-transparent group-hover/widget:border-primary/40 pointer-events-none z-20 transition-all"
-                                                        style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
-                                                    ></div>
-
-                                                    <button
-                                                        onClick={(e) => { e.stopPropagation(); onDeleteBlock?.(block.id); }}
-                                                        className="absolute -top-3 -right-3 p-2 bg-black text-white rounded-full opacity-0 group-hover/widget:opacity-100 transition-all z-40 border-2 border-white hover:bg-red-500 action-handle shadow-lg"
-                                                    >
-                                                        <Trash2 className="h-3 w-3" />
-                                                    </button>
-
-                                                    <div onMouseDown={(e) => startResize(e, block.id, 'x', spanX)} className="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 flex items-center justify-center cursor-ew-resize z-40 opacity-0 group-hover/widget:opacity-100 action-handle">
-                                                        <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                    </div>
-                                                    <div onMouseDown={(e) => startResize(e, block.id, 'x', spanX)} className="absolute top-1/2 -left-2 -translate-y-1/2 w-4 h-4 flex items-center justify-center cursor-ew-resize z-40 opacity-0 group-hover/widget:opacity-100 action-handle">
-                                                        <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                    </div>
-                                                    <div onMouseDown={(e) => startResize(e, block.id, 'y', spanY)} className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 flex items-center justify-center cursor-ns-resize z-40 opacity-0 group-hover/widget:opacity-100 action-handle">
-                                                        <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                    </div>
-                                                    <div onMouseDown={(e) => startResize(e, block.id, 'y', spanY)} className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 flex items-center justify-center cursor-ns-resize z-40 opacity-0 group-hover/widget:opacity-100 action-handle">
-                                                        <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                    </div>
-                                                </>
-                                            )}
-                                        </div>
-                                    </div>
-                                )
-                            })}
+                                        </motion.div>
+                                    )
+                                })}
+                            </AnimatePresence>
                         </div>
                     </div>
                 </div>

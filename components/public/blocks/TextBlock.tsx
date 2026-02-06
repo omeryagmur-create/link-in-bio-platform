@@ -31,9 +31,13 @@ export function TextBlock({ block, theme, layoutType = 'classic' }: TextBlockPro
                 {!isSmall && (
                     <Quote className="absolute -top-4 -left-4 w-24 h-24 opacity-5 transform -rotate-12 transition-transform group-hover:rotate-0" />
                 )}
-                <div className="w-full h-full p-6 flex flex-col justify-center items-center">
+                <div className={`w-full h-full ${isSmall ? 'p-3' : 'p-6'} flex flex-col justify-center items-center`}>
                     <p className={`${isSmall
-                            ? 'text-sm'
+                            ? content.length < 20
+                                ? 'text-sm'
+                                : content.length < 50
+                                    ? 'text-xs'
+                                    : 'text-[10px]'
                             : content.length < 50
                                 ? 'text-3xl md:text-4xl'
                                 : content.length < 100

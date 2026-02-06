@@ -368,7 +368,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
 
                         {isEditing ? renderEditor() : (
                             <div className="flex-1 flex items-center justify-between">
-                                <div className="flex items-center gap-3">
+                                <div className="flex flex-1 items-center gap-3 min-w-0">
                                     <div className="p-2 bg-muted rounded-md text-muted-foreground">
                                         {renderIcon()}
                                     </div>
