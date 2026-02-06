@@ -104,6 +104,8 @@ export function SpecialPageLayout({
     const [dragging, setDragging] = useState<{ id: string; type: 'resize' | 'move'; axis?: 'x' | 'y'; initialValue?: number; initialMouseX: number; initialMouseY: number; currentIndex?: number } | null>(null);
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const gridRef = useRef<HTMLDivElement>(null);
+    const lastReorderTime = useRef<number>(0);
+    const REORDER_THROTTLE_MS = 150;
 
     // Helpers
     const getClientCoords = (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
@@ -132,8 +134,9 @@ export function SpecialPageLayout({
     // Move Start
     const startMove = (e: React.MouseEvent | React.TouchEvent, id: string, index: number) => {
         if (!isEditing) return;
-        if (resizingBlockId) return; // Don't move while resizing
+        if (resizingBlockId) return;
 
+        e.preventDefault(); // Prevent text selection
         if (e.type === 'touchstart') document.body.style.overflow = 'hidden';
 
         const coords = getClientCoords(e);
@@ -197,21 +200,24 @@ export function SpecialPageLayout({
                 const widgetElement = elements.find(el => el.hasAttribute('data-widget-index'));
                 if (widgetElement) {
                     const hoverIndex = parseInt(widgetElement.getAttribute('data-widget-index')!);
-                    // Live reorder: immediately swap positions as user drags
+                    const now = Date.now();
+
                     if (hoverIndex !== dragOverIndex && hoverIndex >= 0 && hoverIndex < blocks.length && dragging.currentIndex !== undefined) {
-                        // Perform live reorder
-                        const newBlocks = [...blocks];
-                        const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
-                        newBlocks.splice(hoverIndex, 0, movedBlock);
+                        // Throttle: only reorder if enough time has passed
+                        if (now - lastReorderTime.current >= REORDER_THROTTLE_MS) {
+                            lastReorderTime.current = now;
 
-                        // Update blocks immediately
-                        onReorderBlocks?.(newBlocks);
+                            const newBlocks = [...blocks];
+                            const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
+                            newBlocks.splice(hoverIndex, 0, movedBlock);
 
-                        // Update currentIndex to new position
-                        setDragging({
-                            ...dragging,
-                            currentIndex: hoverIndex
-                        });
+                            onReorderBlocks?.(newBlocks);
+
+                            setDragging({
+                                ...dragging,
+                                currentIndex: hoverIndex
+                            });
+                        }
                         setDragOverIndex(hoverIndex);
                     }
                 }
@@ -241,7 +247,7 @@ export function SpecialPageLayout({
 
     return (
         <div
-            className="min-h-full transition-all duration-500 overflow-x-hidden w-full flex flex-col relative"
+            className={`min-h-full transition-all duration-500 overflow-x-hidden w-full flex flex-col relative ${dragging ? 'select-none' : ''}`}
             style={{ backgroundColor, color: textColor, fontFamily }}
             onClick={() => {
                 setActiveBlockId(null);
