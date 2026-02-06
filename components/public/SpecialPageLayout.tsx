@@ -128,24 +128,11 @@ export function SpecialPageLayout({
         });
     }
 
+
     // Move Start
     const startMove = (e: React.MouseEvent | React.TouchEvent, id: string, index: number) => {
         if (!isEditing) return;
-        // Only allow move via drag handle or long press logic if we wanted, 
-        // but for now, we'll use a specific move handler or improved logic.
-        // Actually, let's only allow moving if NOT resizing and if user grabs the block content 
-        // BUT we need to avoid conflicting with "Click to activate".
-        // Let's rely on a specific drag handle or just long press.
-        // For simplicity and better UX requested: "Click -> Resize Option". 
-        // So main click handles selection. Dragging needs to be distinct.
-        // We will add a "Move" handle visible on Hover/Selection.
-
-        // For this specific request: "Mobile place changing error" -> Likely tough to drag.
-        // Let's prevent move start if interacting with controls.
-        if ((e.target as HTMLElement).closest('.action-handle')) return;
-
-        // If we are resizing, don't move
-        if (resizingBlockId) return;
+        if (resizingBlockId) return; // Don't move while resizing
 
         if (e.type === 'touchstart') document.body.style.overflow = 'hidden';
 
@@ -159,6 +146,7 @@ export function SpecialPageLayout({
         });
         setDragOverIndex(index);
     }
+
 
     useEffect(() => {
         if (!dragging) return;
@@ -382,7 +370,7 @@ export function SpecialPageLayout({
 
                                                                 {/* Move Handle (Explicit) - Primary for reordering */}
                                                                 <div
-                                                                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors cursor-grab active:cursor-grabbing border-2 border-transparent hover:border-black/5"
+                                                                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors cursor-grab active:cursor-grabbing border-2 border-transparent hover:border-black/5 action-handle"
                                                                     onMouseDown={(e) => { e.stopPropagation(); startMove(e, block.id, index); }}
                                                                     onTouchStart={(e) => { e.stopPropagation(); startMove(e, block.id, index); }}
                                                                     title={t('editor.blocks.move') || 'Move'}
