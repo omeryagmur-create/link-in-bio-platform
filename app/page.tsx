@@ -37,6 +37,7 @@ import IsoLevelWarp from "@/components/ui/isometric-wave-grid-background";
 import { Logo } from "@/components/ui/logo";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { DashboardMockup } from "@/components/landing/DashboardMockup";
+import { ActiveChannels } from "@/components/landing/ActiveChannels";
 
 
 const faqData = [
@@ -193,6 +194,8 @@ export default function Home() {
         </ContainerScroll>
       </section>
 
+      {/* Active Channels */}
+      <ActiveChannels />
 
       {/* Solution Section */}
       <section className="mt-8 py-12 px-6 relative overflow-hidden">

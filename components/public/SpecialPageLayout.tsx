@@ -4,7 +4,7 @@ import { Block } from '@/types'
 import { BlockRenderer } from './BlockRenderer'
 import Image from 'next/image'
 import { popularFonts, getButtonStyle } from '@/lib/theme'
-import { Trash2, Move, Share2, FileText, ChevronLeft, Plus, X } from 'lucide-react'
+import { Trash2, Move, Share2, FileText, ChevronLeft, Plus, X, Scaling, Check, ArrowRight, Expand } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 import { toast } from 'sonner'
 import { useTranslation } from '@/lib/i18n/provider'
@@ -68,8 +68,6 @@ export function SpecialPageLayout({
         const updatedTags = [...tags, newTag.trim()]
         if (onUpdateProfile) {
             onUpdateProfile({ ...profile, tags: updatedTags })
-
-            // Sync with DB
             try {
                 await fetch('/api/profile', {
                     method: 'PATCH',
@@ -88,8 +86,6 @@ export function SpecialPageLayout({
         const updatedTags = tags.filter(t => t !== tagToRemove)
         if (onUpdateProfile) {
             onUpdateProfile({ ...profile, tags: updatedTags })
-
-            // Sync with DB
             try {
                 await fetch('/api/profile', {
                     method: 'PATCH',
@@ -102,11 +98,14 @@ export function SpecialPageLayout({
         }
     }
 
-    // Interactive States for Grid
+    // Interaction States
+    const [activeBlockId, setActiveBlockId] = useState<string | null>(null);
+    const [resizingBlockId, setResizingBlockId] = useState<string | null>(null);
     const [dragging, setDragging] = useState<{ id: string; type: 'resize' | 'move'; axis?: 'x' | 'y'; initialValue?: number; initialMouseX: number; initialMouseY: number; currentIndex?: number } | null>(null);
     const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
+    // Helpers
     const getClientCoords = (e: React.MouseEvent | React.TouchEvent | MouseEvent | TouchEvent) => {
         if ('touches' in e) {
             return { x: e.touches[0].clientX, y: e.touches[0].clientY }
@@ -114,16 +113,11 @@ export function SpecialPageLayout({
         return { x: e.clientX, y: e.clientY }
     }
 
-    // Resize Logic
+    // Resize Start
     const startResize = (e: React.MouseEvent | React.TouchEvent, id: string, axis: 'x' | 'y', initialValue: number) => {
-        // Prevent scrolling on mobile while resizing
-        if (e.type === 'touchstart') {
-            document.body.style.overflow = 'hidden';
-        }
-
+        if (e.type === 'touchstart') document.body.style.overflow = 'hidden';
         e.stopPropagation();
         const coords = getClientCoords(e);
-
         setDragging({
             id,
             type: 'resize',
@@ -134,15 +128,26 @@ export function SpecialPageLayout({
         });
     }
 
-    // Move Logic
+    // Move Start
     const startMove = (e: React.MouseEvent | React.TouchEvent, id: string, index: number) => {
         if (!isEditing) return;
+        // Only allow move via drag handle or long press logic if we wanted, 
+        // but for now, we'll use a specific move handler or improved logic.
+        // Actually, let's only allow moving if NOT resizing and if user grabs the block content 
+        // BUT we need to avoid conflicting with "Click to activate".
+        // Let's rely on a specific drag handle or just long press.
+        // For simplicity and better UX requested: "Click -> Resize Option". 
+        // So main click handles selection. Dragging needs to be distinct.
+        // We will add a "Move" handle visible on Hover/Selection.
+
+        // For this specific request: "Mobile place changing error" -> Likely tough to drag.
+        // Let's prevent move start if interacting with controls.
         if ((e.target as HTMLElement).closest('.action-handle')) return;
 
-        // Prevent scrolling on mobile while dragging
-        if (e.type === 'touchstart') {
-            document.body.style.overflow = 'hidden';
-        }
+        // If we are resizing, don't move
+        if (resizingBlockId) return;
+
+        if (e.type === 'touchstart') document.body.style.overflow = 'hidden';
 
         const coords = getClientCoords(e);
         setDragging({
@@ -159,11 +164,7 @@ export function SpecialPageLayout({
         if (!dragging) return;
 
         const handleMove = (e: MouseEvent | TouchEvent) => {
-            // Prevent default behavior if needed (e.g. scroll)
-            if (e.cancelable && e.type === 'touchmove') {
-                e.preventDefault();
-            }
-
+            if (e.cancelable && e.type === 'touchmove') e.preventDefault();
             const coords = getClientCoords(e);
 
             if (dragging.type === 'resize' && onUpdateBlock) {
@@ -208,7 +209,8 @@ export function SpecialPageLayout({
                 const widgetElement = elements.find(el => el.hasAttribute('data-widget-index'));
                 if (widgetElement) {
                     const hoverIndex = parseInt(widgetElement.getAttribute('data-widget-index')!);
-                    if (hoverIndex !== dragOverIndex) {
+                    // Improved simple reorder preview logic
+                    if (hoverIndex !== dragOverIndex && hoverIndex >= 0 && hoverIndex < blocks.length) {
                         setDragOverIndex(hoverIndex);
                     }
                 }
@@ -216,14 +218,16 @@ export function SpecialPageLayout({
         };
 
         const handleEnd = () => {
-            document.body.style.overflow = ''; // Restore scrolling
+            document.body.style.overflow = '';
 
-            if (dragging?.type === 'move' && dragOverIndex !== null && dragging.currentIndex !== undefined && dragging.currentIndex !== dragOverIndex) {
+            if (dragging.type === 'move' && dragOverIndex !== null && dragging.currentIndex !== undefined && dragging.currentIndex !== dragOverIndex) {
+                // Perform the reorder
                 const newBlocks = [...blocks];
                 const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
                 newBlocks.splice(dragOverIndex, 0, movedBlock);
                 onReorderBlocks?.(newBlocks);
             }
+
             setDragging(null);
             setDragOverIndex(null);
         };
@@ -238,7 +242,7 @@ export function SpecialPageLayout({
             window.removeEventListener('mouseup', handleEnd);
             window.removeEventListener('touchmove', handleMove);
             window.removeEventListener('touchend', handleEnd);
-            document.body.style.overflow = ''; // Ensure overflow restoration on cleanup
+            document.body.style.overflow = '';
         };
     }, [dragging, blocks, onUpdateBlock, onReorderBlocks, previewMode, dragOverIndex]);
 
@@ -246,13 +250,17 @@ export function SpecialPageLayout({
         <div
             className="min-h-full transition-all duration-500 overflow-x-hidden w-full flex flex-col relative"
             style={{ backgroundColor, color: textColor, fontFamily }}
+            onClick={() => {
+                setActiveBlockId(null);
+                // Only clear resizing if explicitly cancelled? Or standard behavior
+                // User said "confirm button to stop". So clicking background shouldn't stop it maybe?
+                // Let's keep resizing active until check is pressed.
+            }}
         >
-            {/* Top Navigation Row Removed as requested */}
-
             <div className={`mx-auto w-full ${previewMode === 'mobile' ? 'px-6 pb-12' : 'max-w-[1200px] px-8 py-10 pb-32'}`}>
                 <div className={`flex ${previewMode === 'mobile' ? 'flex-col' : 'flex-row gap-12 items-start'}`}>
 
-                    {/* Profile Sidebar - Smaller Size */}
+                    {/* Profile Section */}
                     <div className={`${previewMode === 'mobile' ? 'w-full mb-12' : 'w-[280px] sticky top-12'}`}>
                         <div className="relative mb-6 group">
                             <div className={`${previewMode === 'mobile' ? 'w-40 h-40 mx-auto' : 'w-52 h-52'} rounded-[2.5rem] overflow-hidden border-8 border-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative transform rotate-1 hover:rotate-0 transition-transform duration-700`}>
@@ -274,8 +282,6 @@ export function SpecialPageLayout({
                                     <p className="text-base opacity-80 leading-relaxed font-sans max-w-sm mx-auto lg:mx-0">
                                         {profile.bio}
                                     </p>
-
-                                    {/* Editable Tags */}
                                     <div className={`flex flex-wrap gap-2 ${previewMode === 'mobile' ? 'justify-center' : ''}`}>
                                         {tags.map((tag, i) => (
                                             <div key={i} className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/5 text-[11px] font-semibold group/tag">
@@ -287,7 +293,6 @@ export function SpecialPageLayout({
                                                 )}
                                             </div>
                                         ))}
-
                                         {isEditing && (
                                             <div className="flex items-center gap-1">
                                                 {isAddingTag ? (
@@ -304,10 +309,7 @@ export function SpecialPageLayout({
                                                         <button onClick={handleAddTag} className="text-primary"><Plus className="h-3 w-3" /></button>
                                                     </div>
                                                 ) : (
-                                                    <button
-                                                        onClick={() => setIsAddingTag(true)}
-                                                        className="w-6 h-6 rounded-full border border-dashed border-black/20 flex items-center justify-center hover:border-primary hover:text-primary transition-colors"
-                                                    >
+                                                    <button onClick={() => setIsAddingTag(true)} className="w-6 h-6 rounded-full border border-dashed border-black/20 flex items-center justify-center hover:border-primary hover:text-primary transition-colors">
                                                         <Plus className="h-3 w-3" />
                                                     </button>
                                                 )}
@@ -316,8 +318,6 @@ export function SpecialPageLayout({
                                     </div>
                                 </div>
                             )}
-
-                            {/* Share button removed as requested */}
                         </div>
                     </div>
 
@@ -329,6 +329,9 @@ export function SpecialPageLayout({
                                     const data = (block.data as any) || {}
                                     const spanX = previewMode === 'mobile' ? (data.mobileSpanX || 1) : (data.gridSpanX || 1)
                                     const spanY = previewMode === 'mobile' ? (data.mobileSpanY || 1) : (data.gridSpanY || 1)
+
+                                    const isResizing = resizingBlockId === block.id;
+                                    const isActive = activeBlockId === block.id;
                                     const isBeingDragged = dragging?.type === 'move' && dragging.id === block.id;
 
                                     return (
@@ -336,72 +339,85 @@ export function SpecialPageLayout({
                                             layout
                                             key={block.id}
                                             data-widget-index={index}
-                                            onMouseDown={(e) => startMove(e, block.id, index)}
-                                            onTouchStart={(e) => startMove(e, block.id, index)}
+                                            onClick={(e) => {
+                                                if (isEditing) {
+                                                    e.stopPropagation();
+                                                    // If we are already resizing another block, maybe switch?
+                                                    // User said: Click -> Option "Change Size" -> Click that -> Enable Resize
+                                                    if (!isResizing) {
+                                                        setActiveBlockId(block.id);
+                                                    }
+                                                }
+                                            }}
                                             className={`group relative ${spanX === 1 ? 'col-span-1' : spanX === 2 ? 'col-span-2' : spanX === 3 ? 'col-span-3' : 'col-span-4'
                                                 } ${spanY === 1 ? 'row-span-1' : spanY === 2 ? 'row-span-2' : spanY === 3 ? 'row-span-3' : 'row-span-4'
                                                 } ${isBeingDragged ? 'opacity-30 z-50' : 'z-10'} ${dragOverIndex === index && dragging?.type === 'move' && !isBeingDragged ? 'scale-[1.02]' : ''}`}
-                                            transition={{
-                                                layout: { duration: 0.3, ease: "easeInOut" }
-                                            }}
+                                            transition={{ layout: { duration: 0.3, ease: "easeInOut" } }}
                                         >
-                                            <div className={`h-full w-full relative group/widget ${isEditing ? 'hover:z-30 cursor-grab active:cursor-grabbing' : ''}`}>
+                                            <div className={`h-full w-full relative group/widget`}>
                                                 <div
                                                     className="h-full w-full overflow-hidden bg-white shadow-[0_4px_20px_rgba(0,0,0,0.03)] border border-black/[0.04] transition-all duration-300"
-                                                    style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
+                                                    style={{
+                                                        borderRadius: getButtonStyle(theme.buttonStyle),
+                                                        border: (isActive || isResizing) ? '2px solid var(--primary)' : undefined
+                                                    }}
                                                 >
                                                     <BlockRenderer block={block} theme={theme} layoutType="special" />
+
+                                                    {isEditing && !isResizing && (
+                                                        // Only allow dragging if NOT resizing
+                                                        <div
+                                                            className="absolute inset-0 cursor-move z-10"
+                                                            onMouseDown={(e) => startMove(e, block.id, index)}
+                                                            onTouchStart={(e) => startMove(e, block.id, index)}
+                                                        />
+                                                    )}
                                                 </div>
 
+                                                {/* Editing Controls */}
                                                 {isEditing && (
                                                     <>
-                                                        <div
-                                                            className="absolute inset-0 border-2 border-transparent group-hover/widget:border-primary/40 pointer-events-none z-20 transition-all"
-                                                            style={{ borderRadius: getButtonStyle(theme.buttonStyle) }}
-                                                        ></div>
+                                                        {/* Resize Toggle Button (Only when active and not resizing) */}
+                                                        {isActive && !isResizing && (
+                                                            <div className="absolute top-2 right-2 z-50 flex gap-2">
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); setResizingBlockId(block.id); setActiveBlockId(block.id); }}
+                                                                    className="bg-primary text-white text-xs px-3 py-1.5 rounded-full shadow-lg font-bold flex items-center gap-1 hover:scale-105 transition-transform action-handle"
+                                                                >
+                                                                    <Expand className="w-3 h-3" /> {t('editor.blocks.resize') || 'Resize'}
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); onDeleteBlock?.(block.id); }}
+                                                                    className="bg-black text-white p-1.5 rounded-full shadow-lg hover:bg-red-500 transition-colors action-handle"
+                                                                >
+                                                                    <Trash2 className="w-3 h-3" />
+                                                                </button>
+                                                            </div>
+                                                        )}
 
-                                                        <button
-                                                            onClick={(e) => { e.stopPropagation(); onDeleteBlock?.(block.id); }}
-                                                            className={`absolute -top-3 -right-3 p-2 bg-black text-white rounded-full transition-all z-40 border-2 border-white hover:bg-red-500 action-handle shadow-lg ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
-                                                        >
-                                                            <Trash2 className="h-3 w-3" />
-                                                        </button>
+                                                        {/* Resize Confirmation (Only when resizing) */}
+                                                        {isResizing && (
+                                                            <div className="absolute -top-4 right-0 left-0 z-50 flex justify-center">
+                                                                <button
+                                                                    onClick={(e) => { e.stopPropagation(); setResizingBlockId(null); setActiveBlockId(null); }}
+                                                                    className="bg-green-500 text-white text-xs px-4 py-1.5 rounded-full shadow-xl font-bold flex items-center gap-1 hover:scale-105 transition-transform action-handle animate-in fade-in zoom-in"
+                                                                >
+                                                                    <Check className="w-3 h-3" /> {t('common.done') || 'Done'}
+                                                                </button>
+                                                            </div>
+                                                        )}
 
-                                                        {/* Resize Handles - Right */}
-                                                        <div
-                                                            onMouseDown={(e) => startResize(e, block.id, 'x', spanX)}
-                                                            onTouchStart={(e) => startResize(e, block.id, 'x', spanX)}
-                                                            className={`absolute top-1/2 -right-2 -translate-y-1/2 w-6 h-10 flex items-center justify-center cursor-ew-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
-                                                        >
-                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                        </div>
-
-                                                        {/* Resize Handles - Left */}
-                                                        <div
-                                                            onMouseDown={(e) => startResize(e, block.id, 'x', spanX)}
-                                                            onTouchStart={(e) => startResize(e, block.id, 'x', spanX)}
-                                                            className={`absolute top-1/2 -left-2 -translate-y-1/2 w-6 h-10 flex items-center justify-center cursor-ew-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
-                                                        >
-                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                        </div>
-
-                                                        {/* Resize Handles - Bottom */}
-                                                        <div
-                                                            onMouseDown={(e) => startResize(e, block.id, 'y', spanY)}
-                                                            onTouchStart={(e) => startResize(e, block.id, 'y', spanY)}
-                                                            className={`absolute -bottom-2 left-1/2 -translate-x-1/2 w-10 h-6 flex items-center justify-center cursor-ns-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
-                                                        >
-                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                        </div>
-
-                                                        {/* Resize Handles - Top */}
-                                                        <div
-                                                            onMouseDown={(e) => startResize(e, block.id, 'y', spanY)}
-                                                            onTouchStart={(e) => startResize(e, block.id, 'y', spanY)}
-                                                            className={`absolute -top-2 left-1/2 -translate-x-1/2 w-10 h-6 flex items-center justify-center cursor-ns-resize z-40 action-handle ${previewMode === 'mobile' ? 'opacity-100' : 'opacity-0 group-hover/widget:opacity-100'}`}
-                                                        >
-                                                            <div className="w-2.5 h-2.5 bg-white border-2 border-primary rounded-full shadow-md"></div>
-                                                        </div>
+                                                        {/* Resize Handles (Only when resizing) */}
+                                                        {isResizing && (
+                                                            <>
+                                                                <div onMouseDown={(e) => startResize(e, block.id, 'x', spanX)} onTouchStart={(e) => startResize(e, block.id, 'x', spanX)} className="absolute top-1/2 -right-3 -translate-y-1/2 w-8 h-8 flex items-center justify-center cursor-ew-resize z-50 action-handle bg-white rounded-full shadow-md border-2 border-primary hover:scale-110 transition-transform">
+                                                                    <ArrowRight className="w-4 h-4 text-primary" />
+                                                                </div>
+                                                                <div onMouseDown={(e) => startResize(e, block.id, 'y', spanY)} onTouchStart={(e) => startResize(e, block.id, 'y', spanY)} className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-8 h-8 flex items-center justify-center cursor-ns-resize z-50 action-handle bg-white rounded-full shadow-md border-2 border-primary hover:scale-110 transition-transform rotate-90">
+                                                                    <ArrowRight className="w-4 h-4 text-primary" />
+                                                                </div>
+                                                            </>
+                                                        )}
                                                     </>
                                                 )}
                                             </div>
