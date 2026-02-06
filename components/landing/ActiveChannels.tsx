@@ -80,7 +80,7 @@ export function ActiveChannels() {
     }, [])
 
     if (loading) return null; // Or skeleton
-    if (channels.length < 5) return null; // Don't show if too few
+    // if (channels.length < 5) return null; // Removed check to show even with few profiles
 
     // Split into two rows if desired, or just one flow. User asked for "single horizontal row".
 
