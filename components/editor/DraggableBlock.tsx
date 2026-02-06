@@ -118,7 +118,7 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                 )
             case 'text':
                 return (
-                    <div className="flex-1 truncate text-sm">
+                    <div className="flex-1 truncate text-sm min-w-0">
                         {bData.content || t('editor.blocks.text_placeholder')}
                     </div>
                 )
@@ -367,14 +367,14 @@ export function DraggableBlock({ block, onDelete, onUpdate, layoutType = 'classi
                         </div>
 
                         {isEditing ? renderEditor() : (
-                            <div className="flex-1 flex items-center justify-between">
-                                <div className="flex flex-1 items-center gap-3 min-w-0">
-                                    <div className="p-2 bg-muted rounded-md text-muted-foreground">
+                            <div className="flex-1 flex items-center justify-between min-w-0">
+                                <div className="flex flex-1 items-center gap-3 min-w-0 overflow-hidden">
+                                    <div className="p-2 bg-muted rounded-md text-muted-foreground shrink-0">
                                         {renderIcon()}
                                     </div>
                                     {renderContentPreview()}
                                 </div>
-                                <div className="flex gap-1">
+                                <div className="flex gap-1 shrink-0 ml-2">
                                     <Button size="icon" variant="ghost" className="h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => setIsEditing(true)}>
                                         <Edit className="h-4 w-4" />
                                     </Button>

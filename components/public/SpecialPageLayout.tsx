@@ -374,23 +374,38 @@ export function SpecialPageLayout({
                                                     )}
                                                 </div>
 
-                                                {/* Editing Controls */}
                                                 {isEditing && (
                                                     <>
-                                                        {/* Resize Toggle Button (Only when active and not resizing) */}
+                                                        {/* Active State Controls (When clicked but not resizing) */}
                                                         {isActive && !isResizing && (
-                                                            <div className="absolute top-2 right-2 z-50 flex gap-2">
+                                                            <div className="absolute -top-3 right-2 z-50 flex gap-2 animate-in fade-in zoom-in duration-200">
+
+                                                                {/* Move Handle (Explicit) - Primary for reordering */}
+                                                                <div
+                                                                    className="bg-white text-black p-2 rounded-full shadow-lg hover:bg-gray-100 transition-colors action-handle cursor-grab active:cursor-grabbing border-2 border-transparent hover:border-black/5"
+                                                                    onMouseDown={(e) => startMove(e, block.id, index)}
+                                                                    onTouchStart={(e) => startMove(e, block.id, index)}
+                                                                    title={t('editor.blocks.move') || 'Move'}
+                                                                >
+                                                                    <Move className="w-4 h-4" />
+                                                                </div>
+
+                                                                {/* Resize Toggle */}
                                                                 <button
                                                                     onClick={(e) => { e.stopPropagation(); setResizingBlockId(block.id); setActiveBlockId(block.id); }}
-                                                                    className="bg-primary text-white text-xs px-3 py-1.5 rounded-full shadow-lg font-bold flex items-center gap-1 hover:scale-105 transition-transform action-handle"
+                                                                    className="bg-primary text-white p-2 rounded-full shadow-lg hover:brightness-110 transition-all action-handle"
+                                                                    title={t('editor.blocks.resize') || 'Resize'}
                                                                 >
-                                                                    <Expand className="w-3 h-3" /> {t('editor.blocks.resize') || 'Resize'}
+                                                                    <Scaling className="w-4 h-4" />
                                                                 </button>
+
+                                                                {/* Delete Button */}
                                                                 <button
                                                                     onClick={(e) => { e.stopPropagation(); onDeleteBlock?.(block.id); }}
-                                                                    className="bg-black text-white p-1.5 rounded-full shadow-lg hover:bg-red-500 transition-colors action-handle"
+                                                                    className="bg-black text-white p-2 rounded-full shadow-lg hover:bg-red-500 transition-colors action-handle"
+                                                                    title={t('common.delete') || 'Delete'}
                                                                 >
-                                                                    <Trash2 className="w-3 h-3" />
+                                                                    <Trash2 className="w-4 h-4" />
                                                                 </button>
                                                             </div>
                                                         )}
