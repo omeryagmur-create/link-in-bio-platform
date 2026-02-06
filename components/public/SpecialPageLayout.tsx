@@ -197,8 +197,21 @@ export function SpecialPageLayout({
                 const widgetElement = elements.find(el => el.hasAttribute('data-widget-index'));
                 if (widgetElement) {
                     const hoverIndex = parseInt(widgetElement.getAttribute('data-widget-index')!);
-                    // Improved simple reorder preview logic
-                    if (hoverIndex !== dragOverIndex && hoverIndex >= 0 && hoverIndex < blocks.length) {
+                    // Live reorder: immediately swap positions as user drags
+                    if (hoverIndex !== dragOverIndex && hoverIndex >= 0 && hoverIndex < blocks.length && dragging.currentIndex !== undefined) {
+                        // Perform live reorder
+                        const newBlocks = [...blocks];
+                        const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
+                        newBlocks.splice(hoverIndex, 0, movedBlock);
+
+                        // Update blocks immediately
+                        onReorderBlocks?.(newBlocks);
+
+                        // Update currentIndex to new position
+                        setDragging({
+                            ...dragging,
+                            currentIndex: hoverIndex
+                        });
                         setDragOverIndex(hoverIndex);
                     }
                 }
@@ -207,15 +220,7 @@ export function SpecialPageLayout({
 
         const handleEnd = () => {
             document.body.style.overflow = '';
-
-            if (dragging.type === 'move' && dragOverIndex !== null && dragging.currentIndex !== undefined && dragging.currentIndex !== dragOverIndex) {
-                // Perform the reorder
-                const newBlocks = [...blocks];
-                const [movedBlock] = newBlocks.splice(dragging.currentIndex, 1);
-                newBlocks.splice(dragOverIndex, 0, movedBlock);
-                onReorderBlocks?.(newBlocks);
-            }
-
+            // No need to reorder here anymore, it's done during drag
             setDragging(null);
             setDragOverIndex(null);
         };
